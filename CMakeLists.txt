@@ -14,6 +14,7 @@ FetchContent_Declare(
     GIT_REPOSITORY https://github.com/Proyecto3-FDI-UCM/2526-Grupo01-HUGO.git
     GIT_TAG main
     SOURCE_SUBDIR HUGO
+    UPDATE_DISCONNECTED OFF # uncomment if working offline
     GIT_SHALLOW TRUE
 )
 
@@ -27,7 +28,7 @@ file(GLOB_RECURSE ${PROJECT_NAME}_SRC_FILES CONFIGURE_DEPENDS ${CMAKE_SOURCE_DIR
 
 # Game target declaration
 
-add_library(${PROJECT_NAME} ${${PROJECT_NAME}_SRC_FILES})
+add_library(${PROJECT_NAME} MODULE ${${PROJECT_NAME}_SRC_FILES})
 
 # Include dirs
 
