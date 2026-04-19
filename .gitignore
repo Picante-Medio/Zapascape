@@ -1,0 +1,34 @@
+# Directories
+[Bb]uild/*
+[Bb]in/*
+**/.vscode/*
+**/.obsidian/*
+**/.git/*
+
+# Ficheros
+*.dll
+*.so
+*.so*
+*.obj
+*.a
+*.lib
+*.exe
+*.out
+*.o
+*.pdb
+*.clangd
+*.log
+*.exp
+
+# Runfiles y demás
+**/project.godot
+
+#Ignores de Godot
+.godot/
+/android/
+*.editorconfig
+*.import
+*.uid
+.builds/
+addons.zip
+export_presets.cfg
