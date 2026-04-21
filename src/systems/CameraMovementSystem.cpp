@@ -68,4 +68,23 @@ void CameraMovementSystem::update(uint32_t dt) {
         settingCam1 = !settingCam1;
     }
 
+
+        // // camera rotation
+    // auto mouseDelta = input->getMouseRelativePosition();
+
+    // rotationRaw   += mouseDelta.x * rotationSensitivity;
+    // rotationPitch -= mouseDelta.y * rotationSensitivity;
+
+    // // limit pitch
+    // rotationPitch = std::clamp(rotationPitch, MIN_PITCH.valueRadians(), MAX_PITCH.valueRadians());
+
+    // HUGO::Vector3 front;
+
+    // front.x = std::cos(rotationRaw) * std::cos(rotationPitch);
+    // front.y = std::sin(rotationPitch);
+    // front.z = std::sin(rotationRaw) * std::cos(rotationPitch);
+
+    // front = front.normalized();
+
+    // //setForward
 }
