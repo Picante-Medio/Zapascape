@@ -13,8 +13,10 @@ const HUGO::Radian MAX_PITCH = HUGO::Degree(89.0f);
 void 
 PlayerInputSystem::init() {
     auto input = scene.getInput();
-    input->registerAction("interact", interactKey);
-    input->registerAction("mark", markKey);
+    input->registerAction(interactAction, interactKey);
+    input->registerAction(markAction, markKey);
+
+    input->registerAction(moveAction, {upKey, downKey, leftKey, rightKey});
 }
 
 void
@@ -43,31 +45,38 @@ PlayerInputSystem::update(uint32_t)
     HUGO::Vector2 actDir = HUGO::Vector2(0.0f);
     auto input = scene.getInput();
 
-    #pragma region horizontal axis
-    if (input->isKeyPressed(leftKey)){
-        actDir.x = -1.0f;
-    }
-    else if (input->isKeyPressed(rightKey)){
-        actDir.x = 1.0f;
-    }
-    #pragma endregion
+    // if no movement key is pressed, direction will be (0,0) and the player won't move
+    if (input->isActionPressed(moveAction)){
+        #pragma region horizontal axis
+        if (input->isKeyPressed(leftKey)){
+            actDir.x = -1.0f;
+        }
+        else if (input->isKeyPressed(rightKey)){
+            actDir.x = 1.0f;
+        }
+        #pragma endregion
 
-    #pragma region vertical axis
-    if (input->isKeyPressed(downKey)){
-        actDir.y = -1.0f;
+        #pragma region vertical axis
+        if (input->isKeyPressed(downKey)){
+            actDir.y = -1.0f;
+        }
+        else if (input->isKeyPressed(upKey)){
+            actDir.y = 1.0f;
+        }
+        #pragma endregion
     }
-    else if (input->isKeyPressed(upKey)){
-        actDir.y = 1.0f;
-    }
-    #pragma endregion
 
     // apply movement
-    if (actDir != HUGO::Vector2(0.0f)){
-        scene.modifyComponent<MovementComponent>(player, [actDir](MovementComponent& m){
-            m.direction = actDir;
-        });
-    }
+    scene.modifyComponent<MovementComponent>(player, [actDir](MovementComponent& m){
+        m.direction = actDir;
+    });
 }
 
 void
-PlayerInputSystem::fixedUpdate(uint32_t) {}
+PlayerInputSystem::fixedUpdate(uint32_t dt) {
+    // Apply position
+    const MovementComponent& m = scene.getComponentConst<MovementComponent>(player);
+    scene.modifyComponent<TransformComponent>(player, [dt,m](TransformComponent& t){
+        t.setPosition(t.getPosition() + HUGO::Vector3(m.direction.x, 0.0f, m.direction.y) * m.speed * (dt/1000.f));
+    });
+}

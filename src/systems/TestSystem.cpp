@@ -18,7 +18,7 @@
 #include "PlayerComponent.h"
 #include "AnimationComponent.h"
 #include "AudioComponent.h"
-
+#include "MovementComponent.h"
 void
 TestSystem::init() {
     // EntityID ent = scene.createEntity();
@@ -43,16 +43,21 @@ TestSystem::init() {
     });
     e1 = scene.createEntity();
     scene.addComponent<TransformComponent>(e1, [](TransformComponent& t1) {
-        t1.setPosition(HUGO::Vector3(0, 0, 0));
+        t1.setPosition(HUGO::Vector3(0, -2, 0));
         t1.setScale(HUGO::Vector3(0.5f, 0.5f, 0.5f));
     });
     scene.addComponent<RenderComponent>(e1, [](RenderComponent& rc) {
-        rc.setMeshName("Sinbad.mesh");
+        rc.setMeshName("beastie.mesh");
     });
     scene.addComponent<AnimationComponent>(e1, [](AnimationComponent& rc) {
-        rc.addAnimation("Dance", true, true);
+        rc.addAnimation("Run", true, true);
     });
+
     scene.addComponent<PlayerComponent>(e1);
+    scene.addComponent<MovementComponent>(e1, [](MovementComponent& m) {
+        m.speed = 5.0f;
+    });
+
     e2 = scene.createEntity();
     scene.addComponent<TransformComponent>(e2, [](TransformComponent& t2) {
         t2.setWorldPosition(HUGO::Vector3(2, -4, 0));

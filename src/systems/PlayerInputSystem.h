@@ -17,6 +17,11 @@ HSYSTEM(PlayerInputSystem)
 
     HUGO::KeyCode markKey = HUGO::KeyCode::F;
     HUGO::KeyCode interactKey = HUGO::KeyCode::E;
+
+    HUGO::String markAction = "mark";
+    HUGO::String interactAction = "interact";
+    HUGO::String moveAction = "move";
+    
 public:
     void init() override;
     void onLoad() override;
