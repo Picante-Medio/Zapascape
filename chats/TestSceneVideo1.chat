@@ -9,3 +9,4 @@ SYSTEM ConsoleSystem
 SYSTEM HierarchySystem
 SYSTEM ParticleSystem
 SYSTEM TestSystem
+SYSTEM PlayerInputSystem

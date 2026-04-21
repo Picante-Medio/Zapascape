@@ -14,6 +14,7 @@
 #include "LightComponent.h"
 #include "SliderComponent.h"
 #include "ParticleEmitterComponent.h"
+#include "PlayerComponent.h"
 #include "CameraComponent.h"
 
 #include "AnimationComponent.h"
@@ -52,6 +53,7 @@ TestSystem::init() {
     scene.addComponent<AnimationComponent>(e1, [](AnimationComponent& rc) {
         rc.addAnimation("Idle", true, true);
     });
+    scene.addComponent<PlayerComponent>(e1);
 
     e2 = scene.createEntity();
     scene.addComponent<TransformComponent>(e2, [](TransformComponent& t2) {

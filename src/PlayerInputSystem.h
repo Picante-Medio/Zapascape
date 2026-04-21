@@ -1,0 +1,28 @@
+#pragma once
+
+#include "HUGO.h"
+
+HSYSTEM(PlayerInputSystem)
+    EntityID player;
+    EntityID camera;
+
+    HUGO::Float rotationSensitivity = 0.002f;
+    HUGO::Float rotationRaw = 0.0f;
+    HUGO::Float rotationPitch = 0.0f;
+
+    HUGO::KeyCode upKey = HUGO::KeyCode::W;
+    HUGO::KeyCode downKey = HUGO::KeyCode::S;
+    HUGO::KeyCode leftKey = HUGO::KeyCode::A;
+    HUGO::KeyCode rightKey = HUGO::KeyCode::D;
+
+    HUGO::KeyCode markKey = HUGO::KeyCode::F;
+    HUGO::KeyCode interactKey = HUGO::KeyCode::E;
+public:
+    void init() override;
+    void onLoad() override;
+
+    void fixedUpdate(uint32_t dt) override;
+    void update(uint32_t dt) override;
+
+END_HSYSTEM()
+
