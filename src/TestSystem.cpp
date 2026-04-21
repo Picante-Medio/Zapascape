@@ -47,10 +47,10 @@ TestSystem::init() {
         t1.setScale(HUGO::Vector3(0.5f, 0.5f, 0.5f));
     });
     scene.addComponent<RenderComponent>(e1, [](RenderComponent& rc) {
-        rc.setMeshName("Sinbad.mesh");
+        rc.setMeshName("beastie.mesh");
     });
     scene.addComponent<AnimationComponent>(e1, [](AnimationComponent& rc) {
-        rc.addAnimation("Dance", true, true);
+        rc.addAnimation("Idle", true, true);
     });
 
     e2 = scene.createEntity();
