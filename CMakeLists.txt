@@ -12,9 +12,8 @@ include(FetchContent)
 FetchContent_Declare(
     HUGO
     GIT_REPOSITORY https://github.com/Proyecto3-FDI-UCM/2526-Grupo01-HUGO.git
-    GIT_TAG main
+    GIT_TAG build-integration
     SOURCE_SUBDIR HUGO
-    UPDATE_DISCONNECTED OFF # uncomment if working offline
     GIT_SHALLOW TRUE
 )
 
