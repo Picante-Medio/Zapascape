@@ -14,9 +14,8 @@
 #include "LightComponent.h"
 #include "SliderComponent.h"
 #include "ParticleEmitterComponent.h"
-#include "PlayerComponent.h"
 #include "CameraComponent.h"
-
+#include "PlayerComponent.h"
 #include "AnimationComponent.h"
 #include "AudioComponent.h"
 
@@ -48,13 +47,12 @@ TestSystem::init() {
         t1.setScale(HUGO::Vector3(0.5f, 0.5f, 0.5f));
     });
     scene.addComponent<RenderComponent>(e1, [](RenderComponent& rc) {
-        rc.setMeshName("beastie.mesh");
+        rc.setMeshName("Sinbad.mesh");
     });
     scene.addComponent<AnimationComponent>(e1, [](AnimationComponent& rc) {
-        rc.addAnimation("Idle", true, true);
+        rc.addAnimation("Dance", true, true);
     });
     scene.addComponent<PlayerComponent>(e1);
-
     e2 = scene.createEntity();
     scene.addComponent<TransformComponent>(e2, [](TransformComponent& t2) {
         t2.setWorldPosition(HUGO::Vector3(2, -4, 0));
@@ -141,9 +139,6 @@ TestSystem::init() {
 void
 TestSystem::onLoad() {}
 
-double timer = 0;
-
-bool usedTimer = false;
 
 void
 TestSystem::update(uint32_t dt) {
