@@ -75,7 +75,7 @@ TestSystem::init() {
         rc3.setMeshName("cube.mesh");
     });
 
-    scene.addComponent<ChildrenComponent>(e1, [this](ChildrenComponent& childrenComp){
+    scene.addComponent<ChildrenComponent>(e1, [this, cam](ChildrenComponent& childrenComp){
         childrenComp.addChild(e2);
         childrenComp.addChild(e3);
     });

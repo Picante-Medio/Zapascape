@@ -37,46 +37,72 @@ PlayerInputSystem::onLoad() {
     }
 }
 
-
-void
-PlayerInputSystem::update(uint32_t) 
+void PlayerInputSystem::update(uint32_t)
 {
-    // direction for the next movement
-    HUGO::Vector2 actDir = HUGO::Vector2(0.0f);
+    HUGO::Vector2 actDir(0.0f);
     auto input = scene.getInput();
 
-    // if no movement key is pressed, direction will be (0,0) and the player won't move
-    if (input->isActionPressed(moveAction)){
-        #pragma region horizontal axis
-        if (input->isKeyPressed(leftKey)){
+    if (input->isActionPressed(moveAction))
+    {
+        if (input->isKeyPressed(leftKey))
             actDir.x = -1.0f;
-        }
-        else if (input->isKeyPressed(rightKey)){
+        else if (input->isKeyPressed(rightKey))
             actDir.x = 1.0f;
-        }
-        #pragma endregion
 
-        #pragma region vertical axis
-        if (input->isKeyPressed(downKey)){
-            actDir.y = -1.0f;
-        }
-        else if (input->isKeyPressed(upKey)){
+        if (input->isKeyPressed(upKey))
             actDir.y = 1.0f;
-        }
-        #pragma endregion
+        else if (input->isKeyPressed(downKey))
+            actDir.y = -1.0f;
     }
 
-    // apply movement
-    scene.modifyComponent<MovementComponent>(player, [actDir](MovementComponent& m){
+    scene.modifyComponent<MovementComponent>(player,
+    [actDir](MovementComponent& m)
+    {
         m.direction = actDir;
     });
 }
+void PlayerInputSystem::fixedUpdate(uint32_t dt)
+{
+    const MovementComponent& m =
+        scene.getComponentConst<MovementComponent>(player);
 
-void
-PlayerInputSystem::fixedUpdate(uint32_t dt) {
-    // Apply position
-    const MovementComponent& m = scene.getComponentConst<MovementComponent>(player);
-    scene.modifyComponent<TransformComponent>(player, [dt,m](TransformComponent& t){
-        t.setPosition(t.getPosition() + HUGO::Vector3(m.direction.x, 0.0f, m.direction.y) * m.speed * (dt/1000.f));
+    HUGO::Vector2 dir = m.direction;
+
+    if (dir.x == 0.0f && dir.y == 0.0f)
+        return;
+
+    // Normalizar para evitar speed boost en diagonal
+    dir = dir.normalized();
+
+    float deltaTime = dt / 1000.0f;
+
+    // -------------------------
+    // MOVIMIENTO (Z INVERTIDO → TU MOTOR)
+    // -------------------------
+    HUGO::Vector3 worldDir(dir.x, 0.0f, -dir.y);
+
+    scene.modifyComponent<TransformComponent>(player,
+    [worldDir, m, deltaTime](TransformComponent& t)
+    {
+        t.setPosition(
+            t.getPosition() +
+            worldDir * m.speed * deltaTime
+        );
+    });
+
+    // -------------------------
+    // ROTACIÓN (coherente con Z invertido)
+    // -------------------------
+    float angle = std::atan2(dir.x, -dir.y);
+
+    HUGO::Quaternion rot(
+        HUGO::Radian(angle),
+        HUGO::Vector3(0.0f, 1.0f, 0.0f)
+    );
+
+    scene.modifyComponent<TransformComponent>(player,
+    [rot](TransformComponent& t)
+    {
+        t.setRotation(rot);
     });
 }
