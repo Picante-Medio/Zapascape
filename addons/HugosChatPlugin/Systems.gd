@@ -1,5 +1,4 @@
 class_name SYSTEMS
-
 enum system {
 	ConsoleSystem,
 	AudioSystem,
@@ -10,5 +9,9 @@ enum system {
 	LightSystem,
 	RenderSystem,
 	TweenSystem,
-	UISystem,
+	UISystem,	CameraMovementSystem,
+	MovementSystem,
+	PlayerInputSystem,
+	RitualSystem,
+	TestSystem,
 }

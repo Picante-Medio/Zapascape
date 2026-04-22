@@ -104,21 +104,21 @@ static func write_systems():
 	dir.list_dir_end()
 	
 	var file := FileAccess.open(systems_file, FileAccess.WRITE)
-	var native_systems := '	ConsoleSystem,
-							AudioSystem,
-							PhysicsGizmoSystem,
-							HierarchySystem,
-							ParticleSystem,
-							CameraSystem,
-							LightSystem,
-							RenderSystem,
-							TweenSystem,
-							UISystem,'
-	file.store_string(native_systems)
 	file.store_line("class_name SYSTEMS")
 	file.store_line("enum system {")
+	var native_systems := '	ConsoleSystem,
+	AudioSystem,
+	PhysicsGizmoSystem,
+	HierarchySystem,
+	ParticleSystem,
+	CameraSystem,
+	LightSystem,
+	RenderSystem,
+	TweenSystem,
+	UISystem,'
+	file.store_string(native_systems)
 	for system:String in systems_names:
-		file.store_line(system)
+		file.store_line("\t" + system + ",")
 	file.store_line("}")
 
 static func write_enums():
