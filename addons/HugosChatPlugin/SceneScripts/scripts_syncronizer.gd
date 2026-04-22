@@ -98,7 +98,8 @@ static func write_systems():
 	var name := dir.get_next()
 	while name != "":
 		if name != "." and name != "..":
-			systems_names.push_back(name.split(".")[0])
+			if not systems_names.has(name.split(".")[0]):
+				systems_names.push_back(name.split(".")[0])
 		name = dir.get_next()
 	dir.list_dir_end()
 	
@@ -113,7 +114,7 @@ static func write_systems():
 							RenderSystem,
 							TweenSystem,
 							UISystem,'
-	file.store(native_systems)
+	file.store_string(native_systems)
 	file.store_line("class_name SYSTEMS")
 	file.store_line("enum system {")
 	for system:String in systems_names:
