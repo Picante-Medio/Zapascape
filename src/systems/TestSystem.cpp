@@ -34,16 +34,18 @@ TestSystem::init() {
     EntityID cam = scene.createEntity();
 
     scene.addComponent<TransformComponent>(cam, [](TransformComponent& comp){
-        comp.setPosition(HUGO::Vector3(0,0,30));
+        comp.setPosition({0.0f, 0.0f, 0.0f});
 
     });
 
     scene.addComponent<CameraComponent>(cam, [](CameraComponent& comp){
         comp.setMain(true);
     });
+
     e1 = scene.createEntity();
     scene.addComponent<TransformComponent>(e1, [](TransformComponent& t1) {
         t1.setPosition(HUGO::Vector3(0, -2, 0));
+        t1.setRotation(HUGO::Quaternion(HUGO::Radian(HUGO::PI), HUGO::Vector3(0,1,0)));
         t1.setScale(HUGO::Vector3(0.5f, 0.5f, 0.5f));
     });
     scene.addComponent<RenderComponent>(e1, [](RenderComponent& rc) {
@@ -60,7 +62,7 @@ TestSystem::init() {
 
     e2 = scene.createEntity();
     scene.addComponent<TransformComponent>(e2, [](TransformComponent& t2) {
-        t2.setWorldPosition(HUGO::Vector3(2, -4, 0));
+        t2.setPosition(HUGO::Vector3(2, 0, 0));
     });
     scene.addComponent<RenderComponent>(e2, [](RenderComponent& rc2) {
         rc2.setMeshName("cube.mesh");
@@ -69,15 +71,14 @@ TestSystem::init() {
 
     e3 = scene.createEntity(); 
     scene.addComponent<TransformComponent>(e3, [](TransformComponent& t3) {
-        t3.setPosition(HUGO::Vector3(-2, 4, 0));
+        t3.setPosition(HUGO::Vector3(-2, 0, 0));
     });
     scene.addComponent<RenderComponent>(e3, [](RenderComponent& rc3) {
         rc3.setMeshName("cube.mesh");
     });
 
-    scene.addComponent<ChildrenComponent>(e1, [this, cam](ChildrenComponent& childrenComp){
-        childrenComp.addChild(e2);
-        childrenComp.addChild(e3);
+    scene.addComponent<ChildrenComponent>(cam, [this](ChildrenComponent& childrenComp){
+        childrenComp.addChild(e1);
     });
 
     // //----------------------------------------

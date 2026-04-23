@@ -6,9 +6,13 @@ HSYSTEM(PlayerInputSystem)
     EntityID player;
     EntityID camera;
 
+    HUGO::Vector2 lastMousePos;
+    HUGO::Bool firstMouse = true;
+
+    HUGO::Float yaw = 0.0f;
+    HUGO::Float pitch = 0.0f;
+
     HUGO::Float rotationSensitivity = 0.002f;
-    HUGO::Float rotationRaw = 0.0f;
-    HUGO::Float rotationPitch = 0.0f;
 
     HUGO::KeyCode upKey = HUGO::KeyCode::W;
     HUGO::KeyCode downKey = HUGO::KeyCode::S;
