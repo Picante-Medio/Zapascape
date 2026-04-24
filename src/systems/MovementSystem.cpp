@@ -15,6 +15,9 @@ MovementSystem::update(uint32_t dt)
     // Update movement components
     for (auto& pack: scene.query<MovementComponent, TransformComponent>()) {
         const MovementComponent& m = pack.getConst<MovementComponent>();
+        // scene.modifyComponent<TransformComponent>(m.entity, [s, m](TransformComponent& tr){
+        //     tr.setWorldPosition(tr.getWorldPosition() + m.direction * m.speed * s);
+        // });
         pack.modify<TransformComponent>([m, s](TransformComponent& tr){
             tr.setWorldPosition(tr.getWorldPosition() + HUGO::Vector3(m.direction.x, 0.0f, m.direction.y) * m.speed * s);
         });

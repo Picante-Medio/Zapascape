@@ -4,9 +4,7 @@
 #include "MovementComponent.h"
 #include "PlayerComponent.h"
 #include "TransformComponent.h"
-#include "ChildrenComponent.h"
 
-#include <iostream>
 #include <algorithm>
 
 // -------------------------
@@ -34,20 +32,6 @@ void PlayerInputSystem::onLoad() {
         break;
     }
 
-    // Find main camera entity
-    for (auto& pack: scene.query<CameraComponent>()){
-        const CameraComponent& c = pack.getConst<CameraComponent>();
-        if (c.isMain()){
-            camera = c.entity;
-            break;
-        }
-    }
-
-    // just in case to be sure the hierarchy
-    scene.addComponent<ChildrenComponent>(camera, [this](ChildrenComponent& c) {
-        c.addChild(player);
-    });
-
     // Initialize camera angles
     yaw = 0.0f;
     pitch = 0.0f;
@@ -58,11 +42,11 @@ void PlayerInputSystem::onLoad() {
 void PlayerInputSystem::update(uint32_t dt)
 {
     auto input = scene.getInput();
-    const MovementComponent& m = scene.getComponentConst<MovementComponent>(camera);
+    const MovementComponent& m = scene.getComponentConst<MovementComponent>(player);
     // -------------------------
     // MOVEMENT INPUT (WASD)
     // -------------------------
-    HUGO::Vector2 actDir(0.0f);
+    HUGO::Vector3 actDir(0.0f);
 
     if (input->isActionPressed(moveAction))
     {
@@ -72,9 +56,9 @@ void PlayerInputSystem::update(uint32_t dt)
             actDir.x = 1.0f;
 
         if (input->isKeyPressed(upKey))
-            actDir.y = 1.0f;
+            actDir.z = 1.0f;
         else if (input->isKeyPressed(downKey))
-            actDir.y = -1.0f;
+            actDir.z = -1.0f;
     }
 
     // -------------------------
@@ -132,22 +116,17 @@ void PlayerInputSystem::update(uint32_t dt)
     HUGO::Quaternion rotX(HUGO::Radian(pitch), HUGO::Vector3(1, 0, 0));
     
     // Apply combined rotation to camera (yaw first, then pitch)
-    scene.modifyComponent<TransformComponent>(camera,
-    [rotY, rotX](TransformComponent& t)
+    scene.modifyComponent<TransformComponent>(player, [rotY, rotX](TransformComponent& t)
     {
         // Yaw around world Y, then pitch around local X for FPS-style camera
         t.setRotation(rotY * rotX);
     });
 
-    // if there is no movement, do nothing
-    if (actDir.x == 0.0f && actDir.y == 0.0f)
-        return;
-
     actDir = actDir.normalized();
 
     HUGO::Float deltaTime = dt / 1000.0f;
 
-    const TransformComponent& t = scene.getComponentConst<TransformComponent>(camera);
+    const TransformComponent& t = scene.getComponentConst<TransformComponent>(player);
     HUGO::Vector3 forward = t.getRotation().forward();
     HUGO::Vector3 right = t.getRotation().right();
 
@@ -159,15 +138,15 @@ void PlayerInputSystem::update(uint32_t dt)
     right = right.normalized();
 
     // Compute movement direction
-    HUGO::Vector3 moveDir = right * actDir.x - forward * actDir.y;
+    HUGO::Vector3 moveDir = right * actDir.x - forward * actDir.z;
 
     if (moveDir.length() > 0.0f)
         moveDir = moveDir.normalized();
 
     // we use the camera for movement
-    scene.modifyComponent<MovementComponent>(camera, [moveDir](MovementComponent& m)
+    scene.modifyComponent<MovementComponent>(player, [moveDir](MovementComponent& m)
     {
-        m.direction = {moveDir.x, moveDir.z}; 
+        m.direction = moveDir; 
     });
 }
 

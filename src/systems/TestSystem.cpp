@@ -19,6 +19,8 @@
 #include "AnimationComponent.h"
 #include "AudioComponent.h"
 #include "MovementComponent.h"
+#include "ColliderComponent.h"
+#include "RigidBodyComponent.h"
 void
 TestSystem::init() {
     // EntityID ent = scene.createEntity();
@@ -31,22 +33,14 @@ TestSystem::init() {
     // scene.addComponent<TweenComponent>(ent);
 
     // // ------------HierarchySystemTest----------
-    EntityID cam = scene.createEntity();
-
-    scene.addComponent<TransformComponent>(cam, [](TransformComponent& comp){
-        comp.setPosition({0.0f, 0.0f, 0.0f});
-
-    });
-
-    scene.addComponent<CameraComponent>(cam, [](CameraComponent& comp){
-        comp.setMain(true);
-    });
-
     e1 = scene.createEntity();
     scene.addComponent<TransformComponent>(e1, [](TransformComponent& t1) {
-        t1.setPosition(HUGO::Vector3(0, -2, 0));
+        t1.setPosition(HUGO::Vector3(0, 0, 0));
         t1.setRotation(HUGO::Quaternion(HUGO::Radian(HUGO::PI), HUGO::Vector3(0,1,0)));
         t1.setScale(HUGO::Vector3(0.5f, 0.5f, 0.5f));
+    });
+    scene.addComponent<CameraComponent>(e1, [](CameraComponent& comp){
+        comp.setMain(true);
     });
     scene.addComponent<RenderComponent>(e1, [](RenderComponent& rc) {
         rc.setMeshName("beastie.mesh");
@@ -56,8 +50,13 @@ TestSystem::init() {
     });
 
     scene.addComponent<PlayerComponent>(e1);
-    scene.addComponent<MovementComponent>(cam, [](MovementComponent& m) {
-        m.speed = 5.0f;
+    scene.addComponent<MovementComponent>(e1, [](MovementComponent& m) {
+        m.speed = 3.0f;
+    });
+    scene.addComponent<RigidBodyComponent>(e1);
+    scene.addComponent<ColliderComponent>(e1, [](ColliderComponent& c){
+        c.info = HUGO::BoxColliderInfo{(HUGO::Vector3(1.0f))};
+        c.positionOffset.z = -2.0f;
     });
 
     e2 = scene.createEntity();
@@ -68,6 +67,9 @@ TestSystem::init() {
         rc2.setMeshName("cube.mesh");
         rc2.setMaterialName("prueba/ColorVerde");
     });
+    scene.addComponent<ColliderComponent>(e2, [](ColliderComponent& c){
+        c.info = HUGO::BoxColliderInfo{(HUGO::Vector3(0.5f))};
+    });
 
     e3 = scene.createEntity(); 
     scene.addComponent<TransformComponent>(e3, [](TransformComponent& t3) {
@@ -75,10 +77,6 @@ TestSystem::init() {
     });
     scene.addComponent<RenderComponent>(e3, [](RenderComponent& rc3) {
         rc3.setMeshName("cube.mesh");
-    });
-
-    scene.addComponent<ChildrenComponent>(cam, [this](ChildrenComponent& childrenComp){
-        childrenComp.addChild(e1);
     });
 
     // //----------------------------------------

@@ -4,7 +4,6 @@
 
 HSYSTEM(PlayerInputSystem)
     EntityID player;
-    EntityID camera;
 
     HUGO::Vector2 lastMousePos;
     HUGO::Bool firstMouse = true;

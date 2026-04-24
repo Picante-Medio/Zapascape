@@ -11,3 +11,4 @@ SYSTEM ParticleSystem
 SYSTEM TestSystem
 SYSTEM PlayerInputSystem
 SYSTEM MovementSystem
+SYSTEM PhysicsGizmoSystem
