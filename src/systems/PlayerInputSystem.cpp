@@ -58,7 +58,7 @@ void PlayerInputSystem::onLoad() {
 void PlayerInputSystem::update(uint32_t dt)
 {
     auto input = scene.getInput();
-    const MovementComponent& m = scene.getComponentConst<MovementComponent>(player);
+    const MovementComponent& m = scene.getComponentConst<MovementComponent>(camera);
     // -------------------------
     // MOVEMENT INPUT (WASD)
     // -------------------------
@@ -76,13 +76,6 @@ void PlayerInputSystem::update(uint32_t dt)
         else if (input->isKeyPressed(downKey))
             actDir.y = -1.0f;
     }
-
-    // Store movement direction in MovementComponent
-    scene.modifyComponent<MovementComponent>(player,
-    [actDir](MovementComponent& m)
-    {
-        m.direction = actDir;
-    });
 
     // -------------------------
     // MOUSE LOOK (only when right mouse button is held)
@@ -117,21 +110,14 @@ void PlayerInputSystem::update(uint32_t dt)
         pitch += mouseDelta.y * rotationSensitivity;
 
         // Clamp pitch to prevent camera flipping upside down
-        pitch = std::clamp(
-            pitch,
-            MIN_PITCH.valueRadians(),
-            MAX_PITCH.valueRadians()
-        );
+        pitch = std::clamp(pitch, MIN_PITCH.valueRadians(),MAX_PITCH.valueRadians());
     }
     else
     {
         // When right mouse button is NOT pressed:
         // Reset last mouse position to avoid camera snap/jump when pressing again
         auto aux = input->getMousePosition();
-        HUGO::Vector2 currentMousePos(
-            static_cast<HUGO::Float>(aux.x),
-            static_cast<HUGO::Float>(aux.y)
-        );
+        HUGO::Vector2 currentMousePos(static_cast<HUGO::Float>(aux.x), static_cast<HUGO::Float>(aux.y));
         lastMousePos = currentMousePos;
         firstMouse = true;  // Reset flag to prevent delta accumulation
     }
@@ -139,10 +125,10 @@ void PlayerInputSystem::update(uint32_t dt)
     // -------------------------
     // APPLY ROTATION TO CAMERA
     // -------------------------
-    // Build quaternion for yaw (rotation around world Y axis)
+    // Build quaternion for yaw
     HUGO::Quaternion rotY(HUGO::Radian(yaw), HUGO::Vector3(0, 1, 0));
     
-    // Build quaternion for pitch (rotation around local X axis)
+    // Build quaternion for pitch
     HUGO::Quaternion rotX(HUGO::Radian(pitch), HUGO::Vector3(1, 0, 0));
     
     // Apply combined rotation to camera (yaw first, then pitch)
@@ -153,37 +139,35 @@ void PlayerInputSystem::update(uint32_t dt)
         t.setRotation(rotY * rotX);
     });
 
-    HUGO::Vector2 dir = m.direction;
-
     // if there is no movement, do nothing
-    if (dir.x == 0.0f && dir.y == 0.0f)
+    if (actDir.x == 0.0f && actDir.y == 0.0f)
         return;
 
-    dir = dir.normalized();
+    actDir = actDir.normalized();
 
     HUGO::Float deltaTime = dt / 1000.0f;
 
+    const TransformComponent& t = scene.getComponentConst<TransformComponent>(camera);
+    HUGO::Vector3 forward = t.getRotation().forward();
+    HUGO::Vector3 right = t.getRotation().right();
+
+    // Keep movement on horizontal plane
+    forward.y = 0.0f;
+    right.y   = 0.0f;
+
+    forward = forward.normalized();
+    right = right.normalized();
+
+    // Compute movement direction
+    HUGO::Vector3 moveDir = right * actDir.x - forward * actDir.y;
+
+    if (moveDir.length() > 0.0f)
+        moveDir = moveDir.normalized();
+
     // we use the camera for movement
-    scene.modifyComponent<TransformComponent>(camera, [m, dir, deltaTime](TransformComponent& t)
+    scene.modifyComponent<MovementComponent>(camera, [moveDir](MovementComponent& m)
     {
-        HUGO::Vector3 forward = t.getRotation().forward();
-        HUGO::Vector3 right = t.getRotation().right();
-
-        // Keep movement on horizontal plane
-        forward.y = 0.0f;
-        right.y   = 0.0f;
-
-        forward = forward.normalized();
-        right = right.normalized();
-
-        // Compute movement direction
-        HUGO::Vector3 moveDir = right * dir.x - forward * dir.y;
-
-        if (moveDir.length() > 0.0f)
-            moveDir = moveDir.normalized();
-
-        HUGO::Vector3 newPos = t.getWorldPosition() + moveDir * m.speed * deltaTime;
-        t.setWorldPosition(newPos);
+        m.direction = {moveDir.x, moveDir.z}; 
     });
 }
 

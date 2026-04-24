@@ -2,6 +2,7 @@
 
 #include "HUGO.h"
 
+struct MovementComponent;
 HSYSTEM(MovementSystem)
 public:
     void init() override;

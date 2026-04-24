@@ -8,18 +8,17 @@ void MovementSystem::init() {}
 void 
 MovementSystem::onLoad() {}
 
-
 void
 MovementSystem::update(uint32_t dt) 
 {
-    // // Update movement components
-    // for (auto& pack: scene.query<MovementComponent>()) {
-    //     const MovementComponent& m = pack.getConst<MovementComponent>();
-    //     TransformComponent& t = pack.getDeprecated<TransformComponent>();
-    //     pack.modify<TransformComponent>([m, dt](TransformComponent& tr){
-    //         tr.setPosition(tr.getPosition() + HUGO::Vector3(m.direction.x, 0.0f, m.direction.y) * m.speed * dt);
-    //     });
-    // }
+    HUGO::Float s = dt /1000.0f;
+    // Update movement components
+    for (auto& pack: scene.query<MovementComponent, TransformComponent>()) {
+        const MovementComponent& m = pack.getConst<MovementComponent>();
+        pack.modify<TransformComponent>([m, s](TransformComponent& tr){
+            tr.setWorldPosition(tr.getWorldPosition() + HUGO::Vector3(m.direction.x, 0.0f, m.direction.y) * m.speed * s);
+        });
+    }
 }
 
 void

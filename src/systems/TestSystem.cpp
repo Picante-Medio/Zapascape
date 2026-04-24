@@ -56,7 +56,7 @@ TestSystem::init() {
     });
 
     scene.addComponent<PlayerComponent>(e1);
-    scene.addComponent<MovementComponent>(e1, [](MovementComponent& m) {
+    scene.addComponent<MovementComponent>(cam, [](MovementComponent& m) {
         m.speed = 5.0f;
     });
 
