@@ -20,9 +20,6 @@
 *.log
 *.exp
 
-# Runfiles y demás
-**/project.godot
-
 #Ignores de Godot
 .godot/
 /android/
