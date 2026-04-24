@@ -90,8 +90,11 @@ static func write_components():
 		file.close()
 
 static func write_systems():
+	var global_path:String = ProjectSettings.globalize_path("res://")
+	var project_path:String = global_path.path_join("../".path_join(HugoConfig.SYSTEMS_PATH))
+	var dir := DirAccess.open(project_path)
+	
 	var systems_file := "res://addons/HugosChatPlugin/Systems.gd"
-	var dir := DirAccess.open(HugoConfig.SYSTEMS_PATH)
 	var systems_names:Array[String]
 	
 	dir.list_dir_begin()
@@ -164,7 +167,9 @@ static func parse_hugo_types() -> void:
 	file.close()
 
 static func parse_components(path: String) -> void:
-	var dir := DirAccess.open(path)
+	var global_path:String = ProjectSettings.globalize_path("res://")
+	var project_path:String = global_path.path_join("../".path_join(path))
+	var dir := DirAccess.open(project_path)
 
 	dir.list_dir_begin()
 
@@ -172,7 +177,8 @@ static func parse_components(path: String) -> void:
 	
 	while name != "":
 		if name != "." and name != "..":
-			var full_path := path.path_join(name)
+			var full_path := project_path.path_join(name)
+			print(full_path)
 
 			if dir.current_is_dir():
 				parse_components(full_path)
