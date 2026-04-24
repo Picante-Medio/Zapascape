@@ -16,7 +16,11 @@ static func write():
 	var entity_map:Dictionary[String, int] = root.entities_map
 	
 	var scene_name := root.name
-	var file_path := HugoConfig.CHATS_PATH.path_join("%s.chat" % scene_name)
+	
+	var global_path:String = ProjectSettings.globalize_path("res://")
+	var project_path:String = global_path.path_join("../".path_join(HugoConfig.CHATS_PATH))
+	
+	var file_path := project_path.path_join("%s.chat" % scene_name)
 	
 	var file := FileAccess.open(file_path, FileAccess.WRITE)
 	if file == null:
