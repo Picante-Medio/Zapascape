@@ -18,6 +18,7 @@ class_name SCENE_TRACKER
 ]
 
 @export_tool_button("Save Scene") var button = SceneWriter.write
+@export var is_main:bool = false
 
 var current_entity_index:int = 0
 var entities_map:Dictionary[String, int]
@@ -45,16 +46,12 @@ func gather_entities(parent:Node):
 		
 		if child is Entity:
 			add_entity(child)
-			
 			if parent is Entity:
-				entities.get(child.name).get_or_add("ParentComponent", {"value" :  "INT " + str(entities_map[parent.name])})
-				
+				entities.get(child.name).get_or_add("ParentComponent", {"parent" :  "INT parent " + str(entities_map[parent.name])})
 			gather_entities(child)
-			
 			if child is Entity3D:
 				entities.get(child.name).get_or_add("TransformComponent", child.get_component())
-			
-		if child.has_method("get_component"):
+		elif child.has_method("get_component"):
 			if parent is Entity:
 				var child_class_name:String = child.get_script().resource_path.get_file().split(".gd")[0]
 				entities.get(parent.name).get_or_add(child_class_name, child.get_component())
