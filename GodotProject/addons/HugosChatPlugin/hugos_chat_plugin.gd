@@ -39,4 +39,3 @@ func _exit_tree():
 	remove_control_from_container(CONTAINER_TOOLBAR, play_button)
 	
 	config_dock.free()
-	play_button.free()

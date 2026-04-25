@@ -1,7 +1,20 @@
-[gd_scene format=3 uid="uid://2of0ia11wy04"]
+[gd_scene format=3 uid="uid://cxlccu0lpeuc"]
 
-[ext_resource type="Script" uid="uid://cft1fgdpqn2vu" path="res://addons/HugosChatPlugin/Entities/scene_tracker.gd" id="1_yp3x2"]
+[ext_resource type="Script" uid="uid://cgt6dd2vlwyuh" path="res://addons/HugosChatPlugin/hugo_config.gd" id="1_yp3x2"]
+[ext_resource type="Script" uid="uid://qm0380g1405i" path="res://addons/HugosChatPlugin/sync_scripts_button.gd" id="2_p1opw"]
 
-[node name="main_scene" type="Node3D" unique_id=1228723441]
+[node name="HugoConfig" type="Control" unique_id=635791170]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
 script = ExtResource("1_yp3x2")
-metadata/_custom_type_script = "uid://cft1fgdpqn2vu"
+metadata/_custom_type_script = "uid://cgt6dd2vlwyuh"
+
+[node name="SyncScriptsButton" type="Button" parent="." unique_id=549557959]
+layout_mode = 0
+offset_right = 8.0
+offset_bottom = 8.0
+text = "Sync Scripts"
+script = ExtResource("2_p1opw")
+metadata/_custom_type_script = "uid://qm0380g1405i"
