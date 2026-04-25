@@ -28,7 +28,11 @@ static func write():
 		return
 	
 	if root is not Entity:
-		file.store_line("SCENE")
+		var scene_text = "SCENE "
+		if root.is_main: scene_text = "MAIN SCENE "
+		scene_text = scene_text + root.name
+		
+		file.store_line(scene_text)
 		for system:SYSTEMS.system in root.systems:
 			var system_name:String = SYSTEMS.system.keys()[system]
 			file.store_line("SYSTEM " + system_name)

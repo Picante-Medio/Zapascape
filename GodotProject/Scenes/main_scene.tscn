@@ -4,4 +4,5 @@
 
 [node name="main_scene" type="Node3D" unique_id=1228723441]
 script = ExtResource("1_865ah")
+is_main = null
 metadata/_custom_type_script = "uid://cft1fgdpqn2vu"
