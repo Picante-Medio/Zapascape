@@ -2,7 +2,7 @@
 extends Component
 class_name MovementComponent
 
-@export var speed:float
+@export var speed:float = 1.0
 
 func get_component() -> Dictionary[String, Variant]:
 	return {

@@ -2,7 +2,7 @@
 extends Component
 class_name MapComponent
 
-@export var gridSize:float
+@export var gridSize:float = 1.0
 @export var wallPrefab:String
 @export var mapWidth:int
 @export var mapHeight:int
