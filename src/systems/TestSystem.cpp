@@ -22,6 +22,7 @@
 #include "ColliderComponent.h"
 #include "RigidBodyComponent.h"
 #include "MovementRBComponent.h"
+#include "MarkComponent.h"
 void
 TestSystem::init() {
     // EntityID ent = scene.createEntity();
@@ -92,6 +93,8 @@ TestSystem::init() {
         rc3.setMeshName("cube.mesh");
     });
 
+    EntityID marks = scene.createEntity();
+    scene.addComponent<MarkComponent>(marks);
     // //----------------------------------------
 
     // EntityID ui = scene.createEntity();
