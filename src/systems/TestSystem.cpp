@@ -54,17 +54,16 @@ TestSystem::init() {
     });
 
     scene.addComponent<PlayerComponent>(e1);
-    scene.addComponent<MovementRBComponent>(e1, [](MovementRBComponent& m){
-        m.speed = 3.0f;
-    });
+    scene.addComponent<MovementRBComponent>(e1);
     scene.addComponent<ColliderComponent>(e1, [](ColliderComponent& c){
-        c.info = HUGO::BoxColliderInfo{(HUGO::Vector3(1.25f, 1.0f, 1.25f))};
+        c.info = HUGO::BoxColliderInfo{(HUGO::Vector3(1.2f, 1.0f, 1.2f))};
         c.setFriction(0.1f);
         c.setPositionOffset({0.0f, 1.0f, 0.0f});
     });
     scene.addComponent<RigidBodyComponent>(e1, [](RigidBodyComponent& rb){
         rb.setGravity(HUGO::Vector3(0.0f));
         rb.setMass(5.0f);
+        rb.setLinearDamping(0.95f);
         rb.setBodyType(HUGO::BodyType::DYNAMIC);
     });
 

@@ -25,19 +25,17 @@ MovementSystem::update(uint32_t dt)
 }
 
 void 
-MovementSystem::fixedUpdate(uint32_t dt) {
+MovementSystem::fixedUpdate(uint32_t) {
     // movement with rigidbody
-    HUGO::Float delta = dt / 1000.0f;
     for (auto& pack: scene.query<MovementRBComponent, RigidBodyComponent>()) {
         const MovementRBComponent& m = pack.getConst<MovementRBComponent>();
-        scene.modifyComponent<RigidBodyComponent>(m.entity, [m, delta](RigidBodyComponent& rb){
-            if (m.direction.z != 0 || m.direction.x != 0){
-                int i =0;
-            }
-            //rb.applyForce(m.direction.normalized() * m.force * delta);
+        scene.modifyComponent<RigidBodyComponent>(m.entity, [m](RigidBodyComponent& rb){
             rb.setAsleep(false);
-            HUGO::Vector3 targetVelocity = m.direction.normalized() * m.speed; // 5 m/s
-            rb.setLinearVelocity(targetVelocity);   
+            rb.applyForce(m.direction.normalized() * m.force);
+            
+            //this is a transform-like movement
+            //HUGO::Vector3 targetVelocity = m.direction.normalized() * m.speed;
+            //rb.setLinearVelocity(targetVelocity);   
         });
     }
 }
