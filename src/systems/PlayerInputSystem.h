@@ -8,10 +8,7 @@ HSYSTEM(PlayerInputSystem)
     HUGO::Vector2 lastMousePos;
     HUGO::Bool firstMouse = true;
 
-    HUGO::Float yaw = 0.0f;
-    HUGO::Float pitch = 0.0f;
-
-    HUGO::Float rotationSensitivity = 0.002f;
+    HUGO::Float rotationSensitivity = 0.1f;
 
     HUGO::KeyCode upKey = HUGO::KeyCode::W;
     HUGO::KeyCode downKey = HUGO::KeyCode::S;

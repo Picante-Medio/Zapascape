@@ -1,9 +1,10 @@
 #include "PlayerInputSystem.h"
 
 #include "CameraComponent.h"
-#include "MovementComponent.h"
+#include "MovementRBComponent.h"
 #include "PlayerComponent.h"
 #include "TransformComponent.h"
+#include "RigidBodyComponent.h"
 
 #include <algorithm>
 
@@ -32,122 +33,81 @@ void PlayerInputSystem::onLoad() {
         break;
     }
 
-    // Initialize camera angles
-    yaw = 0.0f;
-    pitch = 0.0f;
-
     firstMouse = true;
 }
 
 void PlayerInputSystem::update(uint32_t dt)
 {
     auto input = scene.getInput();
-    const MovementComponent& m = scene.getComponentConst<MovementComponent>(player);
+
     // -------------------------
     // MOVEMENT INPUT (WASD)
     // -------------------------
     HUGO::Vector3 actDir(0.0f);
 
-    if (input->isActionPressed(moveAction))
-    {
-        if (input->isKeyPressed(leftKey))
-            actDir.x = -1.0f;
-        else if (input->isKeyPressed(rightKey))
-            actDir.x = 1.0f;
+    if (input->isKeyPressed(leftKey)) actDir.x -= 1.0f;
+    else if (input->isKeyPressed(rightKey)) actDir.x += 1.0f;
 
-        if (input->isKeyPressed(upKey))
-            actDir.z = 1.0f;
-        else if (input->isKeyPressed(downKey))
-            actDir.z = -1.0f;
-    }
+    if (input->isKeyPressed(upKey)) actDir.z -= 1.0f;
+    else if (input->isKeyPressed(downKey)) actDir.z += 1.0f;
 
     // -------------------------
-    // MOUSE LOOK (only when right mouse button is held)
+    // MOVEMENT DIRECTION
     // -------------------------
     
-    // Check if right mouse button is currently pressed
+    const TransformComponent& t = scene.getComponentConst<TransformComponent>(player);
+
+    HUGO::Vector3 forward = t.getRotation().forward().normalized();
+    HUGO::Vector3 right = t.getRotation().right().normalized();
+
+    forward.y = 0.0f;
+    right.y = 0.0f;
+
+    HUGO::Vector3 moveDir = right * actDir.x + forward * actDir.z;
+
+    if (moveDir.length() > 0.001f)
+        moveDir = moveDir.normalized();
+    else
+        moveDir = HUGO::Vector3(0,0,0);
+
+    scene.modifyComponent<MovementRBComponent>(player, [moveDir](MovementRBComponent& m)
+    {
+        m.direction = moveDir;
+    });
+}
+
+// -------------------------
+// MOUSE DELTA
+// -------------------------
+void PlayerInputSystem::fixedUpdate(uint32_t) {
+    auto input = scene.getInput();
+    HUGO::Vector2 mouseDelta(0.0f);
+    auto aux = input->getMousePosition();
     if (input->isMouseButtonPressed(HUGO::MouseCode::MOUSE_RIGHT))
     {
-        // Get current mouse cursor position
-        auto aux = input->getMousePosition();
-        HUGO::Vector2 currentMousePos(
-            static_cast<HUGO::Float>(aux.x),
-            static_cast<HUGO::Float>(aux.y)
-        );
+        HUGO::Vector2 currentMousePos(static_cast<HUGO::Float>(aux.x),static_cast<HUGO::Float>(aux.y));
 
-        // Initialize last mouse position on first frame
         if (firstMouse)
         {
             lastMousePos = currentMousePos;
             firstMouse = false;
         }
 
-        // Calculate mouse movement delta since last frame
-        HUGO::Vector2 mouseDelta = currentMousePos - lastMousePos;
+        mouseDelta = currentMousePos - lastMousePos;
         lastMousePos = currentMousePos;
-
-        // // Invert Y axis (standard FPS behavior: moving mouse up looks down)
-        // mouseDelta.y = -mouseDelta.y;
-
-        // Update camera rotation angles with sensitivity multiplier
-        yaw   += mouseDelta.x * rotationSensitivity;
-        pitch += mouseDelta.y * rotationSensitivity;
-
-        // Clamp pitch to prevent camera flipping upside down
-        pitch = std::clamp(pitch, MIN_PITCH.valueRadians(),MAX_PITCH.valueRadians());
     }
     else
     {
-        // When right mouse button is NOT pressed:
-        // Reset last mouse position to avoid camera snap/jump when pressing again
-        auto aux = input->getMousePosition();
-        HUGO::Vector2 currentMousePos(static_cast<HUGO::Float>(aux.x), static_cast<HUGO::Float>(aux.y));
-        lastMousePos = currentMousePos;
-        firstMouse = true;  // Reset flag to prevent delta accumulation
+        lastMousePos = HUGO::Vector2(static_cast<HUGO::Float>(aux.x),static_cast<HUGO::Float>(aux.y));
+        firstMouse = true;
     }
 
     // -------------------------
-    // APPLY ROTATION TO CAMERA
+    // RIGIDBODY ROTATION 
     // -------------------------
-    // Build quaternion for yaw
-    HUGO::Quaternion rotY(HUGO::Radian(yaw), HUGO::Vector3(0, 1, 0));
-    
-    // Build quaternion for pitch
-    HUGO::Quaternion rotX(HUGO::Radian(pitch), HUGO::Vector3(1, 0, 0));
-    
-    // Apply combined rotation to camera (yaw first, then pitch)
-    scene.modifyComponent<TransformComponent>(player, [rotY, rotX](TransformComponent& t)
+    HUGO::Float yaw = mouseDelta.x * rotationSensitivity;
+    scene.modifyComponent<RigidBodyComponent>(player, [yaw, this](RigidBodyComponent& rb)
     {
-        // Yaw around world Y, then pitch around local X for FPS-style camera
-        t.setRotation(rotY * rotX);
-    });
-
-    actDir = actDir.normalized();
-
-    HUGO::Float deltaTime = dt / 1000.0f;
-
-    const TransformComponent& t = scene.getComponentConst<TransformComponent>(player);
-    HUGO::Vector3 forward = t.getRotation().forward();
-    HUGO::Vector3 right = t.getRotation().right();
-
-    // Keep movement on horizontal plane
-    forward.y = 0.0f;
-    right.y   = 0.0f;
-
-    forward = forward.normalized();
-    right = right.normalized();
-
-    // Compute movement direction
-    HUGO::Vector3 moveDir = right * actDir.x - forward * actDir.z;
-
-    if (moveDir.length() > 0.0f)
-        moveDir = moveDir.normalized();
-
-    // we use the camera for movement
-    scene.modifyComponent<MovementComponent>(player, [moveDir](MovementComponent& m)
-    {
-        m.direction = moveDir; 
+        rb.setAngularVelocity(HUGO::Vector3(0.0f, 1.0f, 0.0f) * yaw);
     });
 }
-
-void PlayerInputSystem::fixedUpdate(uint32_t) {}

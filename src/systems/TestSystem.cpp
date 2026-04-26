@@ -21,6 +21,7 @@
 #include "MovementComponent.h"
 #include "ColliderComponent.h"
 #include "RigidBodyComponent.h"
+#include "MovementRBComponent.h"
 void
 TestSystem::init() {
     // EntityID ent = scene.createEntity();
@@ -35,10 +36,13 @@ TestSystem::init() {
     // // ------------HierarchySystemTest----------
     e1 = scene.createEntity();
     scene.addComponent<TransformComponent>(e1, [](TransformComponent& t1) {
-        t1.setPosition(HUGO::Vector3(0, 0, 0));
+        t1.setPosition(HUGO::Vector3(0, 0.0f, 0));
         t1.setRotation(HUGO::Quaternion(HUGO::Radian(HUGO::PI), HUGO::Vector3(0,1,0)));
         t1.setScale(HUGO::Vector3(0.5f, 0.5f, 0.5f));
     });
+    // scene.addComponent<TransformComponent>(cam, [](TransformComponent& t) {
+    //     t.setPosition(HUGO::Vector3(0, 0.0f, 5));
+    // });
     scene.addComponent<CameraComponent>(e1, [](CameraComponent& comp){
         comp.setMain(true);
     });
@@ -50,18 +54,23 @@ TestSystem::init() {
     });
 
     scene.addComponent<PlayerComponent>(e1);
-    scene.addComponent<MovementComponent>(e1, [](MovementComponent& m) {
+    scene.addComponent<MovementRBComponent>(e1, [](MovementRBComponent& m){
         m.speed = 3.0f;
     });
-    scene.addComponent<RigidBodyComponent>(e1);
     scene.addComponent<ColliderComponent>(e1, [](ColliderComponent& c){
-        c.info = HUGO::BoxColliderInfo{(HUGO::Vector3(1.0f))};
-        c.positionOffset.z = -2.0f;
+        c.info = HUGO::BoxColliderInfo{(HUGO::Vector3(1.25f, 1.0f, 1.25f))};
+        c.setFriction(0.1f);
+        c.setPositionOffset({0.0f, 1.0f, 0.0f});
+    });
+    scene.addComponent<RigidBodyComponent>(e1, [](RigidBodyComponent& rb){
+        rb.setGravity(HUGO::Vector3(0.0f));
+        rb.setMass(5.0f);
+        rb.setBodyType(HUGO::BodyType::DYNAMIC);
     });
 
     e2 = scene.createEntity();
     scene.addComponent<TransformComponent>(e2, [](TransformComponent& t2) {
-        t2.setPosition(HUGO::Vector3(2, 0, 0));
+        t2.setPosition(HUGO::Vector3(0, 0, 2));
     });
     scene.addComponent<RenderComponent>(e2, [](RenderComponent& rc2) {
         rc2.setMeshName("cube.mesh");
@@ -69,6 +78,11 @@ TestSystem::init() {
     });
     scene.addComponent<ColliderComponent>(e2, [](ColliderComponent& c){
         c.info = HUGO::BoxColliderInfo{(HUGO::Vector3(0.5f))};
+        c.setFriction(0.1f);
+    });
+    scene.addComponent<RigidBodyComponent>(e2, [](RigidBodyComponent& rb){
+        rb.setBodyType(HUGO::BodyType::STATIC);
+        rb.setAsleep(false);
     });
 
     e3 = scene.createEntity(); 
