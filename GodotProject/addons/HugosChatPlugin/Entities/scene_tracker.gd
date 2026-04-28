@@ -40,6 +40,9 @@ func add_entity(entity:Entity):
 	entities.get_or_add(entity_name, {})
 	entities_map.get_or_add(entity_name, current_entity_index)
 	current_entity_index += 1
+	
+	if entity is Entity3D:
+			entities.get(entity.name).get_or_add("TransformComponent", entity.get_component())
 
 func gather_entities(parent:Node):
 	for child in parent.get_children():
@@ -49,8 +52,6 @@ func gather_entities(parent:Node):
 			if parent is Entity:
 				entities.get(child.name).get_or_add("ParentComponent", {"parent" :  "INT parent " + str(entities_map[parent.name])})
 			gather_entities(child)
-			if child is Entity3D:
-				entities.get(child.name).get_or_add("TransformComponent", child.get_component())
 		elif child.has_method("get_component"):
 			if parent is Entity:
 				var child_class_name:String = child.get_script().resource_path.get_file().split(".gd")[0]

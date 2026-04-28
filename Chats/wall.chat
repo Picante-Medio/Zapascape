@@ -1,0 +1,11 @@
+PREFAB
+ENTITY wall 0
+	COMPONENT TransformComponent
+		VECTOR_3 worldPosition 0.0 0.0 0.0
+		QUATERNION worldRotation 0.0 0.0 0.0 1.0
+		VECTOR_3 worldScale 1.0 1.0 1.0
+	COMPONENT RenderComponent
+		STRING mesh cube.mesh
+		STRING materialName 
+		INT objectID 0
+

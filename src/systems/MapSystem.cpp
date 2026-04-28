@@ -20,6 +20,7 @@ MapSystem::onLoad() {
         map.mapData[static_cast<int>(startPos.y)][static_cast<int>(startPos.x)] = static_cast<int>(TileType::Start);
 
         HUGO::Vector2 currentPos = startPos;
+        scene.instantiatePrefab("wall")
     }
 }
 

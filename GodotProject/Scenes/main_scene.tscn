@@ -4,4 +4,18 @@
 
 [node name="main_scene" type="Node3D" unique_id=1228723441]
 script = ExtResource("1_865ah")
+entities = Dictionary[String, Dictionary]({
+"Entity3D": {
+"RenderComponent": Dictionary[String, Variant]({
+"materialName": "STRING materialName ",
+"mesh": "STRING mesh ",
+"objectID": "INT objectID 0"
+}),
+"TransformComponent": Dictionary[String, Variant]({
+"worldPosition": "VECTOR_3 worldPosition 0.0 0.0 0.0",
+"worldRotation": "QUATERNION worldRotation 0.0 0.0 0.0 1.0",
+"worldScale": "VECTOR_3 worldScale 1.0 1.0 1.0"
+})
+}
+})
 metadata/_custom_type_script = "uid://cft1fgdpqn2vu"

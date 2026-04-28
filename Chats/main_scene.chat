@@ -1,4 +1,4 @@
-SCENE
+SCENE main_scene
 SYSTEM ConsoleSystem
 SYSTEM AudioSystem
 SYSTEM PhysicsGizmoSystem
