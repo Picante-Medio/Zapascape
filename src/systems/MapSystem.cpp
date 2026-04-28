@@ -43,9 +43,12 @@ MapSystem::onLoad() {
 std::vector<HUGO::Vector2> 
 MapSystem::getAdjacentFreePositions(HUGO::Vector2 pos, std::vector<std::vector<int>> mapData) {
     std::vector<HUGO::Vector2> freePositions;
+
+    HUGO::Vector2 positionToCheck;
     for(int i = 0; i < directions.size(); i++) {
 
     }
+
     return freePositions;
 }
 
