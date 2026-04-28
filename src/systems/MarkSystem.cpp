@@ -21,6 +21,7 @@ MarkSystem::onLoad()
         mark = pack.getConst<MarkComponent>().entity;
         maxMarks = pack.getConst<MarkComponent>().maxNum;
         break;
+        scene.instantiatePrefab("wall");
     }
 
     // create mark pool
@@ -28,10 +29,10 @@ MarkSystem::onLoad()
         EntityID id = scene.createEntity();
         
         //put them in a invisible zone
-        scene.addComponent<TransformComponent>(id, [](TransformComponent t){
-            t.setWorldPosition({0.0f, -100.0f, 0.0f});
-            t.setWorldScale(HUGO::Vector3(0.1f, 0.1f, 0.1f));
-            
+        scene.addComponent<TransformComponent>(id, [](TransformComponent& t){
+            t.setPosition({0.0f, -100.0f, 0.0f});
+            t.setScale(HUGO::Vector3(0.1f, 0.1f, 0.1f));
+            t.setRotation(HUGO::Quaternion(HUGO::Radian(HUGO::PI), HUGO::Vector3(0,1,0)));
         });
         scene.addComponent<RenderComponent>(id, [](RenderComponent& rc) {
             rc.setMeshName("zapatos.mesh");
@@ -52,9 +53,8 @@ MarkSystem::update(uint32_t dt)
         const TransformComponent& tr_player = scene.getComponentConst<TransformComponent>(player);
         EntityID id_to_use = q.front(); q.pop_front();
         scene.modifyComponent<TransformComponent>(id_to_use, [tr_player, this](TransformComponent& tr){
-            tr.setWorldPosition(tr_player.getWorldPosition());
-            tr.setWorldScale(HUGO::Vector3(0.1f, 0.1f, 0.1f));
-            
+            tr.setPosition(tr_player.getPosition()-HUGO::Vector3(0.0f, 1.0f, 0.0f));
+            tr.setRotation(tr_player.getRotation());
         });
         q.push_back(id_to_use);
         scene.modifyComponent<MarkComponent>(mark, [](MarkComponent& m){

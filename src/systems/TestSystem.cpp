@@ -70,7 +70,7 @@ TestSystem::init() {
 
     e2 = scene.createEntity();
     scene.addComponent<TransformComponent>(e2, [](TransformComponent& t2) {
-        t2.setPosition(HUGO::Vector3(0, 0, 2));
+        t2.setPosition(HUGO::Vector3(0, 0, 5));
     });
     scene.addComponent<RenderComponent>(e2, [](RenderComponent& rc2) {
         rc2.setMeshName("cube.mesh");

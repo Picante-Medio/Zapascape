@@ -106,8 +106,7 @@ void PlayerInputSystem::fixedUpdate(uint32_t) {
     // RIGIDBODY ROTATION 
     // -------------------------
     HUGO::Float yaw = mouseDelta.x * rotationSensitivity;
-    // HUGO::Float pitch = mouseDelta.y *rotationSensitivity;
-    scene.modifyComponent<RigidBodyComponent>(player, [yaw, this](RigidBodyComponent& rb)
+    scene.modifyComponent<RigidBodyComponent>(player, [yaw](RigidBodyComponent& rb)
     {
         rb.setAngularVelocity(HUGO::Vector3(0.0f, yaw, 0.0f));
     });

@@ -1,7 +1,8 @@
-MAIN SCENE TestSceneVideo1
+SCENE TestSceneVideo1
 
 SYSTEM AudioSystem
 SYSTEM RenderSystem
+SYSTEM PhysicsGizmoSystem
 SYSTEM LightSystem
 SYSTEM CameraSystem
 SYSTEM UISystem
@@ -11,4 +12,4 @@ SYSTEM ParticleSystem
 SYSTEM TestSystem
 SYSTEM PlayerInputSystem
 SYSTEM MovementSystem
-SYSTEM PhysicsGizmoSystem
+SYSTEM MarkSystem
