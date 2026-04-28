@@ -4,6 +4,7 @@
 HCOMPONENT(MapComponent)
 private:
     DEFAULT_SERIALIZED_MEMBER(HUGO::Float, gridSize, 1.0f);
+    DEFAULT_SERIALIZED_MEMBER(HUGO::Int, numberOfRooms, 1.0f);
 public:
     std::vector<std::vector<int>> mapData;
     SERIALIZED_MEMBER(HUGO::String, wallPrefab);
@@ -13,5 +14,9 @@ public:
 
     HUGO::Float getGridSize() const {
         return gridSize;
+    }
+
+    HUGO::Int getNumberOfRooms() const {
+        return numberOfRooms;
     }
 END_HCOMPONENT()

@@ -18,7 +18,6 @@ class_name SCENE_TRACKER
 ]
 
 @export_tool_button("Save Scene") var button = SceneWriter.write
-@export var is_main:bool = false
 
 var current_entity_index:int = 0
 var entities_map:Dictionary[String, int]

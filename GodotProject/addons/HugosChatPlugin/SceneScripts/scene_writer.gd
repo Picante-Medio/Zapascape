@@ -29,7 +29,6 @@ static func write():
 	
 	if root is not Entity:
 		var scene_text = "SCENE "
-		if root.is_main: scene_text = "MAIN SCENE "
 		scene_text = scene_text + root.name
 		
 		file.store_line(scene_text)
