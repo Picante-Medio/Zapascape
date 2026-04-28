@@ -1,5 +1,6 @@
 #include "MapSystem.h"
 #include "MapComponent.h"
+#include "TransformComponent.h"
 
 void MapSystem::init() {}
 
@@ -20,7 +21,12 @@ MapSystem::onLoad() {
         map.mapData[static_cast<int>(startPos.y)][static_cast<int>(startPos.x)] = static_cast<int>(TileType::Start);
 
         HUGO::Vector2 currentPos = startPos;
-        scene.instantiatePrefab("wall")
+        ErrorOrType<EntityID> wall = scene.instantiatePrefab("wall");
+
+        if(!wall.isError()) {
+            TransformComponent wallTransform = scene.getComponent<TransformComponent>(wall.getValue());
+            wallTransform.setPosition(HUGO::Vector3(currentPos.x * map.getGridSize(), 0, currentPos.y * map.getGridSize()));
+        }
     }
 }
 

@@ -10,4 +10,8 @@ public:
 
     SERIALIZED_MEMBER(HUGO::Int, mapWidth);
     SERIALIZED_MEMBER(HUGO::Int, mapHeight);
+
+    HUGO::Float getGridSize() const {
+        return gridSize;
+    }
 END_HCOMPONENT()
