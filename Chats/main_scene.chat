@@ -10,3 +10,11 @@ SYSTEM RenderSystem
 SYSTEM TweenSystem
 SYSTEM UISystem
 
+ENTITY Entity 0
+	COMPONENT MapComponent
+		FLOAT gridSize 1.0
+		INT numberOfRooms 7
+		STRING wallPrefab wall
+		INT mapWidth 50
+		INT mapHeight 50
+

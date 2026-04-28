@@ -1,6 +1,7 @@
 #include "MapSystem.h"
 #include "MapComponent.h"
 #include "TransformComponent.h"
+#include <random>
 
 void MapSystem::init() {}
 
@@ -15,14 +16,13 @@ MapSystem::onLoad() {
         mapData[static_cast<int>(startPos.y)][static_cast<int>(startPos.x)] = static_cast<int>(TileType::Start);
 
         HUGO::Vector2 currentPos = startPos;
-        ErrorOrType<EntityID> wall = scene.instantiatePrefab("wall");
         std::vector<HUGO::Vector2> roomPositions;
-
+        
         int nRooms = map.getNumberOfRooms();
         int currentRooms = 0;
 
         while(currentRooms < nRooms) {
-            int randomIndex = 0;
+            int randomIndex = std::rand() % directions.size();
             currentPos = currentPos + directions[randomIndex];
 
             TileType mapTile = static_cast<TileType>(mapData[currentPos.x][currentPos.y]);
@@ -33,10 +33,22 @@ MapSystem::onLoad() {
             }
         }
 
-        if(!wall.isError()) {
-            TransformComponent wallTransform = scene.getComponent<TransformComponent>(wall.getValue());
-            wallTransform.setPosition(HUGO::Vector3(currentPos.x * map.getGridSize(), 0, currentPos.y * map.getGridSize()));
+        for(HUGO::Vector2 pos : roomPositions) {
+            std::vector<HUGO::Vector2> freePositions = getAdjacentFreePositions(pos, mapData);
+
+            for(HUGO::Vector2 freePos : freePositions) {
+
+                ErrorOrType<EntityID> wall = scene.instantiatePrefab("wall");
+
+                if(!wall.isError()) {
+                    TransformComponent wallTransform = scene.getComponent<TransformComponent>(wall.getValue());
+                    wallTransform.setPosition(HUGO::Vector3(currentPos.x * map.getGridSize(), 0, currentPos.y * map.getGridSize()));
+                }
+
+                mapData[freePos.x][freePos.y] = static_cast<int>(TileType::Wall);
+            }
         }
+
     }
 }
 
@@ -44,8 +56,13 @@ std::vector<HUGO::Vector2>
 MapSystem::getAdjacentFreePositions(HUGO::Vector2 pos, std::vector<std::vector<int>> mapData) {
     std::vector<HUGO::Vector2> freePositions;
 
-    HUGO::Vector2 positionToCheck;
     for(int i = 0; i < directions.size(); i++) {
+        HUGO::Vector2 positionToCheck = pos + directions[i];
+        if(positionToCheck.x >= 0 && positionToCheck.x < mapData.size() && positionToCheck.y >= 0 && positionToCheck.y < mapData[0].size()) {
+            if(mapData[positionToCheck.x][positionToCheck.y] == static_cast<int>(TileType::Undefined)) {
+                freePositions.push_back(positionToCheck);
+            }
+        }
 
     }
 
