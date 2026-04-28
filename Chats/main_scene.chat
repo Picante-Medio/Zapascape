@@ -7,6 +7,7 @@ SYSTEM ParticleSystem
 SYSTEM CameraSystem
 SYSTEM LightSystem
 SYSTEM RenderSystem
+SYSTEM MapSystem
 SYSTEM TweenSystem
 SYSTEM UISystem
 

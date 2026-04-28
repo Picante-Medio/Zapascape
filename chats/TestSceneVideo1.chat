@@ -9,6 +9,7 @@ SYSTEM UISystem
 SYSTEM ConsoleSystem
 SYSTEM HierarchySystem
 SYSTEM ParticleSystem
+SYSTEM MapSystem
 SYSTEM TestSystem
 SYSTEM PlayerInputSystem
 SYSTEM MovementSystem

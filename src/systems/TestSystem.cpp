@@ -90,7 +90,7 @@ TestSystem::init() {
         t3.setPosition(HUGO::Vector3(-2, 0, 0));
     });
     scene.addComponent<RenderComponent>(e3, [](RenderComponent& rc3) {
-        rc3.setMeshName("cube.mesh");
+        rc3.setMeshName("door.glb");
     });
 
     EntityID marks = scene.createEntity();
