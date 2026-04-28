@@ -12,7 +12,7 @@ include(FetchContent)
 FetchContent_Declare(
     HUGO
     GIT_REPOSITORY https://github.com/Proyecto3-FDI-UCM/2526-Grupo01-HUGO.git
-    GIT_TAG build-integration
+    GIT_TAG develop
     SOURCE_SUBDIR HUGO
     GIT_SHALLOW TRUE
 )
