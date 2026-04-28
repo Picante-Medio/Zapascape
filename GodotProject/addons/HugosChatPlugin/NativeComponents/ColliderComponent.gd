@@ -11,10 +11,12 @@ class_name ColliderComponent
 @export var info:ENUMS.ColliderType
 
 func get_component() -> Dictionary[String, Variant]:
-	var component_data:Dictionary
+	var component_data:Dictionary[String, Variant]
+	
+	component_data.get_or_add("info", FormatWriter.format(info, "info"))
 	if shape is BoxShape3D:
 		var box:BoxShape3D = shape as BoxShape3D
-		component_data.get_or_add("info", FormatWriter.format(box.size, "info"))
+		component_data.get_or_add("halfExtents", FormatWriter.format(box.size, "halfExtents"))
 	elif shape is SphereShape3D:
 		var sphere:SphereShape3D = shape as SphereShape3D
 		component_data.get_or_add("radius", FormatWriter.format(sphere.radius, "radius"))
@@ -33,6 +35,5 @@ func get_component() -> Dictionary[String, Variant]:
 	component_data.get_or_add("rotationOffset", FormatWriter.format(rotationOffset, "rotationOffset"))
 	component_data.get_or_add("active", FormatWriter.format(active, "active"))
 	component_data.get_or_add("useGizmo", FormatWriter.format(useGizmo, "useGizmo"))
-	component_data.get_or_add("info", FormatWriter.format(info, "info"))
 	
 	return component_data
