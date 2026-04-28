@@ -2,9 +2,6 @@
 
 [ext_resource type="Script" uid="uid://dimuk3ggoam44" path="res://addons/HugosChatPlugin/Entities/entity3d.gd" id="1_x7ijt"]
 [ext_resource type="Script" uid="uid://bnjt3w18hk2gs" path="res://addons/HugosChatPlugin/NativeComponents/RenderComponent.gd" id="2_ar14g"]
-[ext_resource type="Script" uid="uid://c4i0wkyu7kg51" path="res://addons/HugosChatPlugin/CollidersResources/collider_component.gd" id="3_ggb2f"]
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_apnwo"]
 
 [node name="wall" type="Node3D" unique_id=635812287]
 script = ExtResource("1_x7ijt")
@@ -28,7 +25,3 @@ metadata/_custom_type_script = "uid://dimuk3ggoam44"
 script = ExtResource("2_ar14g")
 mesh_name = "cube.mesh"
 metadata/_custom_type_script = "uid://bnjt3w18hk2gs"
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1554077994]
-shape = SubResource("BoxShape3D_apnwo")
-script = ExtResource("3_ggb2f")
