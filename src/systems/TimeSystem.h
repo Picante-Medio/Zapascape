@@ -7,6 +7,8 @@ private:
     uint32_t gameTime;
     uint32_t accumulatedMS;
 
+    bool menssageSent;
+    
     EntityID timerEntity;
 
     void resetTimes();

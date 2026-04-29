@@ -1,4 +1,5 @@
 ﻿#pragma once
 #include "HUGO.h"
 
-struct ChangeEnemyModeMenssage : public HUGO::Message { };
+struct BeastieFastMove : public HUGO::Message { };
+struct BeastieSlowMove : public HUGO::Message { };

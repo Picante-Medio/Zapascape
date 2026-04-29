@@ -16,3 +16,4 @@ SYSTEM MovementSystem
 SYSTEM MarkSystem
 SYSTEM TimeSystem
 SYSTEM HUDSystem
+SYSTEM BeastieSystem

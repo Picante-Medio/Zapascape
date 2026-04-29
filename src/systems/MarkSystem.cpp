@@ -21,7 +21,6 @@ MarkSystem::onLoad()
         mark = pack.getConst<MarkComponent>().entity;
         maxMarks = pack.getConst<MarkComponent>().maxNum;
         break;
-        scene.instantiatePrefab("wall");
     }
 
     // create mark pool
@@ -35,7 +34,7 @@ MarkSystem::onLoad()
             t.setRotation(HUGO::Quaternion(HUGO::Radian(HUGO::PI), HUGO::Vector3(0,1,0)));
         });
         scene.addComponent<RenderComponent>(id, [](RenderComponent& rc) {
-            rc.setMeshName("zapatos.mesh");
+            rc.setMeshName("cube.mesh");
         });
 
         //optional if we want some animation or particles 

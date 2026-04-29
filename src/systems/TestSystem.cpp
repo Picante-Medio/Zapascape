@@ -23,37 +23,22 @@
 #include "RigidBodyComponent.h"
 #include "MovementRBComponent.h"
 #include "MarkComponent.h"
+
+#include "BeastieComponent.h"
 void
+
 TestSystem::init() {
-    // EntityID ent = scene.createEntity();
-
-    // scene.addComponent<RenderComponent>(ent, [](RenderComponent& renderComp){
-    //     renderComp.setMeshName("cube.mesh");
-    // });
-
-    // scene.addComponent<TransformComponent>(ent);
-    // scene.addComponent<TweenComponent>(ent);
-
-    // // ------------HierarchySystemTest----------
     e1 = scene.createEntity();
     scene.addComponent<TransformComponent>(e1, [](TransformComponent& t1) {
         t1.setPosition(HUGO::Vector3(0, 0.0f, 0));
         t1.setRotation(HUGO::Quaternion(HUGO::Radian(HUGO::PI), HUGO::Vector3(0,1,0)));
         t1.setScale(HUGO::Vector3(0.5f, 0.5f, 0.5f));
     });
-    // scene.addComponent<TransformComponent>(cam, [](TransformComponent& t) {
-    //     t.setPosition(HUGO::Vector3(0, 0.0f, 5));
-    // });
     scene.addComponent<CameraComponent>(e1, [](CameraComponent& comp){
         comp.setMain(true);
+        comp.setNearClip(0.01f); 
+        comp.setFarClip(1000.0f);
     });
-    scene.addComponent<RenderComponent>(e1, [](RenderComponent& rc) {
-        rc.setMeshName("beastie.mesh");
-    });
-    scene.addComponent<AnimationComponent>(e1, [](AnimationComponent& rc) {
-        rc.addAnimation("Run", true, true);
-    });
-
     scene.addComponent<PlayerComponent>(e1);
     scene.addComponent<MovementRBComponent>(e1);
     scene.addComponent<ColliderComponent>(e1, [](ColliderComponent& c){
@@ -68,23 +53,69 @@ TestSystem::init() {
         rb.setBodyType(HUGO::BodyType::DYNAMIC);
     });
 
-    e2 = scene.createEntity();
-    scene.addComponent<TransformComponent>(e2, [](TransformComponent& t2) {
-        t2.setPosition(HUGO::Vector3(0, 0, 5));
+    EntityID playerArm = scene.createEntity();
+    scene.addComponent<TransformComponent>(playerArm, [](TransformComponent& t1) {
+        t1.setRotation(HUGO::Quaternion(HUGO::Radian(HUGO::PI), HUGO::Vector3(0,1,0)));
+        t1.setPosition(HUGO::Vector3(0.0f, -3, -1.5f));
+        t1.setScale(HUGO::Vector3(0.5f, 0.5f, 0.5f));
     });
-    scene.addComponent<RenderComponent>(e2, [](RenderComponent& rc2) {
-        rc2.setMeshName("cube.mesh");
-        rc2.setMaterialName("prueba/ColorVerde");
+    scene.addComponent<RenderComponent>(playerArm, [](RenderComponent& rc) {
+        rc.setMeshName("player.mesh");
     });
-    scene.addComponent<ColliderComponent>(e2, [](ColliderComponent& c){
-        c.info = HUGO::BoxColliderInfo{(HUGO::Vector3(0.5f))};
-        c.setFriction(0.1f);
+    scene.addComponent<AnimationComponent>(playerArm, [](AnimationComponent& rc) {
+        rc.addAnimation("Idle", true, true);
     });
-    scene.addComponent<RigidBodyComponent>(e2, [](RigidBodyComponent& rb){
-        rb.setBodyType(HUGO::BodyType::STATIC);
-        rb.setAsleep(false);
+    
+    EntityID light = scene.createEntity();
+    scene.addComponent<TransformComponent>(light, [](TransformComponent& tr){
+        tr.setPosition(HUGO::Vector3(0.2, 1.0f, 0.5f));
+        tr.setRotation(HUGO::Quaternion(HUGO::Degree(-10.0f), HUGO::Vector3(1, 0, 0)));
     });
 
+    scene.addComponent<LightComponent>(light, [](LightComponent& lg){
+        lg.setLightType(HUGO::LightType::LT_SPOTLIGHT);
+        lg.setAttenuation(HUGO::Vector4(1.0f, 0.0f, 0.01f, 20.0f));
+        lg.setDiffuse(HUGO::Vector4(0.9f, 0.85f, 0.7f, 1.0f));
+        lg.setSpecular(HUGO::Vector4(0.5f, 0.5f, 0.5f, 1.0f));
+
+        lg.setSpotInner(HUGO::Radian(HUGO::Degree(20.0f)));
+        lg.setSpotOuter(HUGO::Radian(HUGO::Degree(35.0f)));
+        lg.setSpotFallOff(1.0f); 
+        lg.setSpotNearClip(0.2f);
+     });
+    
+     scene.addComponent<ChildrenComponent>(e1, [light, playerArm](ChildrenComponent& c){ 
+        c.addChild(light);
+        c.addChild(playerArm);
+    });
+
+    //beastie
+
+    e2 = scene.createEntity();
+    scene.addComponent<TransformComponent>(e2, [](TransformComponent& t2) {  
+        t2.setRotation(HUGO::Quaternion(HUGO::Radian(HUGO::PI), HUGO::Vector3(0,1,0)));
+        t2.setPosition(HUGO::Vector3(0, 0, 5));
+        t2.setScale(HUGO::Vector3(0.4f, 0.4f, 0.4f));
+    });
+    scene.addComponent<RenderComponent>(e2, [](RenderComponent& rc) {
+        rc.setMeshName("beastie.mesh");
+    });
+    scene.addComponent<AnimationComponent>(e2);
+    scene.addComponent<ColliderComponent>(e2, [](ColliderComponent& c){
+        c.info = HUGO::BoxColliderInfo{(HUGO::Vector3(0.5f))};
+        c.positionOffset = HUGO::Vector3(0,0.6,0);
+        c.setFriction(0.1f);
+    });
+    scene.addComponent<MovementRBComponent>(e2);
+    scene.addComponent<BeastieComponent>(e2);
+    scene.addComponent<RigidBodyComponent>(e2, [](RigidBodyComponent& rb){
+        rb.setGravity(HUGO::Vector3(0.0f));
+        rb.setMass(5.0f);
+        rb.setLinearDamping(0.95f);
+        rb.setBodyType(HUGO::BodyType::DYNAMIC);
+    });
+    
+    
     e3 = scene.createEntity(); 
     scene.addComponent<TransformComponent>(e3, [](TransformComponent& t3) {
         t3.setPosition(HUGO::Vector3(-2, -1, 0));
@@ -93,7 +124,6 @@ TestSystem::init() {
     scene.addComponent<RenderComponent>(e3, [](RenderComponent& rc3) {
         rc3.setMeshName("door.glb");
     });
-
 
     EntityID e4 = scene.createEntity(); 
     scene.addComponent<TransformComponent>(e4, [](TransformComponent& t3) {
@@ -106,64 +136,6 @@ TestSystem::init() {
 
     EntityID marks = scene.createEntity();
     scene.addComponent<MarkComponent>(marks);
-    // //----------------------------------------
-
-    // EntityID ui = scene.createEntity();
-    // scene.addComponent<TransformComponent>(ui, [](TransformComponent& tr){
-    //     //tr.rotation = HUGO::Quaternion(HUGO::Radian(HUGO::Degree(0)), HUGO::Vector3(0,0,0));
-    //     //tr.rotation.normalize();
-    // });
-    EntityID light = scene.createEntity();
-    
-    scene.addComponent<TransformComponent>(light, [](TransformComponent& tr){
-        tr.setPosition(HUGO::Vector3(0, 0, 0));
-        //tr.setRotation(HUGO::Quaternion(HUGO::Radian(HUGO::Degree(0)), HUGO::Vector3(0,0,0)));
-    });
-
-    scene.addComponent<LightComponent>(light, [](LightComponent& lg){
-         lg.setLightType(HUGO::LightType::LT_POINT);
-        lg.setAttenuation(HUGO::Vector4(1.0f, 0.0f, 0.001f, 0.0001f));
-         lg.setDiffuse(HUGO::Vector4(0.8f, 0.8f, 0.8f, 1.0f));
-         lg.setSpecular(HUGO::Vector4(0.3f, 0.3f, 0.3f, 1.0f));
-     });
-
-    EntityID ui = scene.createEntity();
-    scene.addComponent<TransformComponent>(ui, [](TransformComponent& tr){
-        tr.setPosition(HUGO::Vector3(0, 100, 100));
-        //tr.setRotation(HUGO::Quaternion(HUGO::Radian(HUGO::Degree(0)), HUGO::Vector3(0,0,0)));
-    });
-    scene.addComponent<LightComponent>(ui, [](LightComponent& lg){
-        lg.setLightType(HUGO::LightType::LT_SPOTLIGHT);
-        lg.setDiffuse(HUGO::Vector4(0.8f, 1.8f, 0.8f, 1.0f));
-        lg.setSpecular(HUGO::Vector4(0.8f, 0.8f, 0.8f, 1.0f));
-    });
-
-    // EntityID audio = scene.createEntity();
-    // scene.addComponent<AudioComponent>(audio, [](AudioComponent& a){
-    //     a.isPlaying = true;
-    //     a.type = HUGO::AudioTypes::MUSIC;
-    //     a.audioName = "lucky";
-    //     a.audioId = 0;
-    // });
-    // scene.addComponent<AudioPlayTag>(audio);
-
-    // EntityID emmiter = scene.createEntity();
-    // scene.addComponent<TransformComponent>(emmiter, [](TransformComponent& transform){
-    //     transform.setPosition(HUGO::Vector3(10.f, 0.0f, 0.0f));
-    // });
-    // scene.addComponent<ParticleEmitterComponent>(emmiter, [](ParticleEmitterComponent& pe){
-    //     pe.particleName = "Particle/Smoke";
-    //     pe.emitting = true;
-    //     pe.active = true;
-    //     pe.material = "debug/Smoke";
-    // });
-    
-    auto tweenEnt = scene.createEntity();
-    scene.addComponent<TransformComponent>(tweenEnt);
-
-    scene.addComponent<TweenComponent>(tweenEnt, [](TweenComponent& tw){
-        
-    });
 }
 
 
@@ -173,12 +145,6 @@ TestSystem::onLoad() {}
 
 void
 TestSystem::update(uint32_t dt) {
-
-    // for(auto& elem: scene.query<TransformComponent, LightComponent>()){
-    //     elem.modify<TransformComponent>([dt](TransformComponent& tr){
-    //         tr.setPosition(tr.getPosition() + HUGO::Vector3(0,0, dt));
-    //     });
-    // }
 }
 
 void
