@@ -6,8 +6,6 @@ material ColorNego {
             ambient 0.00 0.00 0.00 1.00
             diffuse 0.00 0.00 0.00 1.00
             specular 0.15 0.15 0.15 1.0
-            
-            emissive 0.01 0.01 0.01 1.0
         }
     }
 }

@@ -2,8 +2,8 @@
 #include "TimeSystem.h"
 #include "GameStatusMessage.h"
 #include "TimeComponent.h"
-const uint32_t MAX_GAME_TIME =10;
-const uint32_t MAX_PLAYER_STOP_TIME = 5;
+const uint32_t MAX_GAME_TIME =120;
+const uint32_t MAX_PLAYER_STOP_TIME = 10;
 
 void TimeSystem::init(){
     timerEntity = scene.createEntity();
