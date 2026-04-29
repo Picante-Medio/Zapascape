@@ -74,6 +74,7 @@ static func write_components():
 		for parameter:Array in component_parameters:
 			var value_text:String = ""
 			if parameter[2]: value_text = " = " + parameter[2]
+			if parameter[0] == "float": value_text = value_text.split("f")[0]
 			var new_parameter:String = "@export var " + parameter[1] + ":" + parameter[0] + value_text
 			file.store_line(new_parameter)
 
@@ -90,8 +91,11 @@ static func write_components():
 		file.close()
 
 static func write_systems():
+	var global_path:String = ProjectSettings.globalize_path("res://")
+	var project_path:String = global_path.path_join("../".path_join(HugoConfig.SYSTEMS_PATH))
+	var dir := DirAccess.open(project_path)
+	
 	var systems_file := "res://addons/HugosChatPlugin/Systems.gd"
-	var dir := DirAccess.open(HugoConfig.SYSTEMS_PATH)
 	var systems_names:Array[String]
 	
 	dir.list_dir_begin()
@@ -164,7 +168,9 @@ static func parse_hugo_types() -> void:
 	file.close()
 
 static func parse_components(path: String) -> void:
-	var dir := DirAccess.open(path)
+	var global_path:String = ProjectSettings.globalize_path("res://")
+	var project_path:String = global_path.path_join("../".path_join(path))
+	var dir := DirAccess.open(project_path)
 
 	dir.list_dir_begin()
 
@@ -172,7 +178,8 @@ static func parse_components(path: String) -> void:
 	
 	while name != "":
 		if name != "." and name != "..":
-			var full_path := path.path_join(name)
+			var full_path := project_path.path_join(name)
+			print(full_path)
 
 			if dir.current_is_dir():
 				parse_components(full_path)
@@ -199,17 +206,16 @@ static func hugo_parse_component(path: String) -> void:
 	complete_whitelist.append_array(enums_dictionary.keys())
 	complete_whitelist.append_array(ENUMS.TYPES_DICTIONARY.keys())
 
-	print(path)
 	while not file.eof_reached():
 		line = file.get_line().strip_edges()
 		
 		var cleaned_parameters:PackedStringArray
 		var parameter_default_value
-		if line.contains("SERIALIZED_MEMBER("):
-			cleaned_parameters = line.split("SERIALIZED_MEMBER(")[1].split(")")[0].split(",")
-		elif line.contains("DEFAULT_SERIALIZED_MEMBER("):
+		if line.contains("DEFAULT_SERIALIZED_MEMBER("):
 			cleaned_parameters = line.split("DEFAULT_SERIALIZED_MEMBER(")[1].split(")")[0].split(",")
 			parameter_default_value = cleaned_parameters[2].strip_edges()
+		elif line.contains("SERIALIZED_MEMBER("):
+			cleaned_parameters = line.split("SERIALIZED_MEMBER(")[1].split(")")[0].split(",")
 		else: continue
 		
 		var parameter_type = cleaned_parameters[0].strip_edges()
