@@ -1,0 +1,52 @@
+SCENE IntroScene
+SYSTEM AudioSystem
+SYSTEM HierarchySystem
+SYSTEM ParticleSystem
+SYSTEM CameraSystem
+SYSTEM LightSystem
+SYSTEM RenderSystem
+SYSTEM TweenSystem
+SYSTEM UISystem
+
+ENTITY camera 0
+	COMPONENT TransformComponent
+		VECTOR_3 position 0.0 0.0 0.0
+		QUATERNION rotation 0.0 0.0 0.0 1.0
+		VECTOR_3 scale 1.0 1.0 1.0
+	COMPONENT CameraComponent
+		INT projectionType 0
+		FLOAT fovY 60.0
+		FLOAT nearClip 1.0
+		FLOAT farClip 1000.0
+		FLOAT orthoWidth 10.0
+		FLOAT orthoHeight 10.0
+		BOOL autoAspectRatio true
+		BOOL mainCamera true
+		VECTOR_4 clearColor 0.30000001192093 0.30000001192093 0.5 1.0
+
+ENTITY background 1
+	COMPONENT PanelComponent
+		STRING overlayName Intro/Background/Overlay
+		STRING containerName Intro/Background/Overlay/Container
+		BOOL isVisible true
+		INT metricsMode 0
+		FLOAT left 0.0
+		FLOAT top 0.0
+		FLOAT width 1.0
+		FLOAT height 1.0
+		STRING material Intro/Background
+
+ENTITY startButton 2
+	COMPONENT ParentComponent
+		INT parent 1
+	COMPONENT PanelComponent
+		STRING overlayName Intro/StartB/Overlay
+		STRING containerName Intro/StartB/Overlay/Container
+		BOOL isVisible true
+		INT metricsMode 0
+		FLOAT left 0.2
+		FLOAT top 0.6
+		FLOAT width 0.3
+		FLOAT height 0.1
+		STRING material Intro/StartButton
+

@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://02c1ker21m4l"]
+
+[ext_resource type="Script" uid="uid://dargypc2g11or" path="res://addons/HugosChatPlugin/Entities/scene_tracker.gd" id="1_w3pyd"]
+
+[node name="VictoryScene" type="Node3D" unique_id=1024040431]
+script = ExtResource("1_w3pyd")
+metadata/_custom_type_script = "uid://dargypc2g11or"

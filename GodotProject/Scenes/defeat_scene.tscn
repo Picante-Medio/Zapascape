@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://b86lfh4jfr8n6"]
+
+[ext_resource type="Script" uid="uid://dargypc2g11or" path="res://addons/HugosChatPlugin/Entities/scene_tracker.gd" id="1_voyle"]
+
+[node name="DefeatScene" type="Node3D" unique_id=1663257916]
+script = ExtResource("1_voyle")
+metadata/_custom_type_script = "uid://dargypc2g11or"

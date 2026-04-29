@@ -1,0 +1,97 @@
+[gd_scene format=3 uid="uid://ddaccncuo46hj"]
+
+[ext_resource type="Script" uid="uid://dargypc2g11or" path="res://addons/HugosChatPlugin/Entities/scene_tracker.gd" id="1_lim1r"]
+[ext_resource type="Script" uid="uid://cfol4koac0mwa" path="res://addons/HugosChatPlugin/Entities/entity.gd" id="2_m538q"]
+[ext_resource type="Script" uid="uid://mar8hgypmgso" path="res://addons/HugosChatPlugin/NativeComponents/PanelComponent.gd" id="3_aqy4q"]
+[ext_resource type="Script" uid="uid://c856nwshhf2ax" path="res://addons/HugosChatPlugin/NativeComponents/CameraComponent.gd" id="3_hq3du"]
+[ext_resource type="Script" uid="uid://cxkvulsjeworc" path="res://addons/HugosChatPlugin/Entities/entity3d.gd" id="4_aqy4q"]
+
+[node name="IntroScene" type="Node3D" unique_id=1838279937]
+script = ExtResource("1_lim1r")
+entities = Dictionary[String, Dictionary]({
+"background": {
+"PanelComponent": Dictionary[String, Variant]({
+"containerName": "STRING containerName Background/Overlay/Container",
+"height": "FLOAT height 1.0",
+"isVisible": "BOOL isVisible true",
+"left": "FLOAT left 0.0",
+"material": "STRING material Intro/Background",
+"metricsMode": "INT metricsMode 0",
+"overlayName": "STRING overlayName Background/Overlay",
+"top": "FLOAT top 0.0",
+"width": "FLOAT width 1.0"
+})
+},
+"camera": {
+"CameraComponent": Dictionary[String, Variant]({
+"autoAspectRatio": "BOOL autoAspectRatio true",
+"clearColor": "VECTOR_4 clearColor 0.30000001192093 0.30000001192093 0.5 1.0",
+"farClip": "FLOAT farClip 1000.0",
+"fovY": "FLOAT fovY 60.0",
+"mainCamera": "BOOL mainCamera true",
+"nearClip": "FLOAT nearClip 1.0",
+"orthoHeight": "FLOAT orthoHeight 10.0",
+"orthoWidth": "FLOAT orthoWidth 10.0",
+"projectionType": "INT projectionType 0"
+}),
+"TransformComponent": Dictionary[String, Variant]({
+"position": "VECTOR_3 position 0.0 0.0 0.0",
+"rotation": "QUATERNION rotation 0.0 0.0 0.0 1.0",
+"scale": "VECTOR_3 scale 1.0 1.0 1.0"
+})
+},
+"cube": {
+"RenderComponent": Dictionary[String, Variant]({
+"materialName": "STRING materialName ",
+"meshName": "STRING meshName player.mesh",
+"objectID": "INT objectID 0"
+}),
+"TransformComponent": Dictionary[String, Variant]({
+"position": "VECTOR_3 position 0.0 0.0 -17.7615089416504",
+"rotation": "QUATERNION rotation 0.0 0.0 0.0 1.0",
+"scale": "VECTOR_3 scale 1.0 1.0 1.0"
+})
+}
+})
+systems = Array[int]([1, 3, 4, 5, 6, 7, 8, 9])
+metadata/_custom_type_script = "uid://dargypc2g11or"
+
+[node name="camera" type="Node3D" parent="." unique_id=1020918840]
+script = ExtResource("4_aqy4q")
+metadata/_custom_type_script = "uid://cxkvulsjeworc"
+
+[node name="CameraComponent" type="Node" parent="camera" unique_id=939505132]
+script = ExtResource("3_hq3du")
+farClip = 1000.0
+mainCamera = true
+metadata/_custom_type_script = "uid://c856nwshhf2ax"
+
+[node name="background" type="Node3D" parent="." unique_id=322730615]
+script = ExtResource("2_m538q")
+metadata/_custom_type_script = "uid://cfol4koac0mwa"
+
+[node name="PanelComponent" type="Node" parent="background" unique_id=1071657246]
+script = ExtResource("3_aqy4q")
+overlayName = "Intro/Background/Overlay"
+containerName = "Intro/Background/Overlay/Container"
+isVisible = true
+width = 1.0
+height = 1.0
+material = "Intro/Background"
+metadata/_custom_type_script = "uid://mar8hgypmgso"
+
+[node name="startButton" type="Node3D" parent="." unique_id=544558984]
+script = ExtResource("2_m538q")
+metadata/_custom_type_script = "uid://cfol4koac0mwa"
+
+[node name="PanelComponent" type="Node" parent="startButton" unique_id=1244753829]
+script = ExtResource("3_aqy4q")
+overlayName = "Intro/StartB/Overlay"
+containerName = "Intro/StartB/Overlay/Container"
+isVisible = true
+left = 0.2
+top = 0.6
+width = 0.3
+height = 0.1
+material = "Intro/StartButton"
+metadata/_custom_type_script = "uid://mar8hgypmgso"

@@ -1,32 +1,142 @@
 [gd_scene format=3 uid="uid://dq2fl1vp76r7r"]
 
-[ext_resource type="Script" uid="uid://cft1fgdpqn2vu" path="res://addons/HugosChatPlugin/Entities/scene_tracker.gd" id="1_865ah"]
-[ext_resource type="Script" uid="uid://dcc6b5sxl6c7u" path="res://addons/HugosChatPlugin/Entities/entity.gd" id="2_jv6wh"]
-[ext_resource type="Script" uid="uid://dp3qkvb1ql7aq" path="res://Components/MapComponent.gd" id="3_x6ack"]
+[ext_resource type="Script" uid="uid://dargypc2g11or" path="res://addons/HugosChatPlugin/Entities/scene_tracker.gd" id="1_865ah"]
+[ext_resource type="Script" uid="uid://cxkvulsjeworc" path="res://addons/HugosChatPlugin/Entities/entity3d.gd" id="2_x6ack"]
+[ext_resource type="Script" uid="uid://c856nwshhf2ax" path="res://addons/HugosChatPlugin/NativeComponents/CameraComponent.gd" id="3_iacmt"]
+[ext_resource type="Script" uid="uid://cep2x6rh3tbvp" path="res://addons/HugosChatPlugin/NativeComponents/RenderComponent.gd" id="4_6ev3c"]
+[ext_resource type="Script" uid="uid://dal5x4yfyfbc1" path="res://Components/PlayerComponent.gd" id="5_huasi"]
+[ext_resource type="Script" uid="uid://dwa3nj3edvsla" path="res://Components/MovementRBComponent.gd" id="6_m1efj"]
+[ext_resource type="Script" uid="uid://7yrjlv0jx5tv" path="res://addons/HugosChatPlugin/NativeComponents/ColliderComponent.gd" id="7_mai8y"]
+[ext_resource type="Script" uid="uid://oombyyspsrw8" path="res://addons/HugosChatPlugin/NativeComponents/RigidBodyComponent.gd" id="8_76v2p"]
+[ext_resource type="Script" uid="uid://cfmk4yxay44ti" path="res://addons/HugosChatPlugin/NativeComponents/AnimationComponent.gd" id="9_m1efj"]
 
-[node name="main_scene" type="Node3D" unique_id=1228723441]
+[sub_resource type="BoxShape3D" id="BoxShape3D_drdnd"]
+
+[node name="MainScene" type="Node3D" unique_id=1228723441]
 script = ExtResource("1_865ah")
 entities = Dictionary[String, Dictionary]({
-"Entity": {
-"MapComponent": Dictionary[String, Variant]({
-"gridSize": "FLOAT gridSize 1.0",
-"mapHeight": "INT mapHeight 0",
-"mapWidth": "INT mapWidth 0",
-"numberOfRooms": "INT numberOfRooms 1",
-"wallPrefab": "STRING wallPrefab "
+"Beastie": {
+"AnimationComponent": Dictionary[String, Variant]({}),
+"RenderComponent": Dictionary[String, Variant]({
+"materialName": "STRING materialName ",
+"meshName": "STRING meshName beastie.mesh",
+"objectID": "INT objectID 0"
+}),
+"TransformComponent": Dictionary[String, Variant]({
+"position": "VECTOR_3 position 0.0 0.0 5.0",
+"rotation": "QUATERNION rotation 0.0 0.0 0.0 1.0",
+"scale": "VECTOR_3 scale 0.40000000596046 0.40000000596046 0.40000000596046"
+})
+},
+"camera": {
+"CameraComponent": Dictionary[String, Variant]({
+"autoAspectRatio": "BOOL autoAspectRatio true",
+"clearColor": "VECTOR_4 clearColor 0.30000001192093 0.30000001192093 0.5 1.0",
+"farClip": "FLOAT farClip 1000.0",
+"fovY": "FLOAT fovY 60.0",
+"mainCamera": "BOOL mainCamera true",
+"nearClip": "FLOAT nearClip 0.01",
+"orthoHeight": "FLOAT orthoHeight 10.0",
+"orthoWidth": "FLOAT orthoWidth 10.0",
+"projectionType": "INT projectionType 0"
+}),
+"TransformComponent": Dictionary[String, Variant]({
+"position": "VECTOR_3 position 0.0 0.0 0.0",
+"rotation": "QUATERNION rotation 0.0 0.0 0.0 1.0",
+"scale": "VECTOR_3 scale 1.0 1.0 1.0"
+})
+},
+"player": {
+"ColliderComponent": Dictionary[String, Variant]({
+"active": "BOOL active false",
+"friction": "FLOAT friction 0.5",
+"halfExtents": "VECTOR_3 halfExtents 1.0 1.0 1.0",
+"info": "INT info 0",
+"positionOffset": "VECTOR_3 positionOffset 0.0 1.0 0.0",
+"restitution": "FLOAT restitution 0.0",
+"rotationOffset": "QUATERNION rotationOffset 0.0 0.0 0.0 1.0",
+"useGizmo": "BOOL useGizmo false"
+}),
+"MovementRBComponent": Dictionary[String, Variant]({
+"force": "FLOAT force 25.0"
+}),
+"PlayerComponent": Dictionary[String, Variant]({}),
+"RenderComponent": Dictionary[String, Variant]({
+"materialName": "STRING materialName ",
+"meshName": "STRING meshName player.mesh",
+"objectID": "INT objectID 0"
+}),
+"RigidBodyComponent": Dictionary[String, Variant]({
+"angularDamping": "FLOAT angularDamping 0.0",
+"angularSleepingThreshold": "FLOAT angularSleepingThreshold 0.0",
+"angularVelocity": "VECTOR_3 angularVelocity 0.0 0.0 0.0",
+"linearDamping": "FLOAT linearDamping 0.95",
+"linearSleepingThreshold": "FLOAT linearSleepingThreshold 0.0",
+"linearVelocity": "VECTOR_3 linearVelocity 0.0 0.0 0.0",
+"mass": "FLOAT mass 5.0"
+}),
+"TransformComponent": Dictionary[String, Variant]({
+"position": "VECTOR_3 position 0.0 0.0 0.0",
+"rotation": "QUATERNION rotation 0.0 1.0 0.0 -0.00000004371139",
+"scale": "VECTOR_3 scale 1.0 1.0 1.0"
 })
 }
 })
-metadata/_custom_type_script = "uid://cft1fgdpqn2vu"
+systems = Array[int]([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 15, 14, 13])
 
-[node name="Entity" type="Node3D" parent="." unique_id=106834206]
-script = ExtResource("2_jv6wh")
-metadata/_custom_type_script = "uid://dcc6b5sxl6c7u"
+[node name="camera" type="Node3D" parent="." unique_id=183548792]
+script = ExtResource("2_x6ack")
+metadata/_custom_type_script = "uid://cxkvulsjeworc"
 
-[node name="MapComponent" type="Node" parent="Entity" unique_id=598530011]
-script = ExtResource("3_x6ack")
-numberOfRooms = 7
-wallPrefab = "wall"
-mapWidth = 50
-mapHeight = 50
-metadata/_custom_type_script = "uid://dp3qkvb1ql7aq"
+[node name="CameraComponent" type="Node" parent="camera" unique_id=527878206]
+script = ExtResource("3_iacmt")
+nearClip = 0.01
+farClip = 1000.0
+mainCamera = true
+metadata/_custom_type_script = "uid://c856nwshhf2ax"
+
+[node name="player" type="Node3D" parent="." unique_id=1825369895]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, 0)
+script = ExtResource("2_x6ack")
+metadata/_custom_type_script = "uid://cxkvulsjeworc"
+
+[node name="RenderComponent" type="MeshInstance3D" parent="player" unique_id=1918491802]
+script = ExtResource("4_6ev3c")
+mesh_name = "player.mesh"
+metadata/_custom_type_script = "uid://cep2x6rh3tbvp"
+
+[node name="PlayerComponent" type="Node" parent="player" unique_id=1515420139]
+script = ExtResource("5_huasi")
+metadata/_custom_type_script = "uid://dal5x4yfyfbc1"
+
+[node name="MovementRBComponent" type="Node" parent="player" unique_id=497685221]
+script = ExtResource("6_m1efj")
+metadata/_custom_type_script = "uid://dwa3nj3edvsla"
+
+[node name="ColliderComponent" type="CollisionShape3D" parent="player" unique_id=1965283048]
+transform = Transform3D(1.2, 0, 0, 0, 1, 0, 0, 0, 1.2, 0, 0, 0)
+shape = SubResource("BoxShape3D_drdnd")
+script = ExtResource("7_mai8y")
+friction = 0.5
+positionOffset = Vector3(0, 1, 0)
+metadata/_custom_type_script = "uid://7yrjlv0jx5tv"
+
+[node name="RigidBodyComponent" type="Node" parent="player" unique_id=980752717]
+script = ExtResource("8_76v2p")
+mass = 5.0
+linearDamping = 0.95
+metadata/_custom_type_script = "uid://oombyyspsrw8"
+
+[node name="Beastie" type="Node3D" parent="." unique_id=254395253]
+transform = Transform3D(0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, 0, 0, 5)
+script = ExtResource("2_x6ack")
+metadata/_custom_type_script = "uid://cxkvulsjeworc"
+
+[node name="RenderComponent" type="MeshInstance3D" parent="Beastie" unique_id=992028334]
+script = ExtResource("4_6ev3c")
+mesh_name = "beastie.mesh"
+metadata/_custom_type_script = "uid://cep2x6rh3tbvp"
+
+[node name="AnimationComponent" type="Node" parent="Beastie" unique_id=684694448]
+script = ExtResource("9_m1efj")
+metadata/_custom_type_script = "uid://cfmk4yxay44ti"
