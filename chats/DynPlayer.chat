@@ -69,3 +69,4 @@ ENTITY Light 2
 		FLOAT shadowNearClipDist 0.0
 		FLOAT shadowFarClipDist 0.0
 
+END_CHILDREN

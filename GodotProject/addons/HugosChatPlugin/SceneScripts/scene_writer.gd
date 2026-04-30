@@ -86,6 +86,11 @@ static func write():
 		file.store_string(entity_cache)	
 		file.store_line("")
 	
+	for parent in parents:
+		file.store_line(o + "END_CHILDREN")
+		current_offset -= 1
+	parents.clear()
+	
 	file.close()
 	print("Written to: ", file_path)
 

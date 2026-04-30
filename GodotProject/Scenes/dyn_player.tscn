@@ -1,12 +1,12 @@
-[gd_scene format=3 uid="uid://bpravoj813uj2"]
+[gd_scene format=3 uid="uid://bx6fuf1lycekb"]
 
-[ext_resource type="Script" uid="uid://cxkvulsjeworc" path="res://addons/HugosChatPlugin/Entities/entity3d.gd" id="1_t2tnc"]
-[ext_resource type="Script" uid="uid://c856nwshhf2ax" path="res://addons/HugosChatPlugin/NativeComponents/CameraComponent.gd" id="2_uncol"]
-[ext_resource type="Script" uid="uid://dal5x4yfyfbc1" path="res://Components/PlayerComponent.gd" id="3_spura"]
+[ext_resource type="Script" uid="uid://dimuk3ggoam44" path="res://addons/HugosChatPlugin/Entities/entity3d.gd" id="1_t2tnc"]
+[ext_resource type="Script" uid="uid://b35wnsb2u6ree" path="res://addons/HugosChatPlugin/NativeComponents/CameraComponent.gd" id="2_uncol"]
+[ext_resource type="Script" uid="uid://bwtn1p4uulsox" path="res://Components/PlayerComponent.gd" id="3_spura"]
 [ext_resource type="Script" uid="uid://7yrjlv0jx5tv" path="res://addons/HugosChatPlugin/NativeComponents/ColliderComponent.gd" id="5_yk30r"]
 [ext_resource type="Script" uid="uid://oombyyspsrw8" path="res://addons/HugosChatPlugin/NativeComponents/RigidBodyComponent.gd" id="6_jg6pv"]
 [ext_resource type="Script" uid="uid://dwa3nj3edvsla" path="res://Components/MovementRBComponent.gd" id="6_uncol"]
-[ext_resource type="Script" uid="uid://cep2x6rh3tbvp" path="res://addons/HugosChatPlugin/NativeComponents/RenderComponent.gd" id="7_qdjo8"]
+[ext_resource type="Script" uid="uid://bnjt3w18hk2gs" path="res://addons/HugosChatPlugin/NativeComponents/RenderComponent.gd" id="7_qdjo8"]
 [ext_resource type="Script" uid="uid://e8gvt24psqym" path="res://addons/HugosChatPlugin/NativeComponents/LightComponent.gd" id="8_n514m"]
 [ext_resource type="Script" uid="uid://cfmk4yxay44ti" path="res://addons/HugosChatPlugin/NativeComponents/AnimationComponent.gd" id="8_uncol"]
 
@@ -98,18 +98,15 @@ entities = Dictionary[String, Dictionary]({
 })
 }
 })
-metadata/_custom_type_script = "uid://cxkvulsjeworc"
 
 [node name="CameraComponent" type="Node" parent="." unique_id=537647126]
 script = ExtResource("2_uncol")
 nearClip = 0.01
 farClip = 1000.0
 mainCamera = true
-metadata/_custom_type_script = "uid://c856nwshhf2ax"
 
 [node name="PlayerComponent" type="Node" parent="." unique_id=865040337]
 script = ExtResource("3_spura")
-metadata/_custom_type_script = "uid://dal5x4yfyfbc1"
 
 [node name="ColliderComponent" type="CollisionShape3D" parent="." unique_id=1365997127]
 transform = Transform3D(1.2, 0, 0, 0, 1, 0, 0, 0, 1.2, 0, 1, 0)
@@ -132,12 +129,10 @@ metadata/_custom_type_script = "uid://dwa3nj3edvsla"
 [node name="Arms" type="Node3D" parent="." unique_id=2118069178]
 transform = Transform3D(-0.5, 0, -4.371139e-08, 0, 0.5, 0, 4.371139e-08, 0, -0.5, 0, -3, -1.5)
 script = ExtResource("1_t2tnc")
-metadata/_custom_type_script = "uid://cxkvulsjeworc"
 
 [node name="RenderComponent" type="MeshInstance3D" parent="Arms" unique_id=1926410086]
 script = ExtResource("7_qdjo8")
 mesh_name = "player.mesh"
-metadata/_custom_type_script = "uid://cep2x6rh3tbvp"
 
 [node name="AnimationComponent" type="Node" parent="Arms" unique_id=1378835488]
 script = ExtResource("8_uncol")
@@ -146,7 +141,6 @@ metadata/_custom_type_script = "uid://cfmk4yxay44ti"
 [node name="Light" type="Node3D" parent="." unique_id=1781458297]
 transform = Transform3D(1, 0, 0, 0, 0.9848077, 0.17364818, 0, -0.17364818, 0.9848077, 0.2, 1, 0.5)
 script = ExtResource("1_t2tnc")
-metadata/_custom_type_script = "uid://cxkvulsjeworc"
 
 [node name="LightComponent" type="Node" parent="Light" unique_id=1952541958]
 script = ExtResource("8_n514m")
