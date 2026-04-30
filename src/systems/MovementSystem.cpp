@@ -18,7 +18,7 @@ MovementSystem::update(uint32_t dt)
     // Update movement components
     for (auto& pack: scene.query<MovementComponent, TransformComponent>()) {
         const MovementComponent& m = pack.getConst<MovementComponent>();
-        scene.modifyComponent<TransformComponent>(m.entity, [s, m](TransformComponent& tr){
+        pack.modify<TransformComponent>([s, m](TransformComponent& tr){
             tr.setWorldPosition(tr.getWorldPosition() + m.direction * m.speed * s);
         });
     }
@@ -29,7 +29,7 @@ MovementSystem::fixedUpdate(uint32_t) {
     // movement with rigidbody
     for (auto& pack: scene.query<MovementRBComponent, RigidBodyComponent>()) {
         const MovementRBComponent& m = pack.getConst<MovementRBComponent>();
-        scene.modifyComponent<RigidBodyComponent>(m.entity, [m](RigidBodyComponent& rb){
+        pack.modify<RigidBodyComponent>([m](RigidBodyComponent& rb){
             rb.setAsleep(false);
             rb.applyForce(m.direction.normalized() * m.force);
             

@@ -31,6 +31,7 @@ TestSystem::init() {
     e1 = scene.createEntity();
     scene.addComponent<TransformComponent>(e1, [](TransformComponent& t1) {
         t1.setPosition(HUGO::Vector3(0, 0.0f, 0));
+
         t1.setRotation(HUGO::Quaternion(HUGO::Radian(HUGO::PI), HUGO::Vector3(0,1,0)));
         t1.setScale(HUGO::Vector3(0.5f, 0.5f, 0.5f));
     });
@@ -89,12 +90,13 @@ TestSystem::init() {
         c.addChild(playerArm);
     });
 
+    //ErrorOrType<EntityID> prefab = scene.instantiatePrefab("DynPlayer");
     //beastie
 
     e2 = scene.createEntity();
     scene.addComponent<TransformComponent>(e2, [](TransformComponent& t2) {  
         t2.setRotation(HUGO::Quaternion(HUGO::Radian(HUGO::PI), HUGO::Vector3(0,1,0)));
-        t2.setPosition(HUGO::Vector3(0, 0, 5));
+        t2.setPosition(HUGO::Vector3(0, 0, -5));
         t2.setScale(HUGO::Vector3(0.4f, 0.4f, 0.4f));
     });
     scene.addComponent<RenderComponent>(e2, [](RenderComponent& rc) {
