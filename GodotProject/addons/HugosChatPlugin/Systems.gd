@@ -11,6 +11,7 @@ enum system {
 	TweenSystem,
 	UISystem,	BeastieSystem,
 	HUDSystem,
+	InstantiateSystem,
 	MapSystem,
 	MarkSystem,
 	MovementSystem,

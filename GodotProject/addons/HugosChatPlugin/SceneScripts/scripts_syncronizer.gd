@@ -97,7 +97,7 @@ static func write_systems():
 	
 	var systems_file := "res://addons/HugosChatPlugin/Systems.gd"
 	var systems_names:Array[String]
-	
+	print(project_path)
 	dir.list_dir_begin()
 	var name := dir.get_next()
 	while name != "":

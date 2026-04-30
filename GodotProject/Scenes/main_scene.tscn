@@ -80,6 +80,28 @@ entities = Dictionary[String, Dictionary]({
 "rotation": "QUATERNION rotation 0.0 1.0 0.0 -0.00000004371139",
 "scale": "VECTOR_3 scale 1.0 1.0 1.0"
 })
+},
+"Entity2": {},
+"Entity3": {},
+"Entity_O": {
+"ParentComponent": {
+"parent": "INT parent 0"
+}
+},
+"Entity_O_O": {
+"ParentComponent": {
+"parent": "INT parent 1"
+}
+},
+"Entity_O_O_O": {
+"ParentComponent": {
+"parent": "INT parent 2"
+}
+},
+"Entity_O_O_O_O": {
+"ParentComponent": {
+"parent": "INT parent 4"
+}
 }
 })
 systems = Array[int]([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 15, 14, 13])

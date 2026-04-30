@@ -42,21 +42,55 @@ static func write():
 		
 		file.store_line(scene_text)
 	
+	var parents:Array[String]
+	var current_offset:int = 0
+	var o:String
+	
 	for entity_key in root.entities.keys():
-		file.store_line("ENTITY " + str(entity_key) + " " + str(entity_map[entity_key]))
-		
 		var entity: Dictionary = root.entities[entity_key]
 		
+		var entity_cache:String = (o + "ENTITY " + str(entity_key) + " " + str(entity_map[entity_key]) + "\n")
+		var has_parent_component:bool = false
 		for component_key in entity.keys():
-			file.store_line("\tCOMPONENT " + str(component_key))
-			
 			var component: Dictionary = entity[component_key]
+			if component_key == "ParentComponent":
+				has_parent_component = true
+				
+				var parent = component["parent"]
+				if parents.has(parent):
+					if parents.back() != parent:
+						while(not parents.is_empty() and parent != parents.pop_back()):
+							current_offset -= 1
+							o = get_offset_string(current_offset)
+							entity_cache += (o + "END_CHILDREN\n")
+				else:
+					parents.push_back(parent)
+					file.store_line(o + "START_CHILDREN\n")
+					current_offset += 1
+					o = get_offset_string(current_offset)
+					
+			else:
+				entity_cache += (o + "\tCOMPONENT " + str(component_key) + "\n")
 			
 			for parameter_key in component.keys():
 				var value = component[parameter_key]
-				file.store_line("\t\t%s" % [str(value)])
+				entity_cache += (o + "\t\t%s" % [str(value)] + "\n")
 		
+		if not has_parent_component:
+			for parent in parents:
+				file.store_line(o + "END_CHILDREN")
+				current_offset -= 1
+			o = get_offset_string(current_offset)
+			parents.clear()
+		
+		file.store_string(entity_cache)	
 		file.store_line("")
 	
 	file.close()
 	print("Written to: ", file_path)
+
+static func get_offset_string(count:int):
+	var offset:String = ""
+	for i in range(0, count):
+		offset += ""
+	return offset

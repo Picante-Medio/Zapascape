@@ -21,6 +21,9 @@ enabled=PackedStringArray("res://addons/HugosChatPlugin/plugin.cfg")
 [hugo]
 
 components_path="MyComponents"
+chats_path="Chats"
+lua_path=""
+systems_path="Systems"
 
 [physics]
 
