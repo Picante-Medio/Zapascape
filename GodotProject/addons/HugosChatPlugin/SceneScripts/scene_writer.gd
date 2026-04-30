@@ -82,6 +82,7 @@ static func write():
 				current_offset -= 1
 			o = get_offset_string(current_offset)
 			parents.clear()
+		entity_cache += "ENDTITY\n"
 		
 		file.store_string(entity_cache)	
 		file.store_line("")
