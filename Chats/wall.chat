@@ -8,4 +8,5 @@ ENTITY wall 0
 		STRING meshName cube.mesh
 		STRING materialName 
 		INT objectID 0
+END_ENTITY
 

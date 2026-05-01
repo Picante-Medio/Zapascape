@@ -23,30 +23,41 @@ ENTITY camera 0
 		BOOL autoAspectRatio true
 		BOOL mainCamera true
 		VECTOR_4 clearColor 0.30000001192093 0.30000001192093 0.5 1.0
+END_ENTITY
 
-ENTITY background 1
-	COMPONENT PanelComponent
-		STRING overlayName Intro/Background/Overlay
-		STRING containerName Intro/Background/Overlay/Container
-		BOOL isVisible true
-		INT metricsMode 0
-		FLOAT left 0.0
-		FLOAT top 0.0
-		FLOAT width 1.0
-		FLOAT height 1.0
-		STRING material Intro/Background
-
-ENTITY startButton 2
-	COMPONENT ParentComponent
-		INT parent 1
+ENTITY startButton 1
 	COMPONENT PanelComponent
 		STRING overlayName Intro/StartB/Overlay
 		STRING containerName Intro/StartB/Overlay/Container
 		BOOL isVisible true
-		INT metricsMode 0
-		FLOAT left 0.2
+		INT metricsMode 2
+		FLOAT left 0.45
 		FLOAT top 0.6
-		FLOAT width 0.3
+		FLOAT width 0.15
 		FLOAT height 0.1
 		STRING material Intro/StartButton
+	COMPONENT ButtonComponent
+		STRING normalMaterial Intro/StartButton
+		STRING hoverMaterial Intro/StartButtonOnHover
+		STRING pressedMaterial Intro/StartButtonOnHover
+		STRING disabledMaterial 
+END_ENTITY
+
+ENTITY exitButton 2
+	COMPONENT PanelComponent
+		STRING overlayName Intro/ExitB/Overlay
+		STRING containerName Intro/ExitB/Overlay/Container
+		BOOL isVisible true
+		INT metricsMode 2
+		FLOAT left 0.45
+		FLOAT top 0.8
+		FLOAT width 0.15
+		FLOAT height 0.1
+		STRING material Intro/ExitButton
+	COMPONENT ButtonComponent
+		STRING normalMaterial Intro/ExitButton
+		STRING hoverMaterial Intro/ExitButtonOnHover
+		STRING pressedMaterial Intro/ExitButtonOnHover
+		STRING disabledMaterial 
+END_ENTITY
 

@@ -5,19 +5,20 @@
 [ext_resource type="Script" uid="uid://mar8hgypmgso" path="res://addons/HugosChatPlugin/NativeComponents/PanelComponent.gd" id="3_aqy4q"]
 [ext_resource type="Script" uid="uid://c856nwshhf2ax" path="res://addons/HugosChatPlugin/NativeComponents/CameraComponent.gd" id="3_hq3du"]
 [ext_resource type="Script" uid="uid://cxkvulsjeworc" path="res://addons/HugosChatPlugin/Entities/entity3d.gd" id="4_aqy4q"]
+[ext_resource type="Script" uid="uid://dnuj4tmlkefuu" path="res://addons/HugosChatPlugin/NativeComponents/ButtonComponent.gd" id="6_hq3du"]
 
 [node name="IntroScene" type="Node3D" unique_id=1838279937]
 script = ExtResource("1_lim1r")
 entities = Dictionary[String, Dictionary]({
 "background": {
 "PanelComponent": Dictionary[String, Variant]({
-"containerName": "STRING containerName Background/Overlay/Container",
+"containerName": "STRING containerName Intro/Background/Overlay/Container",
 "height": "FLOAT height 1.0",
 "isVisible": "BOOL isVisible true",
 "left": "FLOAT left 0.0",
 "material": "STRING material Intro/Background",
 "metricsMode": "INT metricsMode 0",
-"overlayName": "STRING overlayName Background/Overlay",
+"overlayName": "STRING overlayName Intro/Background/Overlay",
 "top": "FLOAT top 0.0",
 "width": "FLOAT width 1.0"
 })
@@ -40,16 +41,42 @@ entities = Dictionary[String, Dictionary]({
 "scale": "VECTOR_3 scale 1.0 1.0 1.0"
 })
 },
-"cube": {
-"RenderComponent": Dictionary[String, Variant]({
-"materialName": "STRING materialName ",
-"meshName": "STRING meshName player.mesh",
-"objectID": "INT objectID 0"
+"exitButton": {
+"ButtonComponent": Dictionary[String, Variant]({
+"disabledMaterial": "STRING disabledMaterial ",
+"hoverMaterial": "STRING hoverMaterial Intro/ExitButtonOnHover",
+"normalMaterial": "STRING normalMaterial Intro/ExitButton",
+"pressedMaterial": "STRING pressedMaterial Intro/ExitButtonOnHover"
 }),
-"TransformComponent": Dictionary[String, Variant]({
-"position": "VECTOR_3 position 0.0 0.0 -17.7615089416504",
-"rotation": "QUATERNION rotation 0.0 0.0 0.0 1.0",
-"scale": "VECTOR_3 scale 1.0 1.0 1.0"
+"PanelComponent": Dictionary[String, Variant]({
+"containerName": "STRING containerName Intro/ExitB/Overlay/Container",
+"height": "FLOAT height 0.1",
+"isVisible": "BOOL isVisible true",
+"left": "FLOAT left 0.45",
+"material": "STRING material Intro/ExitButton",
+"metricsMode": "INT metricsMode 2",
+"overlayName": "STRING overlayName Intro/ExitB/Overlay",
+"top": "FLOAT top 0.8",
+"width": "FLOAT width 0.15"
+})
+},
+"startButton": {
+"ButtonComponent": Dictionary[String, Variant]({
+"disabledMaterial": "STRING disabledMaterial ",
+"hoverMaterial": "STRING hoverMaterial Intro/StartButtonOnHover",
+"normalMaterial": "STRING normalMaterial Intro/StartButton",
+"pressedMaterial": "STRING pressedMaterial Intro/StartButtonOnHover"
+}),
+"PanelComponent": Dictionary[String, Variant]({
+"containerName": "STRING containerName Intro/StartB/Overlay/Container",
+"height": "FLOAT height 0.1",
+"isVisible": "BOOL isVisible true",
+"left": "FLOAT left 0.45",
+"material": "STRING material Intro/StartButton",
+"metricsMode": "INT metricsMode 2",
+"overlayName": "STRING overlayName Intro/StartB/Overlay",
+"top": "FLOAT top 0.6",
+"width": "FLOAT width 0.15"
 })
 }
 })
@@ -89,9 +116,41 @@ script = ExtResource("3_aqy4q")
 overlayName = "Intro/StartB/Overlay"
 containerName = "Intro/StartB/Overlay/Container"
 isVisible = true
-left = 0.2
+metricsMode = 2
+left = 0.45
 top = 0.6
-width = 0.3
+width = 0.15
 height = 0.1
 material = "Intro/StartButton"
 metadata/_custom_type_script = "uid://mar8hgypmgso"
+
+[node name="ButtonComponent" type="Node" parent="startButton" unique_id=1204660041]
+script = ExtResource("6_hq3du")
+normalMaterial = "Intro/StartButton"
+hoverMaterial = "Intro/StartButtonOnHover"
+pressedMaterial = "Intro/StartButtonOnHover"
+metadata/_custom_type_script = "uid://dnuj4tmlkefuu"
+
+[node name="exitButton" type="Node3D" parent="." unique_id=1729690906]
+script = ExtResource("2_m538q")
+metadata/_custom_type_script = "uid://cfol4koac0mwa"
+
+[node name="PanelComponent" type="Node" parent="exitButton" unique_id=205983082]
+script = ExtResource("3_aqy4q")
+overlayName = "Intro/ExitB/Overlay"
+containerName = "Intro/ExitB/Overlay/Container"
+isVisible = true
+metricsMode = 2
+left = 0.45
+top = 0.8
+width = 0.15
+height = 0.1
+material = "Intro/ExitButton"
+metadata/_custom_type_script = "uid://mar8hgypmgso"
+
+[node name="ButtonComponent" type="Node" parent="exitButton" unique_id=1686803206]
+script = ExtResource("6_hq3du")
+normalMaterial = "Intro/ExitButton"
+hoverMaterial = "Intro/ExitButtonOnHover"
+pressedMaterial = "Intro/ExitButtonOnHover"
+metadata/_custom_type_script = "uid://dnuj4tmlkefuu"

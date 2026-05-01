@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://ba421qv7lrqrx"]
+
+[ext_resource type="Script" uid="uid://cxkvulsjeworc" path="res://addons/HugosChatPlugin/Entities/entity3d.gd" id="1_y4f30"]
+[ext_resource type="Script" uid="uid://cep2x6rh3tbvp" path="res://addons/HugosChatPlugin/NativeComponents/RenderComponent.gd" id="2_iuee5"]
+
+[node name="Entity3D" type="Node3D" unique_id=2079684168]
+script = ExtResource("1_y4f30")
+metadata/_custom_type_script = "uid://cxkvulsjeworc"
+
+[node name="RenderComponent" type="MeshInstance3D" parent="." unique_id=507657544]
+script = ExtResource("2_iuee5")
+mesh_name = "wall.glb"
+metadata/_custom_type_script = "uid://cep2x6rh3tbvp"

@@ -118,26 +118,28 @@ TestSystem::init() {
     });
     
     
-    e3 = scene.createEntity(); 
-    scene.addComponent<TransformComponent>(e3, [](TransformComponent& t3) {
-        t3.setPosition(HUGO::Vector3(-2, -1, 0));
-        t3.setScale(HUGO::Vector3(0.5f, 0.5f, 0.5f));
-    });
-    scene.addComponent<RenderComponent>(e3, [](RenderComponent& rc3) {
-        rc3.setMeshName("door.glb");
-    });
+    // e3 = scene.createEntity(); 
+    // scene.addComponent<TransformComponent>(e3, [](TransformComponent& t3) {
+    //     t3.setPosition(HUGO::Vector3(-2, -1, 0));
+    //     t3.setScale(HUGO::Vector3(0.5f, 0.5f, 0.5f));
+    // });
+    // scene.addComponent<RenderComponent>(e3, [](RenderComponent& rc3) {
+    //     rc3.setMeshName("door.glb");
+    // });
 
-    EntityID e4 = scene.createEntity(); 
-    scene.addComponent<TransformComponent>(e4, [](TransformComponent& t3) {
-        t3.setPosition(HUGO::Vector3(2, -1, 0));
-        t3.setScale(HUGO::Vector3(0.5f, 0.5f, 0.5f));
-    });
-    scene.addComponent<RenderComponent>(e4, [](RenderComponent& rc3) {
-        rc3.setMeshName("ritual.glb");
-    });
+    // EntityID e4 = scene.createEntity(); 
+    // scene.addComponent<TransformComponent>(e4, [](TransformComponent& t3) {
+    //     t3.setPosition(HUGO::Vector3(2, -1, 0));
+    //     t3.setScale(HUGO::Vector3(0.5f, 0.5f, 0.5f));
+    // });
+    // scene.addComponent<RenderComponent>(e4, [](RenderComponent& rc3) {
+    //     rc3.setMeshName("ritual.glb");
+    // });
 
     EntityID marks = scene.createEntity();
     scene.addComponent<MarkComponent>(marks);
+
+    ErrorOrType<EntityID> prefab = scene.instantiatePrefab("Wall");
 }
 
 
