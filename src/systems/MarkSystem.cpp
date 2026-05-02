@@ -30,11 +30,11 @@ MarkSystem::onLoad()
         //put them in a invisible zone
         scene.addComponent<TransformComponent>(id, [](TransformComponent& t){
             t.setPosition({0.0f, -100.0f, 0.0f});
-            t.setScale(HUGO::Vector3(0.1f, 0.1f, 0.1f));
+            t.setScale(HUGO::Vector3(0.15f, 0.15f, 0.15f));
             t.setRotation(HUGO::Quaternion(HUGO::Radian(HUGO::PI), HUGO::Vector3(0,1,0)));
         });
         scene.addComponent<RenderComponent>(id, [](RenderComponent& rc) {
-            rc.setMeshName("cube.mesh");
+            rc.setMeshName("mark.glb");
         });
 
         //optional if we want some animation or particles 
@@ -64,3 +64,4 @@ MarkSystem::update(uint32_t dt)
 
 void
 MarkSystem::fixedUpdate(uint32_t) {}
+
