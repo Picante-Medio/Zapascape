@@ -2,17 +2,15 @@
 #include "HUGO.h"
 #include <random>
 struct TransformComponent;
+struct MovementRBComponent;
+struct BeastieComponent;
 HSYSTEM(BeastieSystem)
 private:
-    enum BeastieState {STOP, PURSUE, SLOW_MOVE};
-    BeastieState currentState; 
-
     EntityID beastie;
     EntityID player;
 
-    bool isSlowMoving;
-
     bool isPlayerInRange(float dist, const TransformComponent& beastieTr, const TransformComponent& playerTr);
+    void updateForce(BeastieComponent& b, MovementRBComponent& m);
 public:
     void init() override;
     void onLoad() override;
