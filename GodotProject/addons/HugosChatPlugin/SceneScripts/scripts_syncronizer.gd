@@ -12,8 +12,6 @@ static var enums_dictionary:Dictionary
 static var types_dictionary:Dictionary
 static var components_dictionary:Dictionary
 
-const BLACK_LIST:Array[String] = ["TransformComponent", "CameraComponent", "RenderComponent"]
-
 func _run() -> void:
 	#write_enums()
 	sync()
@@ -97,7 +95,7 @@ static func write_systems():
 	
 	var systems_file := "res://addons/HugosChatPlugin/Systems.gd"
 	var systems_names:Array[String]
-	print(project_path)
+	
 	dir.list_dir_begin()
 	var name := dir.get_next()
 	while name != "":
@@ -198,7 +196,6 @@ static func hugo_parse_component(path: String) -> void:
 		line = file.get_line().strip_edges()
 
 	var component_name:String = line.split("(")[1].split(")")[0].strip_edges()
-	if BLACK_LIST.has(component_name): return
 
 	components_dictionary.get_or_add(component_name, [])
 
@@ -211,9 +208,21 @@ static func hugo_parse_component(path: String) -> void:
 		
 		var cleaned_parameters:PackedStringArray
 		var parameter_default_value
+		
+		if line.begins_with("//"): continue
+		
 		if line.contains("DEFAULT_SERIALIZED_MEMBER("):
 			cleaned_parameters = line.split("DEFAULT_SERIALIZED_MEMBER(")[1].split(")")[0].split(",")
 			parameter_default_value = cleaned_parameters[2].strip_edges()
+			
+			var composite:bool = cleaned_parameters.size() > 3
+			if composite: parameter_default_value += ","
+			
+			for i in range(3, cleaned_parameters.size()):
+				parameter_default_value += cleaned_parameters[i]
+				if i != cleaned_parameters.size() - 1: parameter_default_value += ","
+				
+			if composite: parameter_default_value += ")"
 		elif line.contains("SERIALIZED_MEMBER("):
 			cleaned_parameters = line.split("SERIALIZED_MEMBER(")[1].split(")")[0].split(",")
 		else: continue

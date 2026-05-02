@@ -1,0 +1,45 @@
+SCENE test
+SYSTEM ConsoleSystem
+SYSTEM AudioSystem
+SYSTEM PhysicsGizmoSystem
+SYSTEM HierarchySystem
+SYSTEM ParticleSystem
+SYSTEM CameraSystem
+SYSTEM LightSystem
+SYSTEM RenderSystem
+SYSTEM TweenSystem
+SYSTEM UISystem
+
+ENTITY Entity 0
+	COMPONENT RenderComponent
+		STRING meshName 
+		STRING materialName 
+		INT objectID 0
+
+START_CHILDREN
+
+ENTITY Entity_O 1
+	COMPONENT RenderComponent
+		STRING meshName 
+		STRING materialName 
+		INT objectID 0
+
+START_CHILDREN
+
+ENTITY Entity_O_O 2
+
+START_CHILDREN
+
+ENTITY Entity_O_O_O 3
+
+END_CHILDREN
+END_ENTITY
+ENTITY Entity_O_O_O_O 4
+END_ENTITY
+
+ENTITY Entity2 5
+END_ENTITY
+
+ENTITY Entity3 6
+END_ENTITY
+

@@ -1,0 +1,81 @@
+[gd_scene format=3 uid="uid://cwh888grs0ipe"]
+
+[ext_resource type="Script" uid="uid://cft1fgdpqn2vu" path="res://addons/HugosChatPlugin/Entities/scene_tracker.gd" id="1_8od7v"]
+[ext_resource type="Script" uid="uid://dcc6b5sxl6c7u" path="res://addons/HugosChatPlugin/Entities/entity.gd" id="2_qc4db"]
+[ext_resource type="Script" uid="uid://bnjt3w18hk2gs" path="res://addons/HugosChatPlugin/NativeComponents/RenderComponent.gd" id="3_qc4db"]
+
+[node name="test" type="Node3D" unique_id=65555920]
+script = ExtResource("1_8od7v")
+entities = Dictionary[String, Dictionary]({
+"Entity": {
+"RenderComponent": Dictionary[String, Variant]({
+"materialName": "STRING materialName ",
+"meshName": "STRING meshName ",
+"objectID": "INT objectID 0"
+})
+},
+"Entity2": {},
+"Entity3": {},
+"Entity_O": {
+"ParentComponent": {
+"parent": "INT parent 0"
+},
+"RenderComponent": Dictionary[String, Variant]({
+"materialName": "STRING materialName ",
+"meshName": "STRING meshName ",
+"objectID": "INT objectID 0"
+})
+},
+"Entity_O_O": {
+"ParentComponent": {
+"parent": "INT parent 1"
+}
+},
+"Entity_O_O_O": {
+"ParentComponent": {
+"parent": "INT parent 2"
+}
+},
+"Entity_O_O_O_O": {
+"ParentComponent": {
+"parent": "INT parent 1"
+}
+}
+})
+metadata/_custom_type_script = "uid://cft1fgdpqn2vu"
+
+[node name="Entity" type="Node3D" parent="." unique_id=2074974363]
+script = ExtResource("2_qc4db")
+metadata/_custom_type_script = "uid://dcc6b5sxl6c7u"
+
+[node name="Entity_O" type="Node3D" parent="Entity" unique_id=1724215693]
+script = ExtResource("2_qc4db")
+metadata/_custom_type_script = "uid://dcc6b5sxl6c7u"
+
+[node name="RenderComponent" type="MeshInstance3D" parent="Entity/Entity_O" unique_id=1910205515]
+script = ExtResource("3_qc4db")
+metadata/_custom_type_script = "uid://bnjt3w18hk2gs"
+
+[node name="Entity_O_O" type="Node3D" parent="Entity/Entity_O" unique_id=870029338]
+script = ExtResource("2_qc4db")
+metadata/_custom_type_script = "uid://dcc6b5sxl6c7u"
+
+[node name="Entity_O_O_O" type="Node3D" parent="Entity/Entity_O/Entity_O_O" unique_id=1373646651]
+script = ExtResource("2_qc4db")
+metadata/_custom_type_script = "uid://dcc6b5sxl6c7u"
+
+[node name="Entity_O_O_O_O" type="Node3D" parent="Entity/Entity_O" unique_id=1973189324]
+script = ExtResource("2_qc4db")
+metadata/_custom_type_script = "uid://dcc6b5sxl6c7u"
+
+[node name="RenderComponent" type="MeshInstance3D" parent="Entity" unique_id=1348853878]
+script = ExtResource("3_qc4db")
+metadata/_custom_type_script = "uid://bnjt3w18hk2gs"
+
+[node name="Entity2" type="Node3D" parent="." unique_id=911390471]
+script = ExtResource("2_qc4db")
+metadata/_custom_type_script = "uid://dcc6b5sxl6c7u"
+
+[node name="Entity3" type="Node3D" parent="." unique_id=1731017900]
+script = ExtResource("2_qc4db")
+metadata/_custom_type_script = "uid://dcc6b5sxl6c7u"

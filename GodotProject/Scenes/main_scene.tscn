@@ -1,10 +1,10 @@
 [gd_scene format=3 uid="uid://dq2fl1vp76r7r"]
 
-[ext_resource type="Script" uid="uid://dargypc2g11or" path="res://addons/HugosChatPlugin/Entities/scene_tracker.gd" id="1_865ah"]
-[ext_resource type="Script" uid="uid://cxkvulsjeworc" path="res://addons/HugosChatPlugin/Entities/entity3d.gd" id="2_x6ack"]
-[ext_resource type="Script" uid="uid://c856nwshhf2ax" path="res://addons/HugosChatPlugin/NativeComponents/CameraComponent.gd" id="3_iacmt"]
-[ext_resource type="Script" uid="uid://cep2x6rh3tbvp" path="res://addons/HugosChatPlugin/NativeComponents/RenderComponent.gd" id="4_6ev3c"]
-[ext_resource type="Script" uid="uid://dal5x4yfyfbc1" path="res://Components/PlayerComponent.gd" id="5_huasi"]
+[ext_resource type="Script" uid="uid://cft1fgdpqn2vu" path="res://addons/HugosChatPlugin/Entities/scene_tracker.gd" id="1_865ah"]
+[ext_resource type="Script" uid="uid://dimuk3ggoam44" path="res://addons/HugosChatPlugin/Entities/entity3d.gd" id="2_x6ack"]
+[ext_resource type="Script" uid="uid://b35wnsb2u6ree" path="res://addons/HugosChatPlugin/NativeComponents/CameraComponent.gd" id="3_iacmt"]
+[ext_resource type="Script" uid="uid://bnjt3w18hk2gs" path="res://addons/HugosChatPlugin/NativeComponents/RenderComponent.gd" id="4_6ev3c"]
+[ext_resource type="Script" uid="uid://bwtn1p4uulsox" path="res://Components/PlayerComponent.gd" id="5_huasi"]
 [ext_resource type="Script" uid="uid://dwa3nj3edvsla" path="res://Components/MovementRBComponent.gd" id="6_m1efj"]
 [ext_resource type="Script" uid="uid://7yrjlv0jx5tv" path="res://addons/HugosChatPlugin/NativeComponents/ColliderComponent.gd" id="7_mai8y"]
 [ext_resource type="Script" uid="uid://oombyyspsrw8" path="res://addons/HugosChatPlugin/NativeComponents/RigidBodyComponent.gd" id="8_76v2p"]
@@ -27,6 +27,28 @@ entities = Dictionary[String, Dictionary]({
 "rotation": "QUATERNION rotation 0.0 0.0 0.0 1.0",
 "scale": "VECTOR_3 scale 0.40000000596046 0.40000000596046 0.40000000596046"
 })
+},
+"Entity2": {},
+"Entity3": {},
+"Entity_O": {
+"ParentComponent": {
+"parent": "INT parent 0"
+}
+},
+"Entity_O_O": {
+"ParentComponent": {
+"parent": "INT parent 1"
+}
+},
+"Entity_O_O_O": {
+"ParentComponent": {
+"parent": "INT parent 2"
+}
+},
+"Entity_O_O_O_O": {
+"ParentComponent": {
+"parent": "INT parent 4"
+}
 },
 "camera": {
 "CameraComponent": Dictionary[String, Variant]({
@@ -80,56 +102,29 @@ entities = Dictionary[String, Dictionary]({
 "rotation": "QUATERNION rotation 0.0 1.0 0.0 -0.00000004371139",
 "scale": "VECTOR_3 scale 1.0 1.0 1.0"
 })
-},
-"Entity2": {},
-"Entity3": {},
-"Entity_O": {
-"ParentComponent": {
-"parent": "INT parent 0"
-}
-},
-"Entity_O_O": {
-"ParentComponent": {
-"parent": "INT parent 1"
-}
-},
-"Entity_O_O_O": {
-"ParentComponent": {
-"parent": "INT parent 2"
-}
-},
-"Entity_O_O_O_O": {
-"ParentComponent": {
-"parent": "INT parent 4"
-}
 }
 })
 systems = Array[int]([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 15, 14, 13])
 
 [node name="camera" type="Node3D" parent="." unique_id=183548792]
 script = ExtResource("2_x6ack")
-metadata/_custom_type_script = "uid://cxkvulsjeworc"
 
 [node name="CameraComponent" type="Node" parent="camera" unique_id=527878206]
 script = ExtResource("3_iacmt")
 nearClip = 0.01
 farClip = 1000.0
 mainCamera = true
-metadata/_custom_type_script = "uid://c856nwshhf2ax"
 
 [node name="player" type="Node3D" parent="." unique_id=1825369895]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, 0)
 script = ExtResource("2_x6ack")
-metadata/_custom_type_script = "uid://cxkvulsjeworc"
 
 [node name="RenderComponent" type="MeshInstance3D" parent="player" unique_id=1918491802]
 script = ExtResource("4_6ev3c")
 mesh_name = "player.mesh"
-metadata/_custom_type_script = "uid://cep2x6rh3tbvp"
 
 [node name="PlayerComponent" type="Node" parent="player" unique_id=1515420139]
 script = ExtResource("5_huasi")
-metadata/_custom_type_script = "uid://dal5x4yfyfbc1"
 
 [node name="MovementRBComponent" type="Node" parent="player" unique_id=497685221]
 script = ExtResource("6_m1efj")
@@ -152,12 +147,10 @@ metadata/_custom_type_script = "uid://oombyyspsrw8"
 [node name="Beastie" type="Node3D" parent="." unique_id=254395253]
 transform = Transform3D(0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, 0, 0, 5)
 script = ExtResource("2_x6ack")
-metadata/_custom_type_script = "uid://cxkvulsjeworc"
 
 [node name="RenderComponent" type="MeshInstance3D" parent="Beastie" unique_id=992028334]
 script = ExtResource("4_6ev3c")
 mesh_name = "beastie.mesh"
-metadata/_custom_type_script = "uid://cep2x6rh3tbvp"
 
 [node name="AnimationComponent" type="Node" parent="Beastie" unique_id=684694448]
 script = ExtResource("9_m1efj")

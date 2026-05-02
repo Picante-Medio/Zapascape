@@ -12,8 +12,7 @@ static func write():
 		push_error("No edited scene root found.")
 		return
 	
-	root.create_entities()
-	var entity_map:Dictionary[String, int] = root.entities_map
+	root.track_entities()
 	
 	var scene_name := root.name
 	
@@ -36,67 +35,38 @@ static func write():
 			var system_name:String = SYSTEMS.system.keys()[system]
 			file.store_line("SYSTEM " + system_name)
 		file.store_line("")
+		
+		for entity in root.entities:
+			write_entity(entity, file, "")
 	else:
 		var scene_text = "PREFAB "
 		scene_text = scene_text + root.name
 		
 		file.store_line(scene_text)
-	
-	var parents:Array[String]
-	var current_offset:int = 0
-	var o:String
-	
-	for entity_key in root.entities.keys():
-		var entity: Dictionary = root.entities[entity_key]
 		
-		var entity_cache:String = (o + "ENTITY " + str(entity_key) + " " + str(entity_map[entity_key]) + "\n")
-		var has_parent_component:bool = false
-		for component_key in entity.keys():
-			var component: Dictionary = entity[component_key]
-			if component_key == "ParentComponent":
-				has_parent_component = true
-				
-				var parent = component["parent"]
-				if parents.has(parent):
-					if parents.back() != parent:
-						while(not parents.is_empty() and parent != parents.pop_back()):
-							current_offset -= 1
-							o = get_offset_string(current_offset)
-							entity_cache += (o + "END_CHILDREN\n")
-				else:
-					parents.push_back(parent)
-					file.store_line(o + "START_CHILDREN\n")
-					current_offset += 1
-					o = get_offset_string(current_offset)
-					
-			else:
-				entity_cache += (o + "\tCOMPONENT " + str(component_key) + "\n")
-			
-			for parameter_key in component.keys():
-				var value = component[parameter_key]
-				entity_cache += (o + "\t\t%s" % [str(value)] + "\n")
-		
-		if not has_parent_component:
-			for parent in parents:
-				file.store_line(o + "END_CHILDREN")
-				current_offset -= 1
-			o = get_offset_string(current_offset)
-			parents.clear()
-		entity_cache += "END_ENTITY\n"
-		
-		file.store_string(entity_cache)	
-		file.store_line("")
+		for entity in root.entities:
+			write_entity(entity, file, "")
 	
-	for parent in parents:
-		file.store_line(o + "END_CHILDREN")
-		current_offset -= 1
-	parents.clear()
 	
 	file.close()
 	print("Written to: ", file_path)
 
-static func get_offset_string(count:int):
-	var offset:String = ""
-	for i in range(0, count):
-		offset += ""
-	return offset
+static func write_entity(entity:EntityData, file, tabulations:String):
+	file.store_line(tabulations+"ENTITY " + entity.entityName + " 1")
+	#Component writing
+	for component_key in entity.components.keys():
+		#Map of key-values
+		var component_data: Dictionary = entity.components[component_key]
+		file.store_line(tabulations + "    COMPONENT " + str(component_key))
+		for parameter_key in component_data.keys():
+			var value = component_data[parameter_key]
+			file.store_line(tabulations+ "        "+str(value))
+	#Children writing
+	file.store_line(tabulations + "    START_CHILDREN")
+	for child in entity.children:
+		write_entity(child, file, str(tabulations+"    "))
+	file.store_line(tabulations + "    END_CHILDREN")
+	
+	file.store_line(tabulations + "END_ENTITY")
+	file.store_line("")
+	return
