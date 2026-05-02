@@ -5,7 +5,6 @@ struct TimeComponent;
 HSYSTEM(HUDSystem)
 private:
     EntityID gameTimer;
-    EntityID gameTimerText;
 public:
     void init() override;
     void onLoad() override;

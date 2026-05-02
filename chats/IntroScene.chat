@@ -7,6 +7,7 @@ SYSTEM LightSystem
 SYSTEM RenderSystem
 SYSTEM TweenSystem
 SYSTEM UISystem
+SYSTEM IntroToGameSystem
 
 ENTITY camera 0
 	COMPONENT TransformComponent
@@ -25,12 +26,25 @@ ENTITY camera 0
 		VECTOR_4 clearColor 0.30000001192093 0.30000001192093 0.5 1.0
 END_ENTITY
 
-ENTITY startButton 1
+ENTITY background 1
+	COMPONENT PanelComponent
+		STRING overlayName Intro/Background/Overlay
+		STRING containerName Intro/Background/Overlay/Container
+		BOOL isVisible true
+		INT metricsMode 0
+		FLOAT left 0.0
+		FLOAT top 0.0
+		FLOAT width 1.0
+		FLOAT height 1.0
+		STRING material Intro/Background
+END_ENTITY
+
+ENTITY startButton 2
 	COMPONENT PanelComponent
 		STRING overlayName Intro/StartB/Overlay
 		STRING containerName Intro/StartB/Overlay/Container
 		BOOL isVisible true
-		INT metricsMode 2
+		INT metricsMode 0
 		FLOAT left 0.45
 		FLOAT top 0.6
 		FLOAT width 0.15
@@ -43,21 +57,28 @@ ENTITY startButton 1
 		STRING disabledMaterial 
 END_ENTITY
 
-ENTITY exitButton 2
+ENTITY Text 3
 	COMPONENT PanelComponent
-		STRING overlayName Intro/ExitB/Overlay
-		STRING containerName Intro/ExitB/Overlay/Container
+		STRING overlayName adsdad
+		STRING containerName dsadfefwf
 		BOOL isVisible true
-		INT metricsMode 2
-		FLOAT left 0.45
-		FLOAT top 0.8
-		FLOAT width 0.15
-		FLOAT height 0.1
-		STRING material Intro/ExitButton
-	COMPONENT ButtonComponent
-		STRING normalMaterial Intro/ExitButton
-		STRING hoverMaterial Intro/ExitButtonOnHover
-		STRING pressedMaterial Intro/ExitButtonOnHover
-		STRING disabledMaterial 
+		INT metricsMode 0
+		FLOAT left 0.0
+		FLOAT top 0.0
+		FLOAT width 0.0
+		FLOAT height 0.0
+		STRING material 
+	COMPONENT TextComponent
+		STRING textAreaName untexto
+		STRING text ZAPASCAPE
+		STRING textFont RubikGlitch
+		FLOAT characterHeight 0.25
+		FLOAT spaceWidth 0.005
+		VECTOR_4 colour 0.0 0.0 0.0 0.0
+		VECTOR_4 colourTop 0.34099999070168 0.03500000014901 0.03500000014901 1.0
+		VECTOR_4 colourBottom 0.25900000333786 0.2509999871254 0.2509999871254 1.0
+		FLOAT left 0.15
+		FLOAT top 0.1
+		FLOAT maxWidth 0.0
 END_ENTITY
 

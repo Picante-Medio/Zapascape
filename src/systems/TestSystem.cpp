@@ -139,7 +139,7 @@ TestSystem::init() {
     EntityID marks = scene.createEntity();
     scene.addComponent<MarkComponent>(marks);
 
-    ErrorOrType<EntityID> prefab = scene.instantiatePrefab("Wall");
+    // ErrorOrType<EntityID> prefab = scene.instantiatePrefab("Wall");
 }
 
 

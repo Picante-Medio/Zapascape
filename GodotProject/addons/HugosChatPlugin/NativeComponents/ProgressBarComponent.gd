@@ -6,6 +6,7 @@ class_name ProgressBarComponent
 @export var maxValue:float
 @export var currentValue:float
 @export var fillMaterial:String
+@export var fillMode:ENUMS.ProgressBarFillMode
 
 func get_component() -> Dictionary[String, Variant]:
 	return {
@@ -13,4 +14,5 @@ func get_component() -> Dictionary[String, Variant]:
 		"maxValue" : FormatWriter.format(maxValue, "maxValue"),
 		"currentValue" : FormatWriter.format(currentValue, "currentValue"),
 		"fillMaterial" : FormatWriter.format(fillMaterial, "fillMaterial"),
+		"fillMode" : FormatWriter.format(fillMode, "fillMode"),
 	}

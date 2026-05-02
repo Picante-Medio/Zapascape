@@ -3,5 +3,6 @@
 
 HCOMPONENT(TimeComponent)
 public:
-    uint32_t remainingGameTime = 0;
+    DEFAULT_SERIALIZED_MEMBER(HUGO::Int, remainingGameTime, 0);
 END_HCOMPONENT()
+

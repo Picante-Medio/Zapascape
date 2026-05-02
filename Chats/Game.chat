@@ -1,0 +1,54 @@
+SCENE Game
+SYSTEM AudioSystem
+SYSTEM RenderSystem
+SYSTEM PhysicsGizmoSystem
+SYSTEM LightSystem
+SYSTEM CameraSystem
+SYSTEM UISystem
+SYSTEM ConsoleSystem
+SYSTEM HierarchySystem
+SYSTEM ParticleSystem
+
+ENTITY Camera 0
+	COMPONENT TransformComponent
+		VECTOR_3 position 0.0 0.0 0.0
+		QUATERNION rotation 0.0 0.0 0.0 1.0
+		VECTOR_3 scale 1.0 1.0 1.0
+	COMPONENT CameraComponent
+		INT projectionType 0
+		FLOAT fovY 60.0
+		FLOAT nearClip 1.0
+		FLOAT farClip 10000.0
+		FLOAT orthoWidth 10.0
+		FLOAT orthoHeight 10.0
+		BOOL autoAspectRatio true
+		BOOL mainCamera true
+		VECTOR_4 clearColor 0.10000000149012 0.0 0.0 1.0
+END_ENTITY
+
+ENTITY Timer 1
+	COMPONENT PanelComponent
+		STRING overlayName Game/Timer/Overlay
+		STRING containerName Game/Timer/Overlay/Container
+		BOOL isVisible true
+		INT metricsMode 0
+		FLOAT left 0.0
+		FLOAT top 0.0
+		FLOAT width 0.0
+		FLOAT height 0.0
+		STRING material 
+	COMPONENT TextComponent
+		STRING textAreaName Game/Timer/Overlay/Container/Text
+		STRING text SDHIDHHA
+		STRING textFont Roboto
+		FLOAT characterHeight 0.035
+		FLOAT spaceWidth 0.01
+		VECTOR_4 colour 0.0 0.0 0.0 0.0
+		VECTOR_4 colourTop 0.80000001192093 0.75300002098083 0.34900000691414 1.0
+		VECTOR_4 colourBottom 0.80000001192093 0.75300002098083 0.34900000691414 1.0
+		FLOAT left 0.5
+		FLOAT top 0.1
+		FLOAT maxWidth 1.0
+		FLOAT maxHeight 1.0
+END_ENTITY
+

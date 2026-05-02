@@ -1,0 +1,102 @@
+[gd_scene format=3 uid="uid://b8kqunjpr5ft3"]
+
+[ext_resource type="Script" uid="uid://df8hij7d1ml6q" path="res://addons/HugosChatPlugin/Entities/scene_tracker.gd" id="1_jwv4s"]
+[ext_resource type="Script" uid="uid://bp8xe0wwyk4sh" path="res://addons/HugosChatPlugin/Entities/entity3d.gd" id="2_kilg5"]
+[ext_resource type="Script" uid="uid://cfol4koac0mwa" path="res://addons/HugosChatPlugin/Entities/entity.gd" id="2_lohlh"]
+[ext_resource type="Script" uid="uid://mar8hgypmgso" path="res://addons/HugosChatPlugin/NativeComponents/PanelComponent.gd" id="3_kilg5"]
+[ext_resource type="Script" uid="uid://c856nwshhf2ax" path="res://addons/HugosChatPlugin/NativeComponents/CameraComponent.gd" id="3_x6js8"]
+[ext_resource type="Script" uid="uid://ck3jmxs4auorw" path="res://addons/HugosChatPlugin/NativeComponents/TextComponent.gd" id="4_x6js8"]
+[ext_resource type="Script" uid="uid://de32jp3gyhv40" path="res://Components/TimeComponent.gd" id="5_lohlh"]
+
+[node name="Game" type="Node3D" unique_id=1099111033]
+script = ExtResource("1_jwv4s")
+entities = Dictionary[String, Dictionary]({
+"Camera": {
+"CameraComponent": Dictionary[String, Variant]({
+"autoAspectRatio": "BOOL autoAspectRatio true",
+"clearColor": "VECTOR_4 clearColor 0.10000000149012 0.0 0.0 1.0",
+"farClip": "FLOAT farClip 10000.0",
+"fovY": "FLOAT fovY 60.0",
+"mainCamera": "BOOL mainCamera true",
+"nearClip": "FLOAT nearClip 1.0",
+"orthoHeight": "FLOAT orthoHeight 10.0",
+"orthoWidth": "FLOAT orthoWidth 10.0",
+"projectionType": "INT projectionType 0"
+}),
+"TransformComponent": Dictionary[String, Variant]({
+"position": "VECTOR_3 position 0.0 0.0 0.0",
+"rotation": "QUATERNION rotation 0.0 0.0 0.0 1.0",
+"scale": "VECTOR_3 scale 1.0 1.0 1.0"
+})
+},
+"Timer": {
+"PanelComponent": Dictionary[String, Variant]({
+"containerName": "STRING containerName Game/Timer/Overlay/Container",
+"height": "FLOAT height 0.0",
+"isVisible": "BOOL isVisible true",
+"left": "FLOAT left 0.0",
+"material": "STRING material ",
+"metricsMode": "INT metricsMode 0",
+"overlayName": "STRING overlayName Game/Timer/Overlay",
+"top": "FLOAT top 0.0",
+"width": "FLOAT width 0.0"
+}),
+"TextComponent": Dictionary[String, Variant]({
+"characterHeight": "FLOAT characterHeight 0.035",
+"colour": "VECTOR_4 colour 0.0 0.0 0.0 0.0",
+"colourBottom": "VECTOR_4 colourBottom 0.80000001192093 0.75300002098083 0.34900000691414 1.0",
+"colourTop": "VECTOR_4 colourTop 0.80000001192093 0.75300002098083 0.34900000691414 1.0",
+"left": "FLOAT left 0.5",
+"maxHeight": "FLOAT maxHeight 1.0",
+"maxWidth": "FLOAT maxWidth 1.0",
+"spaceWidth": "FLOAT spaceWidth 0.01",
+"text": "STRING text SDHIDHHA",
+"textAreaName": "STRING textAreaName Game/Timer/Overlay/Container/Text",
+"textFont": "STRING textFont Roboto",
+"top": "FLOAT top 0.1"
+})
+}
+})
+systems = Array[int]([1, 7, 2, 6, 5, 9, 0, 3, 4, 20, 11])
+metadata/_custom_type_script = "uid://df8hij7d1ml6q"
+
+[node name="Camera" type="Node3D" parent="." unique_id=667550423]
+script = ExtResource("2_kilg5")
+metadata/_custom_type_script = "uid://bp8xe0wwyk4sh"
+
+[node name="CameraComponent" type="Node" parent="Camera" unique_id=1671258053]
+script = ExtResource("3_x6js8")
+mainCamera = true
+clearColor = Vector4(0.1, 0, 0, 1)
+metadata/_custom_type_script = "uid://c856nwshhf2ax"
+
+[node name="Timer" type="Node3D" parent="." unique_id=1603679721]
+script = ExtResource("2_lohlh")
+metadata/_custom_type_script = "uid://cfol4koac0mwa"
+
+[node name="PanelComponent" type="Node" parent="Timer" unique_id=287934750]
+script = ExtResource("3_kilg5")
+overlayName = "Game/Timer/Overlay"
+containerName = "Game/Timer/Overlay/Container"
+isVisible = true
+metadata/_custom_type_script = "uid://mar8hgypmgso"
+
+[node name="TextComponent" type="Node" parent="Timer" unique_id=992768007]
+script = ExtResource("4_x6js8")
+text = "SDHIDHHA"
+textAreaName = "Game/Timer/Overlay/Container/Text"
+textFont = "Roboto"
+characterHeight = 0.035
+spaceWidth = 0.01
+colourTop = Vector4(0.8, 0.753, 0.349, 1)
+colourBottom = Vector4(0.8, 0.753, 0.349, 1)
+left = 0.5
+top = 0.1
+maxWidth = 1.0
+maxHeight = 1.0
+metadata/_custom_type_script = "uid://ck3jmxs4auorw"
+
+[node name="TimeComponent" type="Node" parent="Timer" unique_id=1279548996]
+script = ExtResource("5_lohlh")
+remainingGameTime = 120
+metadata/_custom_type_script = "uid://de32jp3gyhv40"

@@ -1,0 +1,7 @@
+font RubikGlitch
+{
+    type truetype
+    source rubikglitch.ttf
+    size 32  
+    resolution 1080
+}

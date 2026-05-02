@@ -9,6 +9,9 @@ class_name SliderComponent
 @export var knobHeight:float
 @export var knobLeft:float
 @export var knobTop:float
+@export var trackMaterial:String 
+@export var knobMaterial:String 
+@export var orientation:ENUMS.SliderOrientation 
 
 func get_component() -> Dictionary[String, Variant]:
 	return {
@@ -19,4 +22,7 @@ func get_component() -> Dictionary[String, Variant]:
 		"knobHeight" : FormatWriter.format(knobHeight, "knobHeight"),
 		"knobLeft" : FormatWriter.format(knobLeft, "knobLeft"),
 		"knobTop" : FormatWriter.format(knobTop, "knobTop"),
+		"trackMaterial" : FormatWriter.format(trackMaterial, "trackMaterial"),
+		"knobMaterial" : FormatWriter.format(knobMaterial, "knobMaterial"),
+		"orientation" : FormatWriter.format(orientation, "orientation"),
 	}

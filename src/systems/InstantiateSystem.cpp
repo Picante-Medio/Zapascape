@@ -1,10 +1,12 @@
 #include "InstantiateSystem.h"
 #include "InstantiateComponent.h"
 #include "RenderComponent.h"
-
+#include "ButtonComponent.h"
 void InstantiateSystem::init() 
 {
-
+    for (auto& pack: scene.query<ButtonComponent>()){
+        
+    }
 }
 
 void 
