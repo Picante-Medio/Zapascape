@@ -88,23 +88,29 @@ static func write_components():
 
 		file.close()
 
-static func write_systems():
-	var global_path:String = ProjectSettings.globalize_path("res://")
-	var project_path:String = global_path.path_join("../".path_join(HugoConfig.SYSTEMS_PATH))
-	var dir := DirAccess.open(project_path)
-	
-	var systems_file := "res://addons/HugosChatPlugin/Systems.gd"
-	var systems_names:Array[String]
+static func get_systems(systems_names:Array[String], path:String):
+	var dir := DirAccess.open(path)
 	
 	dir.list_dir_begin()
 	var name := dir.get_next()
 	while name != "":
 		if name != "." and name != "..":
-			if not systems_names.has(name.split(".")[0]):
+			if dir.current_is_dir(): 
+				var dir_path:String = path.path_join(name)
+				get_systems(systems_names, dir_path)
+			elif not systems_names.has(name.split(".")[0]):
 				systems_names.push_back(name.split(".")[0])
 		name = dir.get_next()
 	dir.list_dir_end()
 	
+static func write_systems():
+	var global_path:String = ProjectSettings.globalize_path("res://")
+	var project_path:String = global_path.path_join("../".path_join(HugoConfig.SYSTEMS_PATH))
+	
+	var systems_names:Array[String]
+	get_systems(systems_names, project_path)
+	
+	var systems_file := "res://addons/HugosChatPlugin/Systems.gd"
 	var file := FileAccess.open(systems_file, FileAccess.WRITE)
 	file.store_line("class_name SYSTEMS")
 	file.store_line("enum system {")
