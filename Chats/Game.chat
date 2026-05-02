@@ -8,6 +8,8 @@ SYSTEM UISystem
 SYSTEM ConsoleSystem
 SYSTEM HierarchySystem
 SYSTEM ParticleSystem
+SYSTEM TimeSystem
+SYSTEM HUDSystem
 
 ENTITY Camera 0
 	COMPONENT TransformComponent
@@ -50,5 +52,7 @@ ENTITY Timer 1
 		FLOAT top 0.1
 		FLOAT maxWidth 1.0
 		FLOAT maxHeight 1.0
+	COMPONENT TimeComponent
+		INT remainingGameTime 120
 END_ENTITY
 

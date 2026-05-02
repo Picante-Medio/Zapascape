@@ -1,6 +1,8 @@
 ﻿#include "HUGO.h"
 #include "TimeSystem.h"
 #include "TimeComponent.h"
+#include "PanelComponent.h"
+#include "TextComponent.h"
 #include "BeastieComponent.h"
 #include "MovementRBComponent.h"
 
@@ -8,13 +10,10 @@ const uint32_t MAX_GAME_TIME =120;
 const uint32_t MAX_PLAYER_STOP_TIME = 10;
 
 void TimeSystem::init(){
-    timerEntity = scene.createEntity();
-    scene.addComponent<TimeComponent>(timerEntity, [this](TimeComponent& t) {t.remainingGameTime = MAX_GAME_TIME; });
     resetTimes();
 }
 void TimeSystem::onLoad(){
     resetTimes();
-    scene.modifyComponent<TimeComponent>(timerEntity, [this](TimeComponent& t) {t.remainingGameTime = MAX_GAME_TIME; });
 }
 void TimeSystem::resetTimes()
 {
@@ -45,10 +44,12 @@ void TimeSystem::update(uint32_t dt){
         }
         gameTime += (accumulatedMS / 1000);
 
-        scene.modifyComponent<TimeComponent>(timerEntity, [this](TimeComponent& t) {
-            t.remainingGameTime = gameTime>MAX_GAME_TIME? 0: MAX_GAME_TIME - gameTime; 
-            t.playerStoppedLongTime = playerStoppedTime > MAX_PLAYER_STOP_TIME;
-        });
+        for (auto& pack: scene.query<TimeComponent>()){
+            pack.modify<TimeComponent>([this](TimeComponent& t){
+                t.remainingGameTime = gameTime>MAX_GAME_TIME? 0: MAX_GAME_TIME - gameTime; 
+                t.playerStoppedLongTime = playerStoppedTime > MAX_PLAYER_STOP_TIME;
+            });
+        }
         
         accumulatedMS %= 1000; 
     }

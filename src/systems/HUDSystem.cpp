@@ -5,15 +5,14 @@
 
 void HUDSystem::init(){}
 
-void HUDSystem::onLoad(){
-    for (auto& pack: scene.query<TimeComponent>()){
-        gameTimer = pack.getConst<TimeComponent>().entity;
-        break;
-    }
-}
+void HUDSystem::onLoad(){}
 void HUDSystem::update(uint32_t dt){
-    const HUGO::Int time = scene.getComponent<TimeComponent>(gameTimer).remainingGameTime;
-    scene.modifyComponent<TextComponent>(gameTimer, [time](TextComponent& t){t.text = std::to_string(time); });
+    for (auto& pack: scene.query<TimeComponent, TextComponent>()){
+        const HUGO::Int time = pack.getConst<TimeComponent>().remainingGameTime;
+        pack.modify<TextComponent>([time](TextComponent& t){
+            t.text = std::to_string(time);
+        });
+    }
 }
 
 void HUDSystem::fixedUpdate(uint32_t) {};

@@ -6,9 +6,6 @@ private:
     uint32_t playerStoppedTime;
     uint32_t gameTime;
     uint32_t accumulatedMS;
-    
-    EntityID timerEntity;
-
     void resetTimes();
 public:
     void init() override;

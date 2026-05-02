@@ -54,6 +54,9 @@ entities = Dictionary[String, Dictionary]({
 "textAreaName": "STRING textAreaName Game/Timer/Overlay/Container/Text",
 "textFont": "STRING textFont Roboto",
 "top": "FLOAT top 0.1"
+}),
+"TimeComponent": Dictionary[String, Variant]({
+"remainingGameTime": "INT remainingGameTime 120"
 })
 }
 })
