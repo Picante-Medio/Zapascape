@@ -14,7 +14,7 @@ InstantiateSystem::onLoad()
 {
     for (auto& pack: scene.query<InstantiateComponent>()){
         InstantiateComponent ic = pack.getConst<InstantiateComponent>();
-        ErrorOrType<EntityID> entity = scene.instantiatePrefab(ic.getPrefabName());
+        HUGO::ErrorOrType<EntityID> entity = scene.instantiatePrefab(ic.getPrefabName());
 
         if(entity.isError()) {
             std::cout << "ERROR_DORI " << entity.getError().description();

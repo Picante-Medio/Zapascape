@@ -1,4 +1,5 @@
 #include "MapSystem.h"
+#include "EcsTypes.h"
 #include "MapComponent.h"
 #include "TransformComponent.h"
 #include <random>
@@ -12,6 +13,7 @@
 #include "CameraComponent.h"
 #include "ChildrenComponent.h"
 #include "ColliderComponent.h"
+
 
 void MapSystem::init() {}
 
@@ -50,7 +52,7 @@ MapSystem::onLoad() {
 
             for(HUGO::Vector2 freePos : freePositions) {
 
-                ErrorOrType<EntityID> wall = scene.instantiatePrefab("wall");
+                HUGO::ErrorOrType<EntityID> wall = scene.instantiatePrefab("wall");
                 if(!wall.isError()) {
                     TransformComponent& wallTransform = scene.getComponent<TransformComponent>(wall.getValue());
                     wallTransform.setPosition(HUGO::Vector3(freePos.x * map.getGridSize(), 0, freePos.y * map.getGridSize()));
@@ -60,12 +62,12 @@ MapSystem::onLoad() {
         }
         
         int playerIndex = std::rand() % roomPositions.size();
-        ErrorOrType<EntityID> player = scene.instantiatePrefab("player");
-        if(!player.isError()) {
-            TransformComponent& playerTr = scene.getComponent<TransformComponent>(player.getValue());
-            playerTr.setPosition(HUGO::Vector3(roomPositions[playerIndex].x * map.getGridSize(), 10, roomPositions[playerIndex].y * map.getGridSize()));
-        }
-        //createPlayer(HUGO::Vector3(roomPositions[playerIndex].x * map.getGridSize(), 0, roomPositions[playerIndex].y * map.getGridSize()));
+        // ErrorOrType<EntityID> player = scene.instantiatePrefab("player");
+        // if(!player.isError()) {
+        //     TransformComponent& playerTr = scene.getComponent<TransformComponent>(player.getValue());
+        //     playerTr.setPosition(HUGO::Vector3(roomPositions[playerIndex].x * map.getGridSize(), 10, roomPositions[playerIndex].y * map.getGridSize()));
+        // }
+        createPlayer(HUGO::Vector3(roomPositions[playerIndex].x * map.getGridSize(), 0, roomPositions[playerIndex].y * map.getGridSize()));
 
         int beastIndex = std::rand() % roomPositions.size();
         while(beastIndex == playerIndex) {
