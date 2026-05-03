@@ -9,6 +9,7 @@ class_name RigidBodyComponent
 @export var angularVelocity:Vector3
 @export var linearSleepingThreshold:float
 @export var angularSleepingThreshold:float
+@export var type:ENUMS.BodyType
 
 func get_component() -> Dictionary[String, Variant]:
 	return {

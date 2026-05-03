@@ -83,6 +83,13 @@ enum TrayLocationTypes
 	TL_NONE
 };
 
+enum BodyType
+{
+	DYNAMIC,
+	STATIC,
+	KINEMATIC
+};
+
 enum ColliderType 
 {
 	BOX,
