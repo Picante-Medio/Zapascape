@@ -15,25 +15,24 @@ ENTITY Entity 0
 		STRING meshName 
 		STRING materialName 
 		INT objectID 0
-
-START_CHILDREN
-
-ENTITY Entity_O 1
-	COMPONENT RenderComponent
-		STRING meshName 
-		STRING materialName 
-		INT objectID 0
-
-START_CHILDREN
-
-ENTITY Entity_O_O 2
-
-START_CHILDREN
-
-ENTITY Entity_O_O_O 3
-
-END_CHILDREN
+	START_CHILDREN
+		ENTITY Entity_O 1
+			COMPONENT RenderComponent
+				STRING meshName 
+				STRING materialName 
+				INT objectID 0
+			START_CHILDREN
+				ENTITY Entity_O_O 2
+					START_CHILDREN
+						ENTITY Entity_O_O_O 3
+						END_ENTITY
+					END_CHILDREN
+				END_ENTITY
+			END_CHILDREN
+		END_ENTITY
+	END_CHILDREN
 END_ENTITY
+
 ENTITY Entity_O_O_O_O 4
 END_ENTITY
 

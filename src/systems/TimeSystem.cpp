@@ -26,12 +26,12 @@ void TimeSystem::update(uint32_t dt){
 
     if(gameTime > MAX_GAME_TIME){
        for (auto& pack: scene.query<BeastieComponent, MovementRBComponent>()){
-            pack.getDeprecated<BeastieComponent>().isFastMove = true;
+            pack.modify<BeastieComponent>([](BeastieComponent& b){b.isFastMove = true;});
        }
     }
     if(playerStoppedTime > MAX_PLAYER_STOP_TIME){
        for (auto& pack: scene.query<BeastieComponent, MovementRBComponent>()){
-            pack.getDeprecated<BeastieComponent>().isSlowMove = true;
+            pack.modify<BeastieComponent>([](BeastieComponent& b){b.isSlowMove = true;});
        }
     }
 

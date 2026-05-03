@@ -1,6 +1,13 @@
 #pragma once
 #include "HugoComponentMacros.h"
 
+enum class TileType {
+    Undefined = -1,
+    Empty = 0,
+    Wall = 1,
+    Start = 2,
+    End = 3
+};
 HCOMPONENT(MapComponent)
 private:
     DEFAULT_SERIALIZED_MEMBER(HUGO::Float, gridSize, 1.0f);

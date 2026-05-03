@@ -1,0 +1,37 @@
+PREFAB player
+ENTITY player 0
+	COMPONENT TransformComponent
+		VECTOR_3 position 0.0 0.0 0.0
+		QUATERNION rotation 0.0 1.0 0.0 0.0
+		VECTOR_3 scale 0.5 0.5 0.5
+    COMPONENT CameraComponent
+		INT projectionType 0
+		FLOAT fovY 60.0
+		FLOAT nearClip 0.01
+		FLOAT farClip 1000.0
+		FLOAT orthoWidth 10.0
+		FLOAT orthoHeight 10.0
+		BOOL autoAspectRatio true
+		BOOL mainCamera true
+		VECTOR_4 clearColor 0.3 0.3 0.5 1.0
+    COMPONENT ColliderComponent
+        COLLIDER_INFO info BOX_COLLIDER 1.2 1.2 1.2
+        FLOAT restitution 0.0
+        FLOAT friction 0.8
+        VECTOR_3 positionOffset 0.0 0.5 0.0
+        QUATERNION rotationOffset 0.0 0.0 0.0 1.0
+        BOOL active true
+        BOOL useGizmo true
+    COMPONENT RigidBodyComponent
+        FLOAT mass 5.0
+        FLOAT linearDamping 0.95
+        FLOAT angularDamping 0.0
+        VECTOR_3 linearVelocity 0.0 0.0 0.0
+        VECTOR_3 angularVelocity 0.0 0.0 0.0
+		VECTOR_3 gravity 0.0 0.0 0.0
+        FLOAT linearSleepingThreshold 0.8
+        FLOAT angularSleepingThreshold 1.0
+    COMPONENT PlayerComponent
+    COMPONENT MovementRBComponent
+END_ENTITY
+

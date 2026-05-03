@@ -8,24 +8,21 @@ SYSTEM UISystem
 SYSTEM ConsoleSystem
 SYSTEM HierarchySystem
 SYSTEM ParticleSystem
+SYSTEM MapSystem
+SYSTEM PlayerInputSystem
+SYSTEM MovementSystem
+SYSTEM MarkSystem
 SYSTEM TimeSystem
+SYSTEM BeastieSystem
 SYSTEM HUDSystem
 
-ENTITY Camera 0
-	COMPONENT TransformComponent
-		VECTOR_3 position 0.0 0.0 0.0
-		QUATERNION rotation 0.0 0.0 0.0 1.0
-		VECTOR_3 scale 1.0 1.0 1.0
-	COMPONENT CameraComponent
-		INT projectionType 0
-		FLOAT fovY 60.0
-		FLOAT nearClip 1.0
-		FLOAT farClip 10000.0
-		FLOAT orthoWidth 10.0
-		FLOAT orthoHeight 10.0
-		BOOL autoAspectRatio true
-		BOOL mainCamera true
-		VECTOR_4 clearColor 0.10000000149012 0.0 0.0 1.0
+ENTITY Map 0
+	COMPONENT MapComponent
+		FLOAT gridSize 5.0
+		INT numberOfRooms 15
+		STRING wallPrefab wall
+		INT mapWidth 1000
+		INT mapHeight 1000
 END_ENTITY
 
 ENTITY Timer 1
