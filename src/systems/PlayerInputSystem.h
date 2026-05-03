@@ -3,8 +3,6 @@
 #include "HUGO.h"
 
 HSYSTEM(PlayerInputSystem)
-    EntityID player;
-
     HUGO::Vector2 lastMousePos;
     HUGO::Bool firstMouse = true;
 

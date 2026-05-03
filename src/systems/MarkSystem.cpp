@@ -6,7 +6,6 @@
 
 void MarkSystem::init() 
 {
-
 }
 
 void 

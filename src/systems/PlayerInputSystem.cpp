@@ -5,7 +5,7 @@
 #include "PlayerComponent.h"
 #include "TransformComponent.h"
 #include "RigidBodyComponent.h"
-
+#include "AnimationComponent.h"
 #include <algorithm>
 
 // -------------------------
@@ -26,13 +26,12 @@ void PlayerInputSystem::init() {
 }
 
 void PlayerInputSystem::onLoad() {
-
-    // Find player entity
-    for (auto& pack: scene.query<PlayerComponent>()){
-        player = pack.getConst<PlayerComponent>().entity;
-        break;
+    for(auto& pack: scene.query<PlayerArmComponent, AnimationComponent>()){
+        pack.modify<AnimationComponent>([](AnimationComponent& anim){
+            anim.addAnimation("Idle", true, false);
+            anim.addAnimation("Stop", true, true);
+        });
     }
-
     firstMouse = true;
 }
 
@@ -51,29 +50,43 @@ void PlayerInputSystem::update(uint32_t dt)
     if (input->isKeyPressed(upKey)) actDir.z -= 1.0f;
     else if (input->isKeyPressed(downKey)) actDir.z += 1.0f;
 
+    //ANIMATION
+    for(auto& pack: scene.query<PlayerArmComponent,AnimationComponent>()){
+        pack.modify<AnimationComponent>([input](AnimationComponent& anim){
+            if(input->isActionPressed("move")){
+                anim.setEnabled("Idle",true);
+                anim.setEnabled("Stop",false);
+            }
+            else {
+                anim.setEnabled("Idle",false);
+                anim.setEnabled("Stop",true);
+            }
+        });
+    }
+
     // -------------------------
     // MOVEMENT DIRECTION
     // -------------------------
-    
-    const TransformComponent& t = scene.getComponentConst<TransformComponent>(player);
+    for (auto& pack: scene.query<PlayerComponent,TransformComponent, MovementRBComponent>()){
+        const TransformComponent& t = pack.getConst<TransformComponent>();
+        HUGO::Vector3 forward = t.getRotation().forward().normalized();
+        HUGO::Vector3 right = t.getRotation().right().normalized();
 
-    HUGO::Vector3 forward = t.getRotation().forward().normalized();
-    HUGO::Vector3 right = t.getRotation().right().normalized();
+        forward.y = 0.0f;
+        right.y = 0.0f;
 
-    forward.y = 0.0f;
-    right.y = 0.0f;
+        HUGO::Vector3 moveDir = right * actDir.x + forward * actDir.z;
 
-    HUGO::Vector3 moveDir = right * actDir.x + forward * actDir.z;
+        if (moveDir.length() > 0.001f)
+            moveDir = moveDir.normalized();
+        else
+            moveDir = HUGO::Vector3(0,0,0);
 
-    if (moveDir.length() > 0.001f)
-        moveDir = moveDir.normalized();
-    else
-        moveDir = HUGO::Vector3(0,0,0);
-
-    scene.modifyComponent<MovementRBComponent>(player, [moveDir](MovementRBComponent& m)
-    {
-        m.direction = moveDir;
-    });
+        pack.modify<MovementRBComponent>([moveDir](MovementRBComponent& m)
+        {
+            m.direction = moveDir;
+        });
+    }
 }
 
 // -------------------------
@@ -106,8 +119,9 @@ void PlayerInputSystem::fixedUpdate(uint32_t) {
     // RIGIDBODY ROTATION 
     // -------------------------
     HUGO::Float yaw = mouseDelta.x * rotationSensitivity;
-    scene.modifyComponent<RigidBodyComponent>(player, [yaw](RigidBodyComponent& rb)
-    {
-        rb.setAngularVelocity(HUGO::Vector3(0.0f, yaw, 0.0f));
-    });
+    for (auto& pack: scene.query<PlayerComponent, RigidBodyComponent>()){
+        pack.modify<RigidBodyComponent>([yaw](RigidBodyComponent& rb){
+            rb.setAngularVelocity(HUGO::Vector3(0.0f, yaw, 0.0f));
+        });
+    }
 }
