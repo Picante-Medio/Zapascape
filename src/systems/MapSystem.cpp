@@ -13,6 +13,7 @@
 #include "CameraComponent.h"
 #include "ChildrenComponent.h"
 #include "ColliderComponent.h"
+#include "RitualComponent.h"
 
 
 void MapSystem::init() {}
@@ -74,12 +75,20 @@ MapSystem::onLoad() {
             beastIndex = std::rand() % roomPositions.size();
         }
         createBeastie(HUGO::Vector3( roomPositions[beastIndex].x * map.getGridSize(),0,roomPositions[beastIndex].y * map.getGridSize()));
-    
+        
+        std::vector<int> ritualIndices;
+        for(int i = 0; i < 2; ++i) {
+            int ritualIndex = std::rand() % roomPositions.size();
+            while(ritualIndex == playerIndex || ritualIndex == beastIndex || std::find(ritualIndices.begin(), ritualIndices.end(), ritualIndex) != ritualIndices.end()) {
+                ritualIndex = std::rand() % roomPositions.size();
+            }
+            ritualIndices.push_back(ritualIndex);
+            createRitual(HUGO::Vector3(roomPositions[ritualIndex].x * map.getGridSize(), -0.9f, roomPositions[ritualIndex].y * map.getGridSize()));
+        }
         
         createFloor(HUGO::Vector3(map.mapWidth * map.getGridSize() / 2.0f, 0,map.mapHeight * map.getGridSize() / 2.0f),map.mapWidth * map.getGridSize(), map.mapHeight * map.getGridSize());
+
     }
-
-
 }
 
 std::vector<HUGO::Vector2> 
@@ -125,7 +134,7 @@ void MapSystem::createPlayer(const HUGO::Vector3& pos){
     scene.addComponent<ColliderComponent>(e1, [](ColliderComponent& c){
         c.info = HUGO::BoxColliderInfo{(HUGO::Vector3(1.2f, 1.0f, 1.2f))};
         c.setFriction(0.6f);
-        c.setPositionOffset({0.0f, 1.0f, 0.0f});
+        c.setPositionOffset({0.0f, 0.2f, 0.0f});
     });
     scene.addComponent<RigidBodyComponent>(e1, [](RigidBodyComponent& rb){
         rb.setGravity(HUGO::Vector3(0.0f));
@@ -214,4 +223,38 @@ void MapSystem::createFloor(const HUGO::Vector3& pos, int width, int height)
     scene.addComponent<RigidBodyComponent>(wall, [](RigidBodyComponent& rb){
         rb.setBodyType(HUGO::BodyType::STATIC);
     });
+}
+
+void MapSystem::createRitual(const HUGO::Vector3 &pos)
+{
+    EntityID ritual = scene.createEntity(); 
+    scene.addComponent<TransformComponent>(ritual, [pos](TransformComponent& t3) {
+        t3.setPosition(pos);
+        t3.setScale(HUGO::Vector3(0.5f, 0.5f, 0.5f));
+    });
+    scene.addComponent<RenderComponent>(ritual, [](RenderComponent& rc3) {
+        rc3.setMeshName("ritual.glb");
+    });
+    scene.addComponent<ColliderComponent>(ritual, [](ColliderComponent& cc3) {
+        cc3.info = HUGO::BoxColliderInfo{HUGO::Vector3(0.5f, 0.5f, 0.5f)};
+        cc3.positionOffset = HUGO::Vector3(0,0.3,0);
+        cc3.isTrigger = true;
+    });
+
+    EntityID cube = scene.createEntity();
+    scene.addComponent<TransformComponent>(cube, [pos](TransformComponent& t) {
+        t.setPosition(pos + HUGO::Vector3(0, 0.25f, 0));
+        t.setScale(HUGO::Vector3(0.15f, 0.15f, 0.15f));
+    });
+    
+    scene.addComponent<RenderComponent>(cube, [](RenderComponent& rc) {
+        rc.setMeshName("cube.mesh");
+        rc.visible = false;
+    });
+
+    scene.addComponent<RitualComponent>(ritual, [cube](RitualComponent& rc){
+        rc.setActive(true);
+        rc.associatedCubo = cube;
+    });
+
 }

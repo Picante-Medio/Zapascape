@@ -4,15 +4,13 @@
 #include "System.h"
 
 HSYSTEM(RitualSystem)
-    //test
-    EntityID e1;
-    EntityID e2;
-    EntityID e3;
+    EntityID player;
+    EntityID puertaFinal;
 
     HUGO::Int activeRituals;
     HUGO::Int maxRitualsNumber;
 
-    std::unordered_set<EntityID> rituals;
+    void activateRitual(EntityID ritual, EntityID cubo);
 public:
     void init() override;
     //Called every time the scene is loaded
@@ -25,8 +23,4 @@ public:
     void setMaximunRitualsNumber(HUGO::Int newNumber);
     void setActiveRitualsNumber(HUGO::Int newNumber);
     
-
-    // Getters for the UI
-    HUGO::Int getMaximunRitualsNumber() const;
-    HUGO::Int getActiveRitualsNumber() const;
 END_HSYSTEM()

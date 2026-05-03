@@ -1,49 +1,99 @@
 #include "RitualSystem.h"
-
 #include <iostream>
 
 #include "TransformComponent.h"
-#include "RenderComponent.h"
-#include "TweenComponent.h"
-#include "ParentComponent.h"
-#include "ChildrenComponent.h"
-#include "PanelComponent.h"
-#include "ButtonComponent.h"
-#include "TextComponent.h"
-#include "InputFieldComponent.h"
-#include "LightComponent.h"
-#include "SliderComponent.h"
-#include "ParticleEmitterComponent.h"
-#include "CameraComponent.h"
-
+#include "ColliderComponent.h"
 #include "AnimationComponent.h"
 #include "AudioComponent.h"
+#include "PlayerComponent.h"
+#include "RenderComponent.h"
+#include "RitualComponent.h"
+#include "ChildrenComponent.h"
 
 void
 RitualSystem::init() {
     activeRituals = 0;
-    maxRitualsNumber = 3;
-
-    // create rituals in valid places 
-    for(int i = 0; i < maxRitualsNumber; ++i){
-        EntityID ritual = scene.createEntity();
-        // instantiate prefab
-
-        // change its position
-    }
+    player = -1;
+    maxRitualsNumber = 0;
 }
 
 void
-RitualSystem::onLoad() {}
+RitualSystem::onLoad() {
+}
+
 
 void
-RitualSystem::update(uint32_t dt) {
-   
+RitualSystem::update(uint32_t dt) {  
+    if(player == -1) {
+        for (auto& pack: scene.query<PlayerComponent>()){
+            player = pack.getConst<PlayerComponent>().entity;
+            break;
+        }
+    }
+
+    for (auto& pack: scene.query<RitualComponent, ColliderComponent, RenderComponent>()){
+        if(maxRitualsNumber == 0) {
+            maxRitualsNumber = scene.query<RitualComponent>().size();
+        }
+        EntityID ritual = pack.getConst<RitualComponent>().entity;
+        
+        if(!scene.getComponent<RitualComponent>(ritual).getActive()) {
+            continue;
+        }
+
+        EntityID cubo = pack.getConst<RitualComponent>().associatedCubo;
+        bool playerInArea = false;
+        for(auto collisionId : scene.getComponent<ColliderComponent>(ritual).getCollisionInfo()){
+            if(player == collisionId){
+                playerInArea = true;
+                // activate cube
+                scene.modifyComponent<RenderComponent>(cubo, [](RenderComponent& rc){ 
+                    rc.visible = true;
+                });
+
+                auto input = scene.getInput();
+                if(input->isActionPressed("interact") && scene.getComponent<RitualComponent>(ritual).getActive()){
+                    activateRitual(ritual, cubo);
+                    scene.log("Ritual activated");
+                    break;
+                }
+            }
+        }
+
+        if(!playerInArea) {
+            scene.modifyComponent<RenderComponent>(cubo, [](RenderComponent& rc){ 
+                rc.visible = false;
+            });
+        
+        }
+    }
+}
+
+void 
+RitualSystem::activateRitual(EntityID ritual, EntityID cubo) {  
+    setActiveRitualsNumber(activeRituals + 1);
+    
+    scene.modifyComponent<RitualComponent>(ritual, [](RitualComponent& rt){
+        rt.setActive(false);
+    });
+    
+    scene.modifyComponent<RenderComponent>(ritual, [](RenderComponent& rc){ 
+        rc.visible = false;
+    });
+    
+    scene.modifyComponent<RenderComponent>(cubo, [](RenderComponent& rc){ 
+        rc.visible = false;
+    });
+    
+    scene.modifyComponent<ColliderComponent>(ritual, [](ColliderComponent& cc){
+        cc.setActive(false);
+    });
+    
+    scene.log("Ritual activado. Progreso: " + std::to_string(activeRituals) + "/" + std::to_string(maxRitualsNumber));
 }
 
 void
 RitualSystem::fixedUpdate(uint32_t) {}
-
 
 void 
 RitualSystem::setMaximunRitualsNumber(HUGO::Int newNumber){
@@ -55,16 +105,6 @@ RitualSystem::setActiveRitualsNumber(HUGO::Int newNumber){
     activeRituals = newNumber;
 
     if(activeRituals == maxRitualsNumber){
-    // door activated
+        // door activated
     }
-}
-
-HUGO::Int 
-RitualSystem::getMaximunRitualsNumber() const {
-    return maxRitualsNumber;
-}
-
-HUGO::Int 
-RitualSystem::getActiveRitualsNumber() const{
-   return activeRituals;
 }

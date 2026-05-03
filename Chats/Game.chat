@@ -15,6 +15,7 @@ SYSTEM MarkSystem
 SYSTEM TimeSystem
 SYSTEM BeastieSystem
 SYSTEM HUDSystem
+SYSTEM RitualSystem
 
 ENTITY Map 0
 	COMPONENT MapComponent

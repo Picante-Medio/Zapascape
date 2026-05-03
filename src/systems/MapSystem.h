@@ -18,6 +18,7 @@ private:
     //prueba se quitara cuando funciona los prefabs
     void createPlayer(const HUGO::Vector3& pos);
     void createBeastie(const HUGO::Vector3& pos);
+    void createRitual(const HUGO::Vector3& pos);
     void createFloor(const HUGO::Vector3& pos, int width, int height);
 
 public:
