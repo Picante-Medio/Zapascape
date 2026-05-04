@@ -1,11 +1,13 @@
 #include "PlayerInputSystem.h"
 
+#include "ColliderComponent.h"
 #include "CameraComponent.h"
 #include "MovementRBComponent.h"
 #include "PlayerComponent.h"
 #include "TransformComponent.h"
 #include "RigidBodyComponent.h"
 #include "AnimationComponent.h"
+#include "LightComponent.h"
 #include <algorithm>
 
 // -------------------------
@@ -120,9 +122,17 @@ void PlayerInputSystem::fixedUpdate(uint32_t) {
     // -------------------------
     HUGO::Float yaw = mouseDelta.x * rotationSensitivity;
     for (auto& pack: scene.query<PlayerComponent, RigidBodyComponent>()){
+        int x=0;
         pack.modify<RigidBodyComponent>([yaw](RigidBodyComponent& rb){
             rb.setAngularVelocity(HUGO::Vector3(0.0f, yaw, 0.0f));
         });
+    }
+    for (auto& pack: scene.query<CameraComponent, TransformComponent>()){
+        int i =0;
+    }
+
+    for (auto& pack: scene.query<LightComponent, TransformComponent>()){
+        int y =0;
     }
 
     // pitch += mouseDelta.y * rotationSensitivity;
