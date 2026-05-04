@@ -1,0 +1,11 @@
+material colorFloor
+{
+    receive_shadows on
+    technique {
+        pass {
+            ambient 0.77 0.76 0.75 1.00
+            diffuse 0.65 0.64 0.62 1.00
+            specular 0.15 0.15 0.15 1.0
+        }
+    }
+}

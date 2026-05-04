@@ -20,10 +20,10 @@ SYSTEM RitualSystem
 ENTITY Map 0
 	COMPONENT MapComponent
 		FLOAT gridSize 5.0
-		INT numberOfRooms 15
+		INT numberOfRooms 20
 		STRING wallPrefab wall
-		INT mapWidth 1000
-		INT mapHeight 1000
+		INT mapWidth 500
+		INT mapHeight 500
 END_ENTITY
 
 ENTITY Timer 1

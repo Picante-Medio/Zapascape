@@ -1,8 +1,8 @@
 #pragma once
 
+#include <random>
 #include "HUGO.h"
 
-struct MapComponent;
 struct TransformComponent;
 HSYSTEM(MapSystem)
 private:
@@ -12,6 +12,8 @@ private:
         {-1, 0}, // Left
         {1, 0}   // Right
     };
+    std::mt19937 mt;
+    std::uniform_int_distribution<int> directionsDist;
 
     std::vector<HUGO::Vector2> getAdjacentFreePositions(HUGO::Vector2 pos, std::vector<std::vector<int>> mapData);
     
@@ -19,7 +21,7 @@ private:
     void createPlayer(const HUGO::Vector3& pos);
     void createBeastie(const HUGO::Vector3& pos);
     void createRitual(const HUGO::Vector3& pos);
-    void createFloor(const HUGO::Vector3& pos, int width, int height);
+    void createFloor(const HUGO::Vector3& pos, const HUGO::Vector3 & scale);
 
 public:
     void init() override;
