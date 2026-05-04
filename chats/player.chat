@@ -2,36 +2,77 @@ PREFAB player
 ENTITY player 0
 	COMPONENT TransformComponent
 		VECTOR_3 position 0.0 0.0 0.0
-		QUATERNION rotation 0.0 1.0 0.0 0.0
+		QUATERNION rotation 0.0 0.0 0.0 1.0
 		VECTOR_3 scale 0.5 0.5 0.5
-    COMPONENT CameraComponent
-		INT projectionType 0
-		FLOAT fovY 60.0
-		FLOAT nearClip 0.01
-		FLOAT farClip 1000.0
-		FLOAT orthoWidth 10.0
-		FLOAT orthoHeight 10.0
-		BOOL autoAspectRatio true
-		BOOL mainCamera true
-		VECTOR_4 clearColor 0.3 0.3 0.5 1.0
+    COMPONENT PlayerComponent
+    COMPONENT MovementRBComponent
+        FLOAT force 25.0
     COMPONENT ColliderComponent
-        COLLIDER_INFO info BOX_COLLIDER 1.2 1.2 1.2
+        COLLIDER_INFO info BOX_COLLIDER 1.0 1.0 1.0
         FLOAT restitution 0.0
-        FLOAT friction 0.8
-        VECTOR_3 positionOffset 0.0 0.5 0.0
+        FLOAT friction 0.9
+        VECTOR_3 positionOffset 0.0 0.2 0.0
         QUATERNION rotationOffset 0.0 0.0 0.0 1.0
         BOOL active true
-        BOOL useGizmo true
+        BOOL useGizmo false
     COMPONENT RigidBodyComponent
         FLOAT mass 5.0
         FLOAT linearDamping 0.95
         FLOAT angularDamping 0.0
         VECTOR_3 linearVelocity 0.0 0.0 0.0
         VECTOR_3 angularVelocity 0.0 0.0 0.0
-		VECTOR_3 gravity 0.0 0.0 0.0
+		VECTOR_3 gravity 0.0 -9.8 0.0
         FLOAT linearSleepingThreshold 0.8
         FLOAT angularSleepingThreshold 1.0
-    COMPONENT PlayerComponent
-    COMPONENT MovementRBComponent
+        BOOL dontRotateWithPhysicsOnDynamic false
+        INT type 0
+    COMPONENT PlayerArmComponent
+    COMPONENT RenderComponent
+        STRING meshName player.mesh
+        STRING materialName 
+    COMPONENT AnimationComponent
+    START_CHILDREN
+    ENTITY cam 1
+        COMPONENT TransformComponent
+            VECTOR_3 position 0.0 0.0 0.125
+            QUATERNION rotation 0.0 0.0 0.0 1.0
+            VECTOR_3 scale 1.0 1.0 1.0
+        COMPONENT CameraComponent
+            INT projectionType 0
+            FLOAT fovY 60.0
+            FLOAT nearClip 0.1
+            FLOAT farClip 1000.0
+            FLOAT orthoWidth 10.0
+            FLOAT orthoHeight 10.0
+            BOOL autoAspectRatio true
+            BOOL mainCamera true
+            VECTOR_4 clearColor 0.30000001192093 0.30000001192093 0.5 1.0
+        START_CHILDREN
+        END_CHILDREN
+    END_ENTITY
+
+    ENTITY light 1
+        COMPONENT TransformComponent
+            VECTOR_3 position 0.0 0.0 0.10000000149012
+            QUATERNION rotation 0.0 0.0 0.0 1.0
+            VECTOR_3 scale 1.0 1.0 1.0
+        COMPONENT LightComponent
+            VECTOR_4 diffuse 0.89999997615814 0.85000002384186 0.69999998807907 1.0
+            VECTOR_4 specular 0.5 0.5 0.5 1.0
+            INT lightType 2
+            FLOAT spotFalloff 1.0
+            FLOAT spotNearClip 0.2
+            FLOAT spotOuter 35.0
+            FLOAT spotInner 20.0
+            FLOAT shadowFarDist 0.0
+            FLOAT shadowFarDistSquared 0.0
+            VECTOR_4 attenuation 1.0 0.0 0.00999999977648 20.0
+            FLOAT shadowNearClipDist 0.0
+            FLOAT shadowFarClipDist 0.0
+        START_CHILDREN
+        END_CHILDREN
+    END_ENTITY
+
+    END_CHILDREN
 END_ENTITY
 

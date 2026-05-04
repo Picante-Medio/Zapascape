@@ -20,6 +20,8 @@ HSYSTEM(PlayerInputSystem)
     HUGO::String interactAction = "interact";
     HUGO::String moveAction = "move";
     
+    EntityID cameraID;
+    HUGO::Float pitch = 0.0f;
 public:
     void init() override;
     void onLoad() override;

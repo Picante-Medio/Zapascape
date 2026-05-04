@@ -1,8 +1,6 @@
 #pragma once
 
 #include "HUGO.h"
-
-struct InstantiateComponent;
 HSYSTEM(InstantiateSystem)
 public:
     void init() override;

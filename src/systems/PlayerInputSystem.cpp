@@ -124,4 +124,14 @@ void PlayerInputSystem::fixedUpdate(uint32_t) {
             rb.setAngularVelocity(HUGO::Vector3(0.0f, yaw, 0.0f));
         });
     }
+
+    // pitch += mouseDelta.y * rotationSensitivity;
+    // HUGO::Quaternion rotX(HUGO::Radian(pitch), HUGO::Vector3(1, 0, 0));
+
+    // for (auto& pack: scene.query<CameraComponent, TransformComponent>()){
+    //     pack.modify<TransformComponent>([rotX](TransformComponent& tr){
+    //         tr.setRotation(rotX);
+    //     });
+    // }
+
 }

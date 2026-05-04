@@ -37,6 +37,13 @@ ENTITY background 1
 		FLOAT width 1.0
 		FLOAT height 1.0
 		STRING material Intro/Background
+	COMPONENT AudioComponent 
+		INT type 2
+		STRING audioName intro
+		FLOAT volume 0.4
+		BOOL loop true
+		FLOAT pitch 1.0
+		BOOL isPlaying true
 END_ENTITY
 
 ENTITY startButton 2

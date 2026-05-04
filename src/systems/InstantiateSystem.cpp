@@ -4,9 +4,6 @@
 #include "ButtonComponent.h"
 void InstantiateSystem::init() 
 {
-    for (auto& pack: scene.query<ButtonComponent>()){
-        
-    }
 }
 
 void 
