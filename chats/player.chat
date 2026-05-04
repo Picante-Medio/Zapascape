@@ -3,7 +3,7 @@ ENTITY player 0
 	COMPONENT TransformComponent
 		VECTOR_3 position 0.0 0.0 0.0
 		QUATERNION rotation 0.0 0.0 0.0 1.0
-		VECTOR_3 scale 0.5 0.5 0.5
+		VECTOR_3 scale 1.0 1.0 1.0
     COMPONENT PlayerComponent
     COMPONENT MovementRBComponent
         FLOAT force 25.0
@@ -26,7 +26,6 @@ ENTITY player 0
         FLOAT angularSleepingThreshold 1.0
         BOOL dontRotateWithPhysicsOnDynamic false
         INT type 0
-    COMPONENT PlayerArmComponent
     COMPONENT RenderComponent
         STRING meshName player.mesh
         STRING materialName 
@@ -34,7 +33,7 @@ ENTITY player 0
     START_CHILDREN
     ENTITY cam 1
         COMPONENT TransformComponent
-            VECTOR_3 position 0.0 0.0 0.125
+            VECTOR_3 position 0.0 0.0 0.1
             QUATERNION rotation 0.0 0.0 0.0 1.0
             VECTOR_3 scale 1.0 1.0 1.0
         COMPONENT CameraComponent
@@ -50,10 +49,9 @@ ENTITY player 0
         START_CHILDREN
         END_CHILDREN
     END_ENTITY
-
-    ENTITY light 1
+    ENTITY light 2
         COMPONENT TransformComponent
-            VECTOR_3 position 0.0 0.0 0.10000000149012
+            VECTOR_3 position 0.0 0.0 0.1
             QUATERNION rotation 0.0 0.0 0.0 1.0
             VECTOR_3 scale 1.0 1.0 1.0
         COMPONENT LightComponent

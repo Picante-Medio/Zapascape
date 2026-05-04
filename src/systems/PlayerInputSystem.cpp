@@ -28,7 +28,7 @@ void PlayerInputSystem::init() {
 }
 
 void PlayerInputSystem::onLoad() {
-    for(auto& pack: scene.query<PlayerArmComponent, AnimationComponent>()){
+    for(auto& pack: scene.query<PlayerComponent, AnimationComponent>()){
         pack.modify<AnimationComponent>([](AnimationComponent& anim){
             anim.addAnimation("Idle", true, false);
             anim.addAnimation("Stop", true, true);
@@ -53,7 +53,7 @@ void PlayerInputSystem::update(uint32_t dt)
     else if (input->isKeyPressed(downKey)) actDir.z += 1.0f;
 
     //ANIMATION
-    for(auto& pack: scene.query<PlayerArmComponent,AnimationComponent>()){
+    for(auto& pack: scene.query<PlayerComponent,AnimationComponent>()){
         pack.modify<AnimationComponent>([input](AnimationComponent& anim){
             if(input->isActionPressed("move")){
                 anim.setEnabled("Idle",true);
