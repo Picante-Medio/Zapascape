@@ -77,6 +77,11 @@ MapSystem::onLoad() {
                 ritualIndex = roomDist(mt);
             }
             ritualIndices.push_back(ritualIndex);
+            // HUGO::ErrorOrType<EntityID> ritual = scene.instantiatePrefab("ritual");
+            // if(!ritual.isError()) {
+            //     TransformComponent& ritualTr = scene.getComponent<TransformComponent>(ritual.getValue());
+            //     ritualTr.setPosition(HUGO::Vector3(roomPositions[ritualIndex].x * map.getGridSize(), -0.9f, roomPositions[ritualIndex].y * map.getGridSize()));
+            // }
             createRitual(HUGO::Vector3(roomPositions[ritualIndex].x * map.getGridSize(), -0.9f, roomPositions[ritualIndex].y * map.getGridSize()));
         }
 
