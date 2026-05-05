@@ -8,12 +8,13 @@ ENTITY ritual 1
         STRING meshName ritual.glb
         STRING materialName 
     COMPONENT ColliderComponent
-        COLLIDER_INFO info BOX_COLLIDER 0.6 0.6 0.6
+        COLLIDER_INFO info BOX_COLLIDER 0.9 0.6 0.9
         FLOAT restitution 0.0
         FLOAT friction 0.8
         VECTOR_3 positionOffset 0.0 0.3 0.0
         QUATERNION rotationOffset 0.0 0.0 0.0 1.0
         BOOL active true
+        BOOL isTrigger true
         BOOL useGizmo true
     COMPONENT ParticleEmitterComponent
         STRING particleName Particle/RitualParticle

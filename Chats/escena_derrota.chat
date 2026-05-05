@@ -1,0 +1,80 @@
+SCENE escena_derrota
+SYSTEM AudioSystem
+SYSTEM PhysicsGizmoSystem
+SYSTEM HierarchySystem
+SYSTEM ParticleSystem
+SYSTEM CameraSystem
+SYSTEM LightSystem
+SYSTEM RenderSystem
+SYSTEM TweenSystem
+SYSTEM UISystem
+SYSTEM ConsoleSystem
+
+ENTITY Entity 1
+    COMPONENT PanelComponent
+        STRING overlayName 
+        STRING containerName 
+        BOOL isVisible false
+        INT metricsMode 0
+        FLOAT left 0.0
+        FLOAT top 0.0
+        FLOAT width 0.0
+        FLOAT height 0.0
+        STRING material 
+    START_CHILDREN
+    END_CHILDREN
+END_ENTITY
+
+ENTITY botonJuego 1
+    COMPONENT PanelComponent
+        STRING overlayName 
+        STRING containerName 
+        BOOL isVisible true
+        INT metricsMode 0
+        FLOAT left 0.0
+        FLOAT top 0.0
+        FLOAT width 20.0
+        FLOAT height 10.0
+        STRING material 
+    COMPONENT ButtonComponent
+        STRING normalMaterial buttonPlay
+        STRING hoverMaterial buttonPlayHover
+        STRING pressedMaterial buttonPlayHover
+        STRING disabledMaterial buttonPlay
+    START_CHILDREN
+    ENTITY botonExit 1
+        COMPONENT PanelComponent
+            STRING overlayName 
+            STRING containerName 
+            BOOL isVisible true
+            INT metricsMode 0
+            FLOAT left 0.0
+            FLOAT top 0.0
+            FLOAT width 20.0
+            FLOAT height 10.0
+            STRING material 
+        COMPONENT ButtonComponent
+            STRING normalMaterial buttonExit
+            STRING hoverMaterial buttonExitHover
+            STRING pressedMaterial buttonExit
+            STRING disabledMaterial buttonExitHover
+        START_CHILDREN
+        END_CHILDREN
+    END_ENTITY
+
+    END_CHILDREN
+END_ENTITY
+
+ENTITY Entity3D 1
+    COMPONENT TransformComponent
+        VECTOR_3 position 0.0 0.0 0.0
+        QUATERNION rotation 0.0 0.0 0.0 1.0
+        VECTOR_3 scale 1.0 1.0 1.0
+    COMPONENT RenderComponent
+        STRING meshName tux.mesh
+        STRING materialName 
+    COMPONENT AnimationComponent
+    START_CHILDREN
+    END_CHILDREN
+END_ENTITY
+

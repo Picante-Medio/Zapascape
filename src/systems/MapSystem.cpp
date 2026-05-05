@@ -17,6 +17,7 @@
 void MapSystem::init() {
     mt = std::mt19937(std::random_device{}());
     directionsDist = std::uniform_int_distribution<int>(0, directions.size()-1);
+    
 }
 
 void 
