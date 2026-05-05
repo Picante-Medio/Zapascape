@@ -12,6 +12,8 @@ static var enums_dictionary:Dictionary
 static var types_dictionary:Dictionary
 static var components_dictionary:Dictionary
 
+const BLACK_LIST:Array[String] = ["TransformComponent", "CameraComponent", "RenderComponent"]
+
 func _run() -> void:
 	#write_enums()
 	sync()
@@ -72,7 +74,6 @@ static func write_components():
 		for parameter:Array in component_parameters:
 			var value_text:String = ""
 			if parameter[2]: value_text = " = " + parameter[2]
-			if parameter[0] == "float": value_text = value_text.split("f")[0]
 			var new_parameter:String = "@export var " + parameter[1] + ":" + parameter[0] + value_text
 			file.store_line(new_parameter)
 
@@ -88,45 +89,35 @@ static func write_components():
 
 		file.close()
 
-static func get_systems(systems_names:Array[String], path:String):
-	var dir := DirAccess.open(path)
+static func write_systems():
+	var systems_file := "res://addons/HugosChatPlugin/Systems.gd"
+	var dir := DirAccess.open(HugoConfig.SYSTEMS_PATH)
+	var systems_names:Array[String]
 	
 	dir.list_dir_begin()
 	var name := dir.get_next()
 	while name != "":
 		if name != "." and name != "..":
-			if dir.current_is_dir(): 
-				var dir_path:String = path.path_join(name)
-				get_systems(systems_names, dir_path)
-			elif not systems_names.has(name.split(".")[0]):
-				systems_names.push_back(name.split(".")[0])
+			systems_names.push_back(name.split(".")[0])
 		name = dir.get_next()
 	dir.list_dir_end()
 	
-static func write_systems():
-	var global_path:String = ProjectSettings.globalize_path("res://")
-	var project_path:String = global_path.path_join("../".path_join(HugoConfig.SYSTEMS_PATH))
-	
-	var systems_names:Array[String]
-	get_systems(systems_names, project_path)
-	
-	var systems_file := "res://addons/HugosChatPlugin/Systems.gd"
 	var file := FileAccess.open(systems_file, FileAccess.WRITE)
+	var native_systems := '	ConsoleSystem,
+							AudioSystem,
+							PhysicsGizmoSystem,
+							HierarchySystem,
+							ParticleSystem,
+							CameraSystem,
+							LightSystem,
+							RenderSystem,
+							TweenSystem,
+							UISystem,'
+	file.store_string(native_systems)
 	file.store_line("class_name SYSTEMS")
 	file.store_line("enum system {")
-	var native_systems := '	ConsoleSystem,
-	AudioSystem,
-	PhysicsGizmoSystem,
-	HierarchySystem,
-	ParticleSystem,
-	CameraSystem,
-	LightSystem,
-	RenderSystem,
-	TweenSystem,
-	UISystem,'
-	file.store_string(native_systems)
 	for system:String in systems_names:
-		file.store_line("\t" + system + ",")
+		file.store_line(system)
 	file.store_line("}")
 
 static func write_enums():
@@ -172,9 +163,7 @@ static func parse_hugo_types() -> void:
 	file.close()
 
 static func parse_components(path: String) -> void:
-	var global_path:String = ProjectSettings.globalize_path("res://")
-	var project_path:String = global_path.path_join("../".path_join(path))
-	var dir := DirAccess.open(project_path)
+	var dir := DirAccess.open(path)
 
 	dir.list_dir_begin()
 
@@ -182,8 +171,7 @@ static func parse_components(path: String) -> void:
 	
 	while name != "":
 		if name != "." and name != "..":
-			var full_path := project_path.path_join(name)
-			print(full_path)
+			var full_path := path.path_join(name)
 
 			if dir.current_is_dir():
 				parse_components(full_path)
@@ -202,6 +190,7 @@ static func hugo_parse_component(path: String) -> void:
 		line = file.get_line().strip_edges()
 
 	var component_name:String = line.split("(")[1].split(")")[0].strip_edges()
+	if BLACK_LIST.has(component_name): return
 
 	components_dictionary.get_or_add(component_name, [])
 
@@ -209,28 +198,17 @@ static func hugo_parse_component(path: String) -> void:
 	complete_whitelist.append_array(enums_dictionary.keys())
 	complete_whitelist.append_array(ENUMS.TYPES_DICTIONARY.keys())
 
+	print(path)
 	while not file.eof_reached():
 		line = file.get_line().strip_edges()
 		
 		var cleaned_parameters:PackedStringArray
 		var parameter_default_value
-		
-		if line.begins_with("//"): continue
-		
-		if line.contains("DEFAULT_SERIALIZED_MEMBER("):
+		if line.contains("SERIALIZED_MEMBER("):
+			cleaned_parameters = line.split("SERIALIZED_MEMBER(")[1].split(")")[0].split(",")
+		elif line.contains("DEFAULT_SERIALIZED_MEMBER("):
 			cleaned_parameters = line.split("DEFAULT_SERIALIZED_MEMBER(")[1].split(")")[0].split(",")
 			parameter_default_value = cleaned_parameters[2].strip_edges()
-			
-			var composite:bool = cleaned_parameters.size() > 3
-			if composite: parameter_default_value += ","
-			
-			for i in range(3, cleaned_parameters.size()):
-				parameter_default_value += cleaned_parameters[i]
-				if i != cleaned_parameters.size() - 1: parameter_default_value += ","
-				
-			if composite: parameter_default_value += ")"
-		elif line.contains("SERIALIZED_MEMBER("):
-			cleaned_parameters = line.split("SERIALIZED_MEMBER(")[1].split(")")[0].split(",")
 		else: continue
 		
 		var parameter_type = cleaned_parameters[0].strip_edges()

@@ -2,8 +2,8 @@
 extends Component
 class_name TextComponent
 
-@export var text:String
 @export var textAreaName:String
+@export var text:String
 @export var textFont:String
 @export var characterHeight:float
 @export var spaceWidth:float
@@ -13,7 +13,6 @@ class_name TextComponent
 @export var left:float
 @export var top:float
 @export var maxWidth:float
-@export var maxHeight:float
 
 func get_component() -> Dictionary[String, Variant]:
 	return {
@@ -28,5 +27,4 @@ func get_component() -> Dictionary[String, Variant]:
 		"left" : FormatWriter.format(left, "left"),
 		"top" : FormatWriter.format(top, "top"),
 		"maxWidth" : FormatWriter.format(maxWidth, "maxWidth"),
-		"maxHeight" : FormatWriter.format(maxHeight, "maxHeight"),
 	}

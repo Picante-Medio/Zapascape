@@ -2,6 +2,9 @@
 #include "HUGO.h"
 
 HSYSTEM(IntroToGameSystem)
+private:
+    EntityID but;
+    HUGO::Bool wasOver = false;
 public:
     void init() override;
     void onLoad() override;

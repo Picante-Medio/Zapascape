@@ -8,6 +8,7 @@ SYSTEM UISystem
 SYSTEM ConsoleSystem
 SYSTEM HierarchySystem
 SYSTEM ParticleSystem
+SYSTEM GameToOtherSystem
 SYSTEM MapSystem
 SYSTEM PlayerInputSystem
 SYSTEM MovementSystem
@@ -24,6 +25,16 @@ ENTITY Map 0
 		STRING wallPrefab wall
 		INT mapWidth 500
 		INT mapHeight 500
+	COMPONENT AudioComponent
+        STRING audioName game
+        FLOAT volume 0.15
+        BOOL loop true
+        FLOAT pitch 0.0
+        FLOAT startTime 0.0
+        BOOL isPlaying true
+		INT type 2
+	START_CHILDREN
+    END_CHILDREN
 END_ENTITY
 
 ENTITY Timer 1
@@ -52,5 +63,7 @@ ENTITY Timer 1
 		FLOAT maxHeight 1.0
 	COMPONENT TimeComponent
 		INT remainingGameTime 120
+	START_CHILDREN
+    END_CHILDREN
 END_ENTITY
 

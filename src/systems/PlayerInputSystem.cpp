@@ -8,6 +8,7 @@
 #include "RigidBodyComponent.h"
 #include "AnimationComponent.h"
 #include "LightComponent.h"
+#include "AudioComponent.h"
 #include <algorithm>
 
 // -------------------------
@@ -53,16 +54,14 @@ void PlayerInputSystem::update(uint32_t dt)
     else if (input->isKeyPressed(downKey)) actDir.z += 1.0f;
 
     //ANIMATION
-    for(auto& pack: scene.query<PlayerComponent,AnimationComponent>()){
-        pack.modify<AnimationComponent>([input](AnimationComponent& anim){
-            if(input->isActionPressed("move")){
-                anim.setEnabled("Idle",true);
-                anim.setEnabled("Stop",false);
-            }
-            else {
-                anim.setEnabled("Idle",false);
-                anim.setEnabled("Stop",true);
-            }
+    for(auto& pack: scene.query<PlayerComponent,AnimationComponent, AudioComponent>()){
+        HUGO::Bool cond = input->isActionPressed("move");
+        pack.modify<AnimationComponent>([cond](AnimationComponent& anim){
+            anim.setEnabled("Idle",cond);
+            anim.setEnabled("Stop",!cond);
+        });
+        pack.modify<AudioComponent>([cond](AudioComponent& a){
+            a.isPlaying = cond;
         });
     }
 
@@ -122,18 +121,18 @@ void PlayerInputSystem::fixedUpdate(uint32_t) {
     // -------------------------
     HUGO::Float yaw = mouseDelta.x * rotationSensitivity;
     for (auto& pack: scene.query<PlayerComponent, RigidBodyComponent>()){
-        int x=0;
+        // int x=0;
         pack.modify<RigidBodyComponent>([yaw](RigidBodyComponent& rb){
             rb.setAngularVelocity(HUGO::Vector3(0.0f, yaw, 0.0f));
         });
     }
-    for (auto& pack: scene.query<CameraComponent, TransformComponent>()){
-        int i =0;
-    }
+    // for (auto& pack: scene.query<CameraComponent, TransformComponent>()){
+    //     int i =0;
+    // }
 
-    for (auto& pack: scene.query<LightComponent, TransformComponent>()){
-        int y =0;
-    }
+    // for (auto& pack: scene.query<LightComponent, TransformComponent>()){
+    //     int y =0;
+    // }
 
     // pitch += mouseDelta.y * rotationSensitivity;
     // HUGO::Quaternion rotX(HUGO::Radian(pitch), HUGO::Vector3(1, 0, 0));

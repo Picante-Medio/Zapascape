@@ -101,7 +101,7 @@ void BeastieSystem::update(uint32_t dt){
     //on collision
     for(auto collisionId : scene.getComponent<ColliderComponent>(beastie).getCollisionInfo()){
         if(scene.hasComponent<PlayerComponent>(collisionId)){
-            scene.changeScene("IntroScene");
+            scene.changeAndDestroyPreviousScene("IntroScene");
         }
     }
 }

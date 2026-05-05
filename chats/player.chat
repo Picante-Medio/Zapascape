@@ -30,6 +30,14 @@ ENTITY player 0
         STRING meshName player.mesh
         STRING materialName 
     COMPONENT AnimationComponent
+    COMPONENT AudioComponent
+        STRING audioName walk
+        FLOAT volume 0.65
+        BOOL loop true
+        FLOAT pitch 0.0
+        FLOAT startTime 0.0
+        BOOL isPlaying false
+		INT type 0
     START_CHILDREN
     ENTITY cam 1
         COMPONENT TransformComponent

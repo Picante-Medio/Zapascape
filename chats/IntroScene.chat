@@ -9,83 +9,72 @@ SYSTEM TweenSystem
 SYSTEM UISystem
 SYSTEM IntroToGameSystem
 
-ENTITY camera 0
-	COMPONENT TransformComponent
-		VECTOR_3 position 0.0 0.0 0.0
-		QUATERNION rotation 0.0 0.0 0.0 1.0
-		VECTOR_3 scale 1.0 1.0 1.0
-	COMPONENT CameraComponent
-		INT projectionType 0
-		FLOAT fovY 60.0
-		FLOAT nearClip 1.0
-		FLOAT farClip 1000.0
-		FLOAT orthoWidth 10.0
-		FLOAT orthoHeight 10.0
-		BOOL autoAspectRatio true
-		BOOL mainCamera true
-		VECTOR_4 clearColor 0.30000001192093 0.30000001192093 0.5 1.0
+ENTITY camera 1
+    COMPONENT TransformComponent
+        VECTOR_3 position 0.0 0.0 0.0
+        QUATERNION rotation 0.0 0.0 0.0 1.0
+        VECTOR_3 scale 1.0 1.0 1.0
+    COMPONENT CameraComponent
+        INT projectionType 0
+        FLOAT fovY 60.0
+        FLOAT nearClip 1.0
+        FLOAT farClip 1000.0
+        FLOAT orthoWidth 10.0
+        FLOAT orthoHeight 10.0
+        BOOL autoAspectRatio true
+        BOOL mainCamera true
+        VECTOR_4 clearColor 0.30000001192093 0.30000001192093 0.5 1.0
+    START_CHILDREN
+    END_CHILDREN
 END_ENTITY
 
 ENTITY background 1
-	COMPONENT PanelComponent
-		STRING overlayName Intro/Background/Overlay
-		STRING containerName Intro/Background/Overlay/Container
-		BOOL isVisible true
-		INT metricsMode 0
-		FLOAT left 0.0
-		FLOAT top 0.0
-		FLOAT width 1.0
-		FLOAT height 1.0
-		STRING material Intro/Background
-	COMPONENT AudioComponent 
+    COMPONENT PanelComponent
+        STRING overlayName Intro/Background/Overlay
+        STRING containerName Intro/Background/Overlay/Container
+        BOOL isVisible true
+        INT metricsMode 0
+        FLOAT left 0.0
+        FLOAT top 0.0
+        FLOAT width 1.0
+        FLOAT height 1.0
+        STRING material Intro/Background
+    COMPONENT AudioComponent
+        STRING audioName intro
+        FLOAT volume 0.4
+        BOOL loop true
+        FLOAT pitch 0.0
+        FLOAT startTime 0.0
+        BOOL isPlaying true
 		INT type 2
-		STRING audioName intro
-		FLOAT volume 0.4
-		BOOL loop true
-		FLOAT pitch 1.0
-		BOOL isPlaying true
+    START_CHILDREN
+    END_CHILDREN
 END_ENTITY
 
-ENTITY startButton 2
-	COMPONENT PanelComponent
-		STRING overlayName Intro/StartB/Overlay
-		STRING containerName Intro/StartB/Overlay/Container
-		BOOL isVisible true
-		INT metricsMode 0
-		FLOAT left 0.45
-		FLOAT top 0.6
-		FLOAT width 0.15
-		FLOAT height 0.1
-		STRING material Intro/StartButton
-	COMPONENT ButtonComponent
-		STRING normalMaterial Intro/StartButton
-		STRING hoverMaterial Intro/StartButtonOnHover
-		STRING pressedMaterial Intro/StartButtonOnHover
-		STRING disabledMaterial 
-END_ENTITY
-
-ENTITY Text 3
-	COMPONENT PanelComponent
-		STRING overlayName adsdad
-		STRING containerName dsadfefwf
-		BOOL isVisible true
-		INT metricsMode 0
-		FLOAT left 0.0
-		FLOAT top 0.0
-		FLOAT width 0.0
-		FLOAT height 0.0
-		STRING material 
-	COMPONENT TextComponent
-		STRING textAreaName untexto
-		STRING text ZAPASCAPE
-		STRING textFont RubikGlitch
-		FLOAT characterHeight 0.25
-		FLOAT spaceWidth 0.005
-		VECTOR_4 colour 0.0 0.0 0.0 0.0
-		VECTOR_4 colourTop 0.34099999070168 0.03500000014901 0.03500000014901 1.0
-		VECTOR_4 colourBottom 0.25900000333786 0.2509999871254 0.2509999871254 1.0
-		FLOAT left 0.15
-		FLOAT top 0.1
-		FLOAT maxWidth 0.0
+ENTITY Text 1
+    COMPONENT PanelComponent
+        STRING overlayName adsdad
+        STRING containerName dsadfefwf
+        BOOL isVisible true
+        INT metricsMode 0
+        FLOAT left 0.0
+        FLOAT top 0.0
+        FLOAT width 0.0
+        FLOAT height 0.0
+        STRING material 
+    COMPONENT TextComponent
+        STRING textAreaName untexto
+        STRING text ZAPASCAPE
+        STRING textFont RubikGlitch
+        FLOAT characterHeight 0.25
+        FLOAT spaceWidth 0.005
+        VECTOR_4 colour 0.0 0.0 0.0 0.0
+        VECTOR_4 colourTop 0.34099999070168 0.03500000014901 0.03500000014901 1.0
+        VECTOR_4 colourBottom 0.25900000333786 0.2509999871254 0.2509999871254 1.0
+        FLOAT left 0.15
+        FLOAT top 0.1
+        FLOAT maxWidth 0.0
+    START_CHILDREN
+    END_CHILDREN
 END_ENTITY
 

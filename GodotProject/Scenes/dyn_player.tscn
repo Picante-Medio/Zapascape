@@ -1,79 +1,40 @@
 [gd_scene format=3 uid="uid://bx6fuf1lycekb"]
 
-[ext_resource type="Script" uid="uid://dimuk3ggoam44" path="res://addons/HugosChatPlugin/Entities/entity3d.gd" id="1_t2tnc"]
-[ext_resource type="Script" uid="uid://b35wnsb2u6ree" path="res://addons/HugosChatPlugin/NativeComponents/CameraComponent.gd" id="2_uncol"]
-[ext_resource type="Script" uid="uid://bwtn1p4uulsox" path="res://Components/PlayerComponent.gd" id="3_spura"]
-[ext_resource type="Script" uid="uid://7yrjlv0jx5tv" path="res://addons/HugosChatPlugin/NativeComponents/ColliderComponent.gd" id="5_yk30r"]
-[ext_resource type="Script" uid="uid://oombyyspsrw8" path="res://addons/HugosChatPlugin/NativeComponents/RigidBodyComponent.gd" id="6_jg6pv"]
-[ext_resource type="Script" uid="uid://dwa3nj3edvsla" path="res://Components/MovementRBComponent.gd" id="6_uncol"]
-[ext_resource type="Script" uid="uid://bnjt3w18hk2gs" path="res://addons/HugosChatPlugin/NativeComponents/RenderComponent.gd" id="7_qdjo8"]
-[ext_resource type="Script" uid="uid://e8gvt24psqym" path="res://addons/HugosChatPlugin/NativeComponents/LightComponent.gd" id="8_n514m"]
-[ext_resource type="Script" uid="uid://cfmk4yxay44ti" path="res://addons/HugosChatPlugin/NativeComponents/AnimationComponent.gd" id="8_uncol"]
+[ext_resource type="Script" uid="uid://bp8xe0wwyk4sh" path="res://addons/HugosChatPlugin/Entities/entity3d.gd" id="1_t2tnc"]
+[ext_resource type="Script" uid="uid://bjwx87l5l8cjv" path="res://addons/HugosChatPlugin/NativeComponents/CameraComponent.gd" id="2_uncol"]
+[ext_resource type="Script" uid="uid://dal5x4yfyfbc1" path="res://Components/PlayerComponent.gd" id="3_spura"]
+[ext_resource type="Script" uid="uid://5ysnehctvx5b" path="res://addons/HugosChatPlugin/NativeComponents/ColliderComponent.gd" id="5_yk30r"]
+[ext_resource type="Script" uid="uid://dpjupwgyydq3o" path="res://addons/HugosChatPlugin/NativeComponents/RigidBodyComponent.gd" id="6_jg6pv"]
+[ext_resource type="Script" uid="uid://wjsubow522tf" path="res://Components/MovementRBComponent.gd" id="6_uncol"]
+[ext_resource type="Script" uid="uid://cmidua6v4bry" path="res://addons/HugosChatPlugin/NativeComponents/RenderComponent.gd" id="7_qdjo8"]
+[ext_resource type="Script" uid="uid://41u0bjcy3u3m" path="res://addons/HugosChatPlugin/NativeComponents/LightComponent.gd" id="8_n514m"]
+[ext_resource type="Script" uid="uid://cwpkus4pc4c3r" path="res://addons/HugosChatPlugin/NativeComponents/AnimationComponent.gd" id="8_uncol"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_ca844"]
-
-[node name="DynPlayer" type="Node3D" unique_id=1518891000]
-transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, 0)
+[node name="player" type="Node3D" unique_id=1518891000]
 script = ExtResource("1_t2tnc")
 entities = Dictionary[String, Dictionary]({
-"Arms": {
-"AnimationComponent": Dictionary[String, Variant]({}),
-"ParentComponent": {
-"parent": "INT parent 0"
-},
-"RenderComponent": Dictionary[String, Variant]({
-"materialName": "STRING materialName ",
-"meshName": "STRING meshName player.mesh",
-"objectID": "INT objectID 0"
-}),
-"TransformComponent": Dictionary[String, Variant]({
-"position": "VECTOR_3 position 0.0 -3.0 -1.5",
-"rotation": "QUATERNION rotation 0.0 1.0 0.0 -0.00000004371139",
-"scale": "VECTOR_3 scale 0.5 0.5 0.5"
-})
-},
-"DynPlayer": {
+"cam": {
 "CameraComponent": Dictionary[String, Variant]({
 "autoAspectRatio": "BOOL autoAspectRatio true",
 "clearColor": "VECTOR_4 clearColor 0.30000001192093 0.30000001192093 0.5 1.0",
 "farClip": "FLOAT farClip 1000.0",
 "fovY": "FLOAT fovY 60.0",
 "mainCamera": "BOOL mainCamera true",
-"nearClip": "FLOAT nearClip 0.01",
+"nearClip": "FLOAT nearClip 0.1",
 "orthoHeight": "FLOAT orthoHeight 10.0",
 "orthoWidth": "FLOAT orthoWidth 10.0",
 "projectionType": "INT projectionType 0"
 }),
-"ColliderComponent": Dictionary[String, Variant]({
-"active": "BOOL active false",
-"friction": "FLOAT friction 0.6",
-"halfExtents": "VECTOR_3 halfExtents 1.0 1.0 1.0",
-"info": "INT info 0",
-"positionOffset": "VECTOR_3 positionOffset 0.0 1.0 0.0",
-"restitution": "FLOAT restitution 0.0",
-"rotationOffset": "QUATERNION rotationOffset 0.0 0.0 0.0 1.0",
-"useGizmo": "BOOL useGizmo false"
-}),
-"MovementRBComponent": Dictionary[String, Variant]({
-"force": "FLOAT force 25.0"
-}),
-"PlayerComponent": Dictionary[String, Variant]({}),
-"RigidBodyComponent": Dictionary[String, Variant]({
-"angularDamping": "FLOAT angularDamping 0.0",
-"angularSleepingThreshold": "FLOAT angularSleepingThreshold 0.0",
-"angularVelocity": "VECTOR_3 angularVelocity 0.0 0.0 0.0",
-"linearDamping": "FLOAT linearDamping 0.95",
-"linearSleepingThreshold": "FLOAT linearSleepingThreshold 0.0",
-"linearVelocity": "VECTOR_3 linearVelocity 0.0 0.0 0.0",
-"mass": "FLOAT mass 5.0"
-}),
+"ParentComponent": {
+"value": "INT 0"
+},
 "TransformComponent": Dictionary[String, Variant]({
-"position": "VECTOR_3 position 0.0 0.0 0.0",
-"rotation": "QUATERNION rotation 0.0 1.0 0.0 -0.00000004371139",
+"position": "VECTOR_3 position 0.0 0.0 0.10000000149012",
+"rotation": "QUATERNION rotation 0.0 0.0 0.0 1.0",
 "scale": "VECTOR_3 scale 1.0 1.0 1.0"
 })
 },
-"Light": {
+"luz": {
 "LightComponent": Dictionary[String, Variant]({
 "attenuation": "VECTOR_4 attenuation 1.0 0.0 0.00999999977648 20.0",
 "diffuse": "VECTOR_4 diffuse 0.89999997615814 0.85000002384186 0.69999998807907 1.0",
@@ -82,74 +43,115 @@ entities = Dictionary[String, Dictionary]({
 "shadowFarDist": "FLOAT shadowFarDist 0.0",
 "shadowFarDistSquared": "FLOAT shadowFarDistSquared 0.0",
 "shadowNearClipDist": "FLOAT shadowNearClipDist 0.0",
-"specular": "VECTOR_4 specular 0.5 0.5 0.5 1.5",
+"specular": "VECTOR_4 specular 0.5 0.5 0.5 1.0",
 "spotFalloff": "FLOAT spotFalloff 1.0",
-"spotInner": "FLOAT spotInner 20.0",
+"spotInner": "FLOAT spotInner 0.0",
 "spotNearClip": "FLOAT spotNearClip 0.2",
-"spotOuter": "FLOAT spotOuter 35.0"
+"spotOuter": "FLOAT spotOuter 0.0"
 }),
 "ParentComponent": {
-"parent": "INT parent 0"
+"value": "INT 0"
 },
 "TransformComponent": Dictionary[String, Variant]({
-"position": "VECTOR_3 position 0.20000000298023 1.0 0.5",
-"rotation": "QUATERNION rotation -0.08715575188398 0.0 0.0 0.99619472026825",
-"scale": "VECTOR_3 scale 1.0 0.99999994039536 0.99999994039536"
+"position": "VECTOR_3 position 0.0 0.0 0.10000000149012",
+"rotation": "QUATERNION rotation 0.0 0.0 0.0 1.0",
+"scale": "VECTOR_3 scale 1.0 1.0 1.0"
+})
+},
+"player": {
+"AnimationComponent": Dictionary[String, Variant]({}),
+"ColliderComponent": Dictionary[String, Variant]({
+"active": "BOOL active false",
+"friction": "FLOAT friction 0.9",
+"info": "INT info 0",
+"positionOffset": "VECTOR_3 positionOffset 0.0 0.20000000298023 0.0",
+"restitution": "FLOAT restitution 0.0",
+"rotationOffset": "QUATERNION rotationOffset 0.0 0.0 0.0 1.0",
+"useGizmo": "BOOL useGizmo false"
+}),
+"MovementRBComponent": Dictionary[String, Variant]({
+"force": "FLOAT force 25.0"
+}),
+"PlayerComponent": Dictionary[String, Variant]({}),
+"RenderComponent": Dictionary[String, Variant]({
+"materialName": "STRING materialName ",
+"meshName": "STRING meshName player.mesh"
+}),
+"RigidBodyComponent": Dictionary[String, Variant]({
+"angularDamping": "FLOAT angularDamping 0.0",
+"angularSleepingThreshold": "FLOAT angularSleepingThreshold 0.0",
+"angularVelocity": "VECTOR_3 angularVelocity 0.0 0.0 0.0",
+"dontRotateWithPhysicsOnDynamic": "NIL dontRotateWithPhysicsOnDynamic <null>",
+"gravity": "NIL gravity <null>",
+"linearDamping": "FLOAT linearDamping 0.95",
+"linearSleepingThreshold": "FLOAT linearSleepingThreshold 0.0",
+"linearVelocity": "VECTOR_3 linearVelocity 0.0 0.0 0.0",
+"mass": "FLOAT mass 5.0",
+"type": "INT type 0"
+}),
+"entity3d": Dictionary[String, Variant]({
+"position": "VECTOR_3 position 0.0 0.0 0.10000000149012",
+"rotation": "QUATERNION rotation 0.0 0.0 0.0 1.0",
+"scale": "VECTOR_3 scale 1.0 1.0 1.0"
 })
 }
 })
 
-[node name="CameraComponent" type="Node" parent="." unique_id=537647126]
-script = ExtResource("2_uncol")
-nearClip = 0.01
-farClip = 1000.0
-mainCamera = true
-
-[node name="PlayerComponent" type="Node" parent="." unique_id=865040337]
+[node name="PlayerComponent" type="Node" parent="." unique_id=1419765716]
 script = ExtResource("3_spura")
+metadata/_custom_type_script = "uid://dal5x4yfyfbc1"
 
-[node name="ColliderComponent" type="CollisionShape3D" parent="." unique_id=1365997127]
-transform = Transform3D(1.2, 0, 0, 0, 1, 0, 0, 0, 1.2, 0, 1, 0)
-shape = SubResource("BoxShape3D_ca844")
+[node name="MovementRBComponent" type="Node" parent="." unique_id=1503091916]
+script = ExtResource("6_uncol")
+metadata/_custom_type_script = "uid://wjsubow522tf"
+
+[node name="ColliderComponent" type="CollisionShape3D" parent="." unique_id=1055739485]
+transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 0, 0.2, 0)
 script = ExtResource("5_yk30r")
-friction = 0.6
-positionOffset = Vector3(0, 1, 0)
-metadata/_custom_type_script = "uid://7yrjlv0jx5tv"
+friction = 0.9
+info = 0
+metadata/_custom_type_script = "uid://cbpbjs7b6kpbl"
 
-[node name="RigidBodyComponent" type="Node" parent="." unique_id=409071390]
+[node name="RigidBodyComponent" type="Node" parent="." unique_id=413175294]
 script = ExtResource("6_jg6pv")
 mass = 5.0
 linearDamping = 0.95
+gravity = null
+dontRotateWithPhysicsOnDynamic = null
 metadata/_custom_type_script = "uid://oombyyspsrw8"
 
-[node name="MovementRBComponent" type="Node" parent="." unique_id=1537263202]
-script = ExtResource("6_uncol")
-metadata/_custom_type_script = "uid://dwa3nj3edvsla"
-
-[node name="Arms" type="Node3D" parent="." unique_id=2118069178]
-transform = Transform3D(-0.5, 0, -4.371139e-08, 0, 0.5, 0, 4.371139e-08, 0, -0.5, 0, -3, -1.5)
-script = ExtResource("1_t2tnc")
-
-[node name="RenderComponent" type="MeshInstance3D" parent="Arms" unique_id=1926410086]
+[node name="RenderComponent" type="MeshInstance3D" parent="." unique_id=1519493425]
 script = ExtResource("7_qdjo8")
 mesh_name = "player.mesh"
+metadata/_custom_type_script = "uid://cmidua6v4bry"
 
-[node name="AnimationComponent" type="Node" parent="Arms" unique_id=1378835488]
+[node name="AnimationComponent" type="Node" parent="." unique_id=1112685604]
 script = ExtResource("8_uncol")
-metadata/_custom_type_script = "uid://cfmk4yxay44ti"
+metadata/_custom_type_script = "uid://cwpkus4pc4c3r"
 
-[node name="Light" type="Node3D" parent="." unique_id=1781458297]
-transform = Transform3D(1, 0, 0, 0, 0.9848077, 0.17364818, 0, -0.17364818, 0.9848077, 0.2, 1, 0.5)
+[node name="cam" type="Node3D" parent="." unique_id=2118225121]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.1)
 script = ExtResource("1_t2tnc")
+metadata/_custom_type_script = "uid://bp8xe0wwyk4sh"
 
-[node name="LightComponent" type="Node" parent="Light" unique_id=1952541958]
+[node name="CameraComponent" type="Node" parent="cam" unique_id=2053823315]
+script = ExtResource("2_uncol")
+nearClip = 0.1
+farClip = 1000.0
+mainCamera = true
+metadata/_custom_type_script = "uid://bjwx87l5l8cjv"
+
+[node name="luz" type="Node3D" parent="." unique_id=1710691691]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.1)
+script = ExtResource("1_t2tnc")
+metadata/_custom_type_script = "uid://bp8xe0wwyk4sh"
+
+[node name="LightComponent" type="Node" parent="luz" unique_id=1716531118]
 script = ExtResource("8_n514m")
 diffuse = Vector4(0.9, 0.85, 0.7, 1)
-specular = Vector4(0.5, 0.5, 0.5, 1.5)
+specular = Vector4(0.5, 0.5, 0.5, 1)
 lightType = 2
 spotFalloff = 1.0
 spotNearClip = 0.2
-spotOuter = 35.0
-spotInner = 20.0
 attenuation = Vector4(1, 0, 0.01, 20)
-metadata/_custom_type_script = "uid://e8gvt24psqym"
+metadata/_custom_type_script = "uid://41u0bjcy3u3m"
