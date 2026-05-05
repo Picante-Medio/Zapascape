@@ -10,6 +10,26 @@ SYSTEM TweenSystem
 SYSTEM UISystem
 SYSTEM ConsoleSystem
 
+ENTITY camera 1
+    COMPONENT TransformComponent
+        VECTOR_3 position 0.0 0.0 0.0
+        QUATERNION rotation 0.0 0.0 0.0 1.0
+        VECTOR_3 scale 1.0 1.0 1.0
+    COMPONENT CameraComponent
+        INT projectionType 0
+        FLOAT fovY 60.0
+        FLOAT nearClip 1.0
+        FLOAT farClip 1000.0
+        FLOAT orthoWidth 10.0
+        FLOAT orthoHeight 10.0
+        BOOL autoAspectRatio true
+        BOOL mainCamera true
+        VECTOR_4 clearColor 0.30000001192093 0.30000001192093 0.5 1.0
+    START_CHILDREN
+    END_CHILDREN
+END_ENTITY
+
+
 ENTITY Entity 1
     COMPONENT PanelComponent
         STRING overlayName 
