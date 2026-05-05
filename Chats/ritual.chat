@@ -11,12 +11,12 @@ ENTITY ritual 1
         COLLIDER_INFO info BOX_COLLIDER 0.6 0.6 0.6
         FLOAT restitution 0.0
         FLOAT friction 0.8
-        VECTOR_3 positionOffset 0.0 0.2 0.0
+        VECTOR_3 positionOffset 0.0 0.3 0.0
         QUATERNION rotationOffset 0.0 0.0 0.0 1.0
         BOOL active true
-        BOOL useGizmo false
+        BOOL useGizmo true
     COMPONENT ParticleEmitterComponent
-        STRING particleName Particle/Smoke
+        STRING particleName Particle/RitualParticle
         INT quota 200
         BOOL sorted false
         VECTOR_3 direction 0.0 1.0 0.0
@@ -27,8 +27,8 @@ ENTITY ritual 1
         VECTOR_4 colour 1.0 0.0 0.0 1.0
         FLOAT duration 1.0
         STRING material 
-        FLOAT width 1.0
-        FLOAT height 1.0
+        FLOAT width 0.01
+        FLOAT height 0.01
         BOOL emitting true
         BOOL active true
     START_CHILDREN

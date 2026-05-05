@@ -11,3 +11,38 @@ material colorFloor
         }
     }
 }
+
+material colorTecho
+{
+    receive_shadows on
+    technique {
+        pass {
+            lighting on
+            scene_blend add
+            depth_write on
+            texture_unit {
+                texture ceiling.png
+                tex_address_mode wrap
+                scale 0.005 0.005
+            }
+        }
+    }
+}
+
+material Particle/ImageMaterial
+{
+    technique
+    {
+        pass
+        {
+            lighting off
+            scene_blend add
+            depth_write off
+
+            texture_unit
+            {
+                texture particle_ritual.png 
+            }
+        }
+    }
+}
