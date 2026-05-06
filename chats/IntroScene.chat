@@ -7,6 +7,7 @@ SYSTEM LightSystem
 SYSTEM RenderSystem
 SYSTEM TweenSystem
 SYSTEM UISystem
+SYSTEM InstantiateButtonSystem
 SYSTEM IntroToGameSystem
 
 ENTITY camera 1
@@ -66,11 +67,45 @@ ENTITY Text 1
         FLOAT characterHeight 0.25
         FLOAT spaceWidth 0.005
         VECTOR_4 colour 0.0 0.0 0.0 0.0
-        VECTOR_4 colourTop 0.34099999070168 0.03500000014901 0.03500000014901 1.0
-        VECTOR_4 colourBottom 0.25900000333786 0.2509999871254 0.2509999871254 1.0
+        VECTOR_4 colourTop 0.4 0.03500000014901 0.03500000014901 1.0
+        VECTOR_4 colourBottom 0.1 0.05 0.05 1.0
         FLOAT left 0.15
         FLOAT top 0.1
         FLOAT maxWidth 0.0
+    START_CHILDREN
+    END_CHILDREN
+END_ENTITY
+
+ENTITY zapas 2
+	COMPONENT TransformComponent
+        VECTOR_3 position 0.0 -1.2 -2.5
+		QUATERNION rotation 0.0 0.0 0.0 1.0
+        VECTOR_3 scale 2.2 2.2 2.2
+    COMPONENT RenderComponent
+		STRING meshName zapatos.mesh
+		STRING materialName 
+    START_CHILDREN
+    END_CHILDREN
+END_ENTITY
+
+ENTITY luz 3
+	COMPONENT TransformComponent
+        VECTOR_3 position 0.0 -1.2 -0.5
+		QUATERNION rotation 0.0 0.0 0.0 1.0
+        VECTOR_3 scale 1.0 1.0 1.0
+     COMPONENT LightComponent
+        VECTOR_4 diffuse 0.8 0.2 0.2 1.0
+        VECTOR_4 specular 0.5 0.5 0.5 1.0
+        INT lightType 2
+        FLOAT spotFalloff 1.0
+        FLOAT spotNearClip 0.2
+        FLOAT spotOuter 0.610865235
+        FLOAT spotInner 0.1004
+        FLOAT shadowFarDist 20.0
+        FLOAT shadowFarDistSquared 1.0
+        VECTOR_4 attenuation 1.0 0.0 0.00999999977648 20.0
+        FLOAT shadowNearClipDist 0.1
+        FLOAT shadowFarClipDist 300.0
     START_CHILDREN
     END_CHILDREN
 END_ENTITY

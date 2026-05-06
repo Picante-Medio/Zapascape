@@ -1,0 +1,12 @@
+PREFAB tuxZapas
+ENTITY tuxZapas 0
+	COMPONENT TransformComponent
+    VECTOR_3 position -1.2 -1.0 -2.5
+		QUATERNION rotation 0.0 0.0 0.0 1.0
+    VECTOR_3 scale 0.25 0.25 0.25
+  COMPONENT RenderComponent
+		STRING meshName tux.mesh
+		STRING materialName 
+    START_CHILDREN
+    END_CHILDREN
+END_ENTITY

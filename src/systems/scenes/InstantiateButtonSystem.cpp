@@ -1,13 +1,14 @@
-#include "IntroToGameSystem.h"
-#include "AnimationComponent.h"
+#include "InstantiateButtonSystem.h"
+#include "RenderComponent.h"
 #include "AudioComponent.h"
 #include "ButtonComponent.h"
 #include "AllChangeSceneMessages.h"
+void InstantiateButtonSystem::init() {}
 
-void IntroToGameSystem::init(){ }
-
-void IntroToGameSystem::onLoad(){
-     scene.subscribe<ChangeGameMessage>([this](std::shared_ptr<HUGO::Message> msg) {
+void 
+InstantiateButtonSystem::onLoad() 
+{
+    scene.subscribe<ChangeGameMessage>([this](std::shared_ptr<HUGO::Message> msg) {
         std::shared_ptr<ChangeGameMessage> m = std::static_pointer_cast<ChangeGameMessage>(msg);
         scene.changeAndDestroyPreviousScene(m->sceneName);
     });
@@ -23,25 +24,30 @@ void IntroToGameSystem::onLoad(){
     but = startB.getValue();
     scene.modifyComponent<ButtonComponent>(but, [this](ButtonComponent& b){
         b.onClickCallback = [this](){
-            scene.sendMessage<ChangeGameMessage>(ChangeGameMessage());
+            //scene.sendMessage<ChangeGameMessage>(ChangeGameMessage());
+            scene.changeAndDestroyPreviousScene("Game");
         };
     });
     scene.modifyComponent<AudioComponent>(but, [this](AudioComponent& a){
         a.type = HUGO::AudioTypes::SOUND2D;
     });
     
-    EntityID beastie = scene.instantiatePrefab("beastieStatic").getValue();
-    scene.addComponent<AnimationComponent>(beastie, [](AnimationComponent& a){
-        a.addAnimation("Run", true, true);
+    // register exit button callback
+    HUGO::ErrorOrType<EntityID> exitB = scene.instantiatePrefab("exitButton");
+    but = exitB.getValue();
+    scene.modifyComponent<ButtonComponent>(but, [this](ButtonComponent& b){
+        b.onClickCallback = [this](){
+            scene.exitGame();
+        };
     });
-    EntityID tux = scene.instantiatePrefab("tuxStatic").getValue();
-    scene.addComponent<AnimationComponent>(tux, [](AnimationComponent& a){
-        a.addAnimation("Idle", true, true);
+    scene.modifyComponent<AudioComponent>(but, [this](AudioComponent& a){
+        a.type = HUGO::AudioTypes::SOUND2D;
     });
 }
 
-void IntroToGameSystem::update(uint32_t dt){
-    for (auto& pack : scene.query<ButtonComponent, AudioComponent>()){
+void
+InstantiateButtonSystem::update(uint32_t dt) {
+for (auto& pack : scene.query<ButtonComponent, AudioComponent>()){
         const ButtonComponent& b = pack.getConst<ButtonComponent>();
         HUGO::Bool isOver = (b.state == HUGO::ButtonStateTypes::BS_OVER);
 
@@ -56,4 +62,5 @@ void IntroToGameSystem::update(uint32_t dt){
     }
 }
 
-void IntroToGameSystem::fixedUpdate(uint32_t) {};
+void
+InstantiateButtonSystem::fixedUpdate(uint32_t) {}

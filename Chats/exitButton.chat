@@ -1,19 +1,20 @@
-PREFAB startButton
+PREFAB exitButton
 ENTITY button 0
     COMPONENT PanelComponent
-        STRING overlayName Intro/StartB/Overlay
-        STRING containerName Intro/StartB/Overlay/Container
+        STRING overlayName Intro/ExitB/Overlay
+        STRING containerName Intro/ExitB/Overlay/Container
         BOOL isVisible true
         INT metricsMode 0
         FLOAT left 0.45
-        FLOAT top 0.6
+        FLOAT top 0.7
         FLOAT width 0.15
         FLOAT height 0.1
-        STRING material Intro/StartButton
+        FLOAT zOrder 200
+        STRING material Intro/ExitButton
     COMPONENT ButtonComponent
-        STRING normalMaterial Intro/StartButton
-        STRING hoverMaterial Intro/StartButtonOnHover
-        STRING pressedMaterial Intro/StartButtonOnHover
+        STRING normalMaterial Intro/ExitButton
+        STRING hoverMaterial Intro/ExitButtonOnHover
+        STRING pressedMaterial Intro/ExitButtonOnHover
         STRING disabledMaterial 
     COMPONENT AudioComponent
         STRING audioName click

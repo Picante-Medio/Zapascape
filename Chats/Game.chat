@@ -54,13 +54,13 @@ ENTITY Timer 1
 		STRING textAreaName Game/Timer/Overlay/Container/Text
 		STRING text SDHIDHHA
 		STRING textFont Roboto
-		FLOAT characterHeight 0.035
+		FLOAT characterHeight 0.05
 		FLOAT spaceWidth 0.01
 		VECTOR_4 colour 0.0 0.0 0.0 0.0
 		VECTOR_4 colourTop 0.80000001192093 0.75300002098083 0.34900000691414 1.0
 		VECTOR_4 colourBottom 0.80000001192093 0.75300002098083 0.34900000691414 1.0
 		FLOAT left 0.5
-		FLOAT top 0.1
+		FLOAT top 0.05
 		FLOAT maxWidth 1.0
 		FLOAT maxHeight 1.0
 	COMPONENT TimeComponent
