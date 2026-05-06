@@ -17,12 +17,12 @@ private:
 
     std::vector<HUGO::Vector2> getAdjacentFreePositions(HUGO::Vector2 pos, std::vector<std::vector<int>> mapData);
     
-    //prueba se quitara cuando funciona los prefabs
     void createPlayer(const HUGO::Vector3& pos);
     void createBeastie(const HUGO::Vector3& pos);
     void createRitual(const HUGO::Vector3& pos, EntityID ritual);
     void createFloor(const HUGO::Vector3& pos, const HUGO::Vector3 & scale, const std::string& prefab);
     void createRoomLight(const HUGO::Vector3& pos);
+    void createDoor(const HUGO::Vector3& pos, const HUGO::Vector2& dir);
 
 public:
     void init() override;

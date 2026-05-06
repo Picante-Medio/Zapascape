@@ -9,7 +9,7 @@
 #include "RenderComponent.h"
 #include "RitualComponent.h"
 #include "ChildrenComponent.h"
-
+#include "DoorTag.h"
 void
 RitualSystem::init() {
     activeRituals = 0;
@@ -106,5 +106,7 @@ RitualSystem::setActiveRitualsNumber(HUGO::Int newNumber){
 
     if(activeRituals == maxRitualsNumber){
         // door activated
+        //de momento va directo a victoria para tener un flujo
+        scene.changeScene("VictoryScene");
     }
 }

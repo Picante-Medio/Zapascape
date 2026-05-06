@@ -1,7 +1,7 @@
 #pragma once
 #include "HUGO.h"
 
-enum BeastieState {STOP, PURSUE};
+enum BeastieState {STOP, PURSUE, WANDER};
 HCOMPONENT(BeastieComponent)
     BeastieState currentState = BeastieState::STOP;
     DEFAULT_SERIALIZED_MEMBER(HUGO::Float, normalForce, 20.0f);
@@ -13,5 +13,8 @@ HCOMPONENT(BeastieComponent)
 
     bool isFastMove = false;
     bool isSlowMove = false;
+
+    float wanderTime = 0.0f;
+    float changeDirTime = 20.0f;
 END_HCOMPONENT()
 

@@ -82,3 +82,17 @@ material Particle/Particle/MarkMaterial
         }
     }
 }
+
+material Door/FiltroRojo
+{
+    technique 
+	{
+		pass 
+		{
+            ambient 0.16 0.02 0.02 1.00
+            diffuse 0.25 0.25 0.25 1.00
+            specular 0.5 0.0 0.0 8
+            emissive 0.0 0.0 0.0
+		}
+    }
+}

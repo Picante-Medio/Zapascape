@@ -15,13 +15,13 @@
 #include "AudioComponent.h"
 
 void MapSystem::init() {
+    scene.changeAmbientLight(HUGO::Vector3(0.1f));
 }
 
 void 
 MapSystem::onLoad() {
     mt = std::mt19937(std::random_device{}());
     directionsDist = std::uniform_int_distribution<int>(0, directions.size()-1);
-    scene.se
     for (auto& pack: scene.query<MapComponent>()) {
         MapComponent& map = pack.getDeprecated<MapComponent>();
         map.mapData = std::vector<std::vector<HUGO::Int>>(map.mapWidth, std::vector<HUGO::Int>(map.mapHeight, static_cast<HUGO::Int>(TileType::Undefined)));
@@ -70,12 +70,27 @@ MapSystem::onLoad() {
             }
         }
         
-        createPlayer(HUGO::Vector3(startPos.x * map.getGridSize(), -2.0f, startPos.y * map.getGridSize()));
-        
+
+        HUGO::Vector3 start =HUGO::Vector3(startPos.x * map.getGridSize(), 0, startPos.y * map.getGridSize());
+        HUGO::Vector2 doorDirection = roomPositions[0] - startPos; 
+        createDoor(start, doorDirection);
+
         std::uniform_int_distribution<HUGO::Int> roomDist(0, roomPositions.size()-1);
         
-        HUGO::Int beastIndex = roomDist(mt);
-        createBeastie(HUGO::Vector3( roomPositions[beastIndex].x * map.getGridSize(),0,roomPositions[beastIndex].y * map.getGridSize()));
+        HUGO::Int playerIndex = roomDist(mt);
+        HUGO::Int beastIndex;
+
+        HUGO::Vector3 playerPos = HUGO::Vector3(roomPositions[playerIndex].x * map.getGridSize(), -2.5f, roomPositions[playerIndex].y * map.getGridSize());
+        HUGO::Vector3 beastiePos;
+
+        float minDist = 2.0f; 
+        do {
+            beastIndex = roomDist(mt);
+            beastiePos = HUGO::Vector3(roomPositions[beastIndex].x * map.getGridSize(), -2.5f, roomPositions[beastIndex].y * map.getGridSize());
+        } while(beastIndex == playerIndex || (beastiePos - playerPos).length() < minDist * map.getGridSize());
+
+        createPlayer(playerPos);
+        createBeastie(beastiePos);
         
         std::vector<HUGO::Int> ritualIndices;
         for(HUGO::Int i = 0; i < 2; ++i) {
@@ -127,75 +142,19 @@ void
 MapSystem::fixedUpdate(uint32_t) {}
 void MapSystem::createPlayer(const HUGO::Vector3& pos){
 
-    EntityID e1 = scene.createEntity();
-    scene.addComponent<TransformComponent>(e1, [pos](TransformComponent& t1) {
-        t1.setPosition(pos + HUGO::Vector3(0.0f,1.0f,0.0f));
-    });
-    scene.addComponent<PlayerComponent>(e1);
-    scene.addComponent<MovementRBComponent>(e1);
-    scene.addComponent<ColliderComponent>(e1, [](ColliderComponent& c){
-        c.info = HUGO::BoxColliderInfo{(HUGO::Vector3(0.6f, 0.6f, 0.6f))};
-        c.setFriction(0.9f);
-        c.setPositionOffset({0.0f, 0.2f, 0.0f});
-    });
-    scene.addComponent<RigidBodyComponent>(e1, [](RigidBodyComponent& rb){
-        rb.setGravity(HUGO::Vector3(0.0f));
-        rb.setMass(5.0f);
-        rb.setLinearDamping(0.95f);
-        rb.setBodyType(HUGO::BodyType::DYNAMIC);
-
-    });
-    scene.addComponent<RenderComponent>(e1, [](RenderComponent& rc) {
-        rc.setMeshName("player.mesh");
-    });
-    scene.addComponent<AnimationComponent>(e1);
-    
-
-    EntityID camera = scene.createEntity();
-    scene.addComponent<TransformComponent>(camera, [](TransformComponent& t1) {
-        t1.setPosition(HUGO::Vector3(0.0f, 0, 0.1f));
-    });
-    scene.addComponent<CameraComponent>(camera, [](CameraComponent& comp){
-        comp.setMain(true);
-        comp.setNearClip(0.01f); 
-        comp.setFarClip(1000.0f);
-        comp.setClearColor(HUGO::Vector4(0.1f,0.1f,0.1f,0.1f));
-    });
-    EntityID light = scene.createEntity();
-    scene.addComponent<TransformComponent>(light, [](TransformComponent& tr){
-        tr.setPosition(HUGO::Vector3(0.0, 0.0f, 0.1f)); });
-
-    scene.addComponent<LightComponent>(light, [](LightComponent& lg){
-        lg.setLightType(HUGO::LightType::LT_SPOTLIGHT);
-        lg.setAttenuation(HUGO::Vector4(1.0f, 0.0f, 0.01f, 20.0f));
-        lg.setDiffuse(HUGO::Vector4(0.9f, 0.85f, 0.7f, 1.0f));
-        lg.setSpecular(HUGO::Vector4(0.5f, 0.5f, 0.5f, 1.0f));
-
-        lg.setSpotInner(HUGO::Radian(HUGO::Degree(20.0f)));
-        lg.setSpotOuter(HUGO::Radian(HUGO::Degree(35.0f)));
-        lg.setSpotFallOff(1.0f); 
-        lg.setSpotNearClip(0.2f);
-     });
-    
-    scene.addComponent<ChildrenComponent>(e1, [light, camera](ChildrenComponent& c){ 
-        c.addChild(light);
-        c.addChild(camera);
-    });
-
-    scene.addComponent<AudioComponent>(e1, [](AudioComponent& a){ 
-        a.audioName = "walk";
-        a.type = HUGO::SOUND2D;
-        a.loop =true;
-        a.volume =0.85f;
-        a.pitch = 1.35f;
-    });
-
-    // HUGO::ErrorOrType<EntityID> player = scene.instantiatePrefab("player");
-    // if(!player.isError()) {
-    //     scene.modifyComponent<TransformComponent>(player.getValue(), [pos](TransformComponent& tr){
-    //         tr.setPosition(pos + HUGO::Vector3(0.0f,1.0f,0.0f));
-    //     });
-    // }
+    HUGO::ErrorOrType<EntityID> player = scene.instantiatePrefab("player");
+    if(!player.isError()) {
+        scene.modifyComponent<TransformComponent>(player.getValue(), [pos](TransformComponent& tr){
+            tr.setPosition(pos + HUGO::Vector3(0.0f,1.0f,0.0f));
+        });
+        scene.modifyComponent<LightComponent>(player.getValue(), [](LightComponent& l){
+            l.setLightType(HUGO::LightType::LT_SPOTLIGHT);
+            l.setSpotInner(HUGO::Radian(HUGO::Degree(5.0f)));
+        });
+        scene.modifyComponent<AudioComponent>(player.getValue(), [](AudioComponent& a){
+            a.type = HUGO::SOUND2D;
+        });
+    }
 
 }
 void MapSystem::createBeastie(const HUGO::Vector3& pos){
@@ -203,7 +162,6 @@ void MapSystem::createBeastie(const HUGO::Vector3& pos){
     if(!beastie.isError()) {
         TransformComponent& beastieTr = scene.getComponent<TransformComponent>(beastie.getValue());
         beastieTr.setPosition(pos);
-        beastieTr.setScale(HUGO::Vector3(1));
     }
 }
 
@@ -266,4 +224,23 @@ void MapSystem::createRoomLight(const HUGO::Vector3& pos) {
         lg.setDiffuse(HUGO::Vector4(0.9f, 0.8f, 0.6f, 1.0f));
         lg.setSpecular(HUGO::Vector4(0.05f, 0.05f, 0.0f, 1.0f));
     });
+}
+
+void MapSystem::createDoor(const HUGO::Vector3 &pos, const HUGO::Vector2& dir)
+{
+    HUGO::ErrorOrType<EntityID> door = scene.instantiatePrefab("door");
+    if(!door.isError()) {
+        TransformComponent& doorTr = scene.getComponent<TransformComponent>(door.getValue());
+        doorTr.setPosition(pos);
+
+        float rotationY = 0.0f;
+        if(dir.x > 0) rotationY = 90.0f;     
+        else if(dir.x < 0) rotationY = -90.0f;
+        else if(dir.y > 0) rotationY = 0.0f;  
+        else if(dir.y < 0) rotationY = 180.0f; 
+        
+        HUGO::Radian angleRad = rotationY * (HUGO::PI / 180.0f);
+        doorTr.setRotation(HUGO::Quaternion(angleRad, HUGO::Vector3(0, 1, 0)));
+
+    }
 }
