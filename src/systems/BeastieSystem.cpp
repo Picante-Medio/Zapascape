@@ -12,11 +12,14 @@
 void BeastieSystem::init(){
 }
 void BeastieSystem::onLoad(){
-    for (auto& pack: scene.query<BeastieComponent, AnimationComponent>()){
+    for (auto& pack: scene.query<BeastieComponent, AnimationComponent, AudioComponent>()){
         beastie = pack.getConst<BeastieComponent>().entity;
         pack.modify<AnimationComponent>([](AnimationComponent& anim){
             anim.addAnimation("Run", true, false);
             anim.addAnimation("Stop", true, true);
+        });
+        pack.modify<AudioComponent>([](AudioComponent& a){
+            a.isPlaying =true;
         });
     }
     for (auto& pack: scene.query<PlayerComponent, TransformComponent>()){

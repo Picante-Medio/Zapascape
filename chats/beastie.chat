@@ -38,7 +38,7 @@ ENTITY beastie 0
         BOOL loop true
         FLOAT pitch 1.0
         FLOAT startTime 0.0
-        BOOL isPlaying true
+        BOOL isPlaying false
 		INT type 1
     COMPONENT Audio3DInfoComponent
         FLOAT maxDistance 30.0

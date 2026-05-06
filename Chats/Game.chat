@@ -14,9 +14,9 @@ SYSTEM PlayerInputSystem
 SYSTEM MovementSystem
 SYSTEM MarkSystem
 SYSTEM TimeSystem
-SYSTEM BeastieSystem
 SYSTEM HUDSystem
 SYSTEM RitualSystem
+SYSTEM BeastieSystem
 
 ENTITY Map 0
 	COMPONENT MapComponent
@@ -27,7 +27,7 @@ ENTITY Map 0
 		INT mapHeight 500
 	COMPONENT AudioComponent
         STRING audioName game
-        FLOAT volume 0.05
+        FLOAT volume 0.1
         BOOL loop true
         FLOAT pitch 0.0
         FLOAT startTime 0.0
@@ -65,6 +65,14 @@ ENTITY Timer 1
 		FLOAT maxHeight 1.0
 	COMPONENT TimeComponent
 		INT remainingGameTime 120
+	COMPONENT AudioComponent
+        STRING audioName breath
+        FLOAT volume 0.35
+        BOOL loop true
+        FLOAT pitch 0.7
+        FLOAT startTime 0.0
+        BOOL isPlaying true
+		INT type 0
 	START_CHILDREN
     END_CHILDREN
 END_ENTITY

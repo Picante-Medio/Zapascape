@@ -63,5 +63,7 @@ ENTITY player 1
         VECTOR_4 attenuation 1.0 0.0 0.00999999977648 20.0
         FLOAT shadowNearClipDist 0.1
         FLOAT shadowFarClipDist 300.0
+    START_CHILDREN
+    END_CHILDREN
 END_ENTITY
 

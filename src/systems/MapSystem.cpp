@@ -88,9 +88,6 @@ MapSystem::onLoad() {
             beastIndex = roomDist(mt);
             beastiePos = HUGO::Vector3(roomPositions[beastIndex].x * map.getGridSize(), -2.5f, roomPositions[beastIndex].y * map.getGridSize());
         } while(beastIndex == playerIndex || (beastiePos - playerPos).length() < minDist * map.getGridSize());
-
-        createPlayer(playerPos);
-        createBeastie(beastiePos);
         
         std::vector<HUGO::Int> ritualIndices;
         for(HUGO::Int i = 0; i < 2; ++i) {
@@ -114,6 +111,9 @@ MapSystem::onLoad() {
         HUGO::Vector3 floorScale(map.mapWidth / 2.0f, 0.1f, map.mapHeight / 2.0f);
         createFloor(floorPos, floorScale, "floor");
         createFloor(HUGO::Vector3(floorPos.x, map.getGridSize()/2, floorPos.z), floorScale, "ceiling");
+
+        createPlayer(playerPos);
+        createBeastie(beastiePos);
     }
 }
 

@@ -97,3 +97,33 @@ ENTITY luz 3
     START_CHILDREN
     END_CHILDREN
 END_ENTITY
+
+ENTITY pass 1
+    COMPONENT AudioComponent 
+        STRING audioName click
+        FLOAT volume 0.75
+        BOOL loop false
+        FLOAT pitch 0.0
+        FLOAT startTime 0.0
+        BOOL isPlaying false
+        INT type 0
+    COMPONENT ClickTag
+    START_CHILDREN
+    END_CHILDREN
+END_ENTITY
+
+ENTITY Loading 1
+    COMPONENT PanelComponent
+        STRING overlayName gs
+        STRING containerName jtht
+        BOOL isVisible false
+        INT metricsMode 0
+        FLOAT left 0.0
+        FLOAT top 0.0
+        FLOAT width 1.0
+        FLOAT height 1.0
+        STRING material Intro/Loading
+        INT zOrder 600
+    START_CHILDREN
+    END_CHILDREN
+END_ENTITY

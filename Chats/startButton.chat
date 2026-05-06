@@ -17,13 +17,11 @@ ENTITY button 0
         STRING pressedMaterial Intro/StartButtonOnHover
         STRING disabledMaterial 
     COMPONENT AudioComponent
-        STRING audioName click
+        STRING audioName hover
         FLOAT volume 0.8
         BOOL loop false
         FLOAT pitch 0.0
         FLOAT startTime 0.0
         BOOL isPlaying false
 		INT type 0
-    START_CHILDREN
-    END_CHILDREN
 END_ENTITY
