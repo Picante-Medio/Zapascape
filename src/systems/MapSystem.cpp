@@ -183,12 +183,12 @@ void MapSystem::createRitual(const HUGO::Vector3 &pos, EntityID ritual)
 
     EntityID cube = scene.createEntity();
     scene.addComponent<TransformComponent>(cube, [pos](TransformComponent& t) {
-        t.setPosition(pos + HUGO::Vector3(0.0f, 0.25f, 0.0f));
-        t.setScale(HUGO::Vector3(0.15f, 0.15f, 0.15f));
+        t.setPosition(pos + HUGO::Vector3(0.0f, 1.0f, 0.0f));
+        t.setScale(HUGO::Vector3(0.3f, 0.3f, 0.3f));
     });
     
     scene.addComponent<RenderComponent>(cube, [](RenderComponent& rc) {
-        rc.setMeshName("cube.mesh");
+        rc.setMeshName("ritual_press.glb");
         rc.visible = false;
     });
 
