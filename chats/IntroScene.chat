@@ -18,7 +18,7 @@ ENTITY camera 1
         INT projectionType 0
         FLOAT fovY 60.0
         FLOAT nearClip 1.0
-        FLOAT farClip 1000.0
+        FLOAT farClip 10000.0
         FLOAT orthoWidth 10.0
         FLOAT orthoHeight 10.0
         BOOL autoAspectRatio true
@@ -29,16 +29,13 @@ ENTITY camera 1
 END_ENTITY
 
 ENTITY background 1
-    COMPONENT PanelComponent
-        STRING overlayName Intro/Background/Overlay
-        STRING containerName Intro/Background/Overlay/Container
-        BOOL isVisible true
-        INT metricsMode 0
-        FLOAT left 0.0
-        FLOAT top 0.0
-        FLOAT width 1.0
-        FLOAT height 1.0
-        STRING material Intro/Background
+    COMPONENT TransformComponent
+		VECTOR_3 position 0.0 0.0 -10.0
+		QUATERNION rotation 0.0 1.0 0.0 0.0
+		VECTOR_3 scale 32.0 18.0 0.1
+    COMPONENT RenderComponent
+		STRING meshName cube.mesh
+		STRING materialName Intro/Background
     COMPONENT AudioComponent
         STRING audioName intro
         FLOAT volume 0.4
@@ -77,4 +74,3 @@ ENTITY Text 1
     START_CHILDREN
     END_CHILDREN
 END_ENTITY
-

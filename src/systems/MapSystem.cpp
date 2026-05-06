@@ -21,7 +21,7 @@ void
 MapSystem::onLoad() {
     mt = std::mt19937(std::random_device{}());
     directionsDist = std::uniform_int_distribution<int>(0, directions.size()-1);
-
+    scene.se
     for (auto& pack: scene.query<MapComponent>()) {
         MapComponent& map = pack.getDeprecated<MapComponent>();
         map.mapData = std::vector<std::vector<HUGO::Int>>(map.mapWidth, std::vector<HUGO::Int>(map.mapHeight, static_cast<HUGO::Int>(TileType::Undefined)));

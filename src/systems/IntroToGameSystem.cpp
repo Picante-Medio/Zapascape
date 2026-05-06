@@ -1,4 +1,5 @@
 #include "IntroToGameSystem.h"
+#include "AnimationComponent.h"
 #include "AudioComponent.h"
 #include "ButtonComponent.h"
 #include "AllChangeSceneMessages.h"
@@ -27,6 +28,15 @@ void IntroToGameSystem::onLoad(){
     });
     scene.modifyComponent<AudioComponent>(but, [this](AudioComponent& a){
         a.type = HUGO::AudioTypes::SOUND2D;
+    });
+    
+    EntityID beastie = scene.instantiatePrefab("beastieStatic").getValue();
+    scene.addComponent<AnimationComponent>(beastie, [](AnimationComponent& a){
+        a.addAnimation("Run", true, true);
+    });
+    EntityID tux = scene.instantiatePrefab("tuxStatic").getValue();
+    scene.addComponent<AnimationComponent>(tux, [](AnimationComponent& a){
+        a.addAnimation("Idle", true, true);
     });
 }
 
