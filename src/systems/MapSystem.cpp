@@ -12,6 +12,7 @@
 #include "ChildrenComponent.h"
 #include "ColliderComponent.h"
 #include "RitualComponent.h"
+#include "DoorComponent.h"
 #include "AudioComponent.h"
 
 void MapSystem::init() {
@@ -237,7 +238,30 @@ void MapSystem::createDoor(const HUGO::Vector3 &pos, const HUGO::Vector2& dir)
         else if(dir.y < 0) rotationY = 180.0f; 
         
         HUGO::Radian angleRad = rotationY * (HUGO::PI / 180.0f);
-        doorTr.setRotation(HUGO::Quaternion(angleRad, HUGO::Vector3(0, 1, 0)));
+        HUGO::Quaternion finalRotation = HUGO::Quaternion(angleRad, HUGO::Vector3(0, 1, 0));
+        doorTr.setRotation(finalRotation);
 
+        EntityID cube = scene.createEntity();
+        
+        HUGO::Vector3 forward(dir.x, 0.0f, dir.y);
+        forward.normalize();
+        
+        scene.addComponent<TransformComponent>(cube, [pos, forward](TransformComponent& t) {
+            t.setPosition(pos + forward);
+            t.setScale(HUGO::Vector3(0.3f, 0.3f, 0.3f));
+        });
+        
+        scene.addComponent<TransformComponent>(cube, [finalRotation](TransformComponent& t) {
+            t.setRotation(finalRotation);
+        });
+        
+        scene.addComponent<RenderComponent>(cube, [](RenderComponent& rc) {
+            rc.setMeshName("ritual_press.glb");
+            rc.visible = false;
+        });
+
+        scene.addComponent<DoorComponent>(door.getValue(), [cube](DoorComponent& dc){
+            dc.associatedCubo = cube;
+        });
     }
 }

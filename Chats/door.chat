@@ -8,13 +8,14 @@ ENTITY door 0
 		STRING meshName wall.glb
 		STRING materialName 
     COMPONENT ColliderComponent
-        COLLIDER_INFO info BOX_COLLIDER 2.5 2.5 2.5
+        COLLIDER_INFO info BOX_COLLIDER 3 2.5 3
         FLOAT restitution 0.0
         FLOAT friction 0.8
         VECTOR_3 positionOffset 0.0 0.0 0.0
         QUATERNION rotationOffset 0.0 0.0 0.0 1.0
         BOOL active true
-        BOOL useGizmo false
+        BOOL useGizmo true
+        BOOL isTrigger true
     COMPONENT RigidBodyComponent
         FLOAT mass 0.0
         FLOAT linearDamping 0.0

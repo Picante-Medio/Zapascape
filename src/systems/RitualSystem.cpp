@@ -10,7 +10,9 @@
 #include "RitualComponent.h"
 #include "ChildrenComponent.h"
 #include "ParticleEmitterComponent.h"
+#include "DoorComponent.h"
 #include "DoorTag.h"
+
 void
 RitualSystem::init() {
     activeRituals = 0;
@@ -22,9 +24,8 @@ void
 RitualSystem::onLoad() {
 }
 
-
 void
-RitualSystem::update(uint32_t dt) {  
+RitualSystem::update(uint32_t dt) {
     if(player == -1) {
         for (auto& pack: scene.query<PlayerComponent>()){
             player = pack.getConst<PlayerComponent>().entity;
@@ -65,7 +66,32 @@ RitualSystem::update(uint32_t dt) {
             scene.modifyComponent<RenderComponent>(cubo, [](RenderComponent& rc){ 
                 rc.visible = false;
             });
-        
+        }
+    }
+
+    for (auto& pack : scene.query<DoorComponent>()){
+        EntityID door = pack.getConst<DoorComponent>().entity;
+
+        if(pack.getConst<DoorComponent>().isInteractive) {
+            auto input = scene.getInput();
+            EntityID cubo = pack.getConst<DoorComponent>().associatedCubo;
+
+            bool playerInArea = false;
+            for(auto collisionId : scene.getComponent<ColliderComponent>(door).getCollisionInfo()){
+                if(collisionId == player){
+                    playerInArea = true;
+                    if(input->isActionPressed("interact") ){ 
+                        scene.log("Door activated");
+                        scene.changeAndDestroyPreviousScene("VictoryScene");
+                        break;
+                    }
+                }
+            }
+
+            scene.modifyComponent<RenderComponent>(cubo, [playerInArea](RenderComponent& rc){ 
+                rc.visible = playerInArea;
+            });
+            
         }
     }
 }
@@ -96,15 +122,16 @@ RitualSystem::activateRitual(EntityID ritual, EntityID cubo) {
     });
     
     scene.log("Ritual activado. Progreso: " + std::to_string(activeRituals) + "/" + std::to_string(maxRitualsNumber));
-}
+} 
 
 void
-RitualSystem::fixedUpdate(uint32_t) {}
+RitualSystem::fixedUpdate(uint32_t) {
+}  
 
 void 
 RitualSystem::setMaximunRitualsNumber(HUGO::Int newNumber){
     maxRitualsNumber = newNumber;
-}
+} 
 
 void 
 RitualSystem::setActiveRitualsNumber(HUGO::Int newNumber){
@@ -113,6 +140,8 @@ RitualSystem::setActiveRitualsNumber(HUGO::Int newNumber){
     if(activeRituals == maxRitualsNumber){
         // door activated
         //de momento va directo a victoria para tener un flujo
-        scene.changeAndDestroyPreviousScene("VictoryScene");
+        for (auto& pack : scene.query<DoorComponent>()){
+            pack.getDeprecated<DoorComponent>().isInteractive = true;
+        }
     }
 }
