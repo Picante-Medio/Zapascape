@@ -1,0 +1,57 @@
+[gd_scene format=3 uid="uid://b0l87p2dpiy64"]
+
+[ext_resource type="Script" uid="uid://bp8xe0wwyk4sh" path="res://addons/HugosChatPlugin/Entities/entity3d.gd" id="1_ca06n"]
+[ext_resource type="Script" uid="uid://41u0bjcy3u3m" path="res://addons/HugosChatPlugin/NativeComponents/LightComponent.gd" id="2_n7hdi"]
+[ext_resource type="Script" uid="uid://cmidua6v4bry" path="res://addons/HugosChatPlugin/NativeComponents/RenderComponent.gd" id="3_n0gkh"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_n0gkh"]
+
+[node name="CeilingLight" type="Node3D" unique_id=922471714]
+transform = Transform3D(-1, -1.7484556e-08, 0, 8.742278e-08, -0.2, 0, 0, 0, 1, 0, 0, 0)
+script = ExtResource("1_ca06n")
+entities = Dictionary[String, Dictionary]({
+"CeilingLight": {
+"LightComponent": Dictionary[String, Variant]({
+"attenuation": "VECTOR_4 attenuation 1.0 0.69999998807907 0.80000001192093 0.0",
+"diffuse": "VECTOR_4 diffuse 0.15000000596046 0.15000000596046 0.18000000715256 1.0",
+"lightType": "INT lightType 2",
+"shadowFarClipDist": "FLOAT shadowFarClipDist 10.0",
+"shadowFarDist": "FLOAT shadowFarDist 8.0",
+"shadowFarDistSquared": "FLOAT shadowFarDistSquared 64.0",
+"shadowNearClipDist": "FLOAT shadowNearClipDist 0.1",
+"specular": "VECTOR_4 specular 0.05000000074506 0.05000000074506 0.05000000074506 1.0",
+"spotFalloff": "FLOAT spotFalloff 2.5",
+"spotInner": "FLOAT spotInner 0.349",
+"spotNearClip": "FLOAT spotNearClip 0.1",
+"spotOuter": "FLOAT spotOuter 0.611"
+}),
+"RenderComponent": Dictionary[String, Variant]({
+"materialName": "STRING materialName light.jpg",
+"meshName": "STRING meshName cube.mesh"
+})
+}
+})
+metadata/_custom_type_script = "uid://bp8xe0wwyk4sh"
+
+[node name="LightComponent" type="Node" parent="." unique_id=248542817]
+script = ExtResource("2_n7hdi")
+diffuse = Vector4(0.15, 0.15, 0.18, 1)
+specular = Vector4(0.05, 0.05, 0.05, 1)
+lightType = 2
+spotFalloff = 2.5
+spotNearClip = 0.1
+spotOuter = 0.611
+spotInner = 0.349
+shadowFarDist = 8.0
+shadowFarDistSquared = 64.0
+attenuation = Vector4(1, 0.7, 0.8, 0)
+shadowNearClipDist = 0.1
+shadowFarClipDist = 10.0
+metadata/_custom_type_script = "uid://41u0bjcy3u3m"
+
+[node name="RenderComponent" type="MeshInstance3D" parent="." unique_id=2091510952]
+mesh = SubResource("BoxMesh_n0gkh")
+script = ExtResource("3_n0gkh")
+mesh_name = "cube.mesh"
+materialName = "light.jpg"
+metadata/_custom_type_script = "uid://cmidua6v4bry"

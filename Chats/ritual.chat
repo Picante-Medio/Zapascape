@@ -18,18 +18,18 @@ ENTITY ritual 1
         BOOL useGizmo true
     COMPONENT ParticleEmitterComponent
         STRING particleName Particle/RitualParticle
-        INT quota 200
-        BOOL sorted false
+        STRING material Particle/ImageMaterial
+        INT quota 50
+        BOOL sorted true
         VECTOR_3 direction 0.0 1.0 0.0
-        FLOAT emissionRate 10.0
+        FLOAT emissionRate 1.0
         FLOAT timeToLive 0.5
-        FLOAT velocityMin 5.0
-        FLOAT velocityMax 10.0
-        VECTOR_4 colour 1.0 0.0 0.0 1.0
+        FLOAT velocityMin 1.0
+        FLOAT velocityMax 2.0
+        VECTOR_4 colour 0.8 0.0 0.1 1.0
         FLOAT duration 1.0
-        STRING material 
-        FLOAT width 0.01
-        FLOAT height 0.01
+        FLOAT width 0.025
+        FLOAT height 0.025
         BOOL emitting true
         BOOL active true
     START_CHILDREN

@@ -15,13 +15,13 @@
 #include "AudioComponent.h"
 
 void MapSystem::init() {
-    mt = std::mt19937(std::random_device{}());
-    directionsDist = std::uniform_int_distribution<int>(0, directions.size()-1);
-    
 }
 
 void 
 MapSystem::onLoad() {
+    mt = std::mt19937(std::random_device{}());
+    directionsDist = std::uniform_int_distribution<int>(0, directions.size()-1);
+
     for (auto& pack: scene.query<MapComponent>()) {
         MapComponent& map = pack.getDeprecated<MapComponent>();
         map.mapData = std::vector<std::vector<HUGO::Int>>(map.mapWidth, std::vector<HUGO::Int>(map.mapHeight, static_cast<HUGO::Int>(TileType::Undefined)));
@@ -50,7 +50,13 @@ MapSystem::onLoad() {
             }
         }
 
-        for(HUGO::Vector2 pos : roomPositions) {
+        for(HUGO::Int i =0; i<roomPositions.size(); ++i) {
+            auto pos = roomPositions[i];
+            if (i%4==0){
+                HUGO::Vector3 worldPos(pos.x * map.getGridSize(), 3.0f, pos.y * map.getGridSize());
+                createRoomLight(worldPos);
+            }
+
             std::vector<HUGO::Vector2> freePositions = getAdjacentFreePositions(pos, map.mapData);
 
             for(const HUGO::Vector2& freePos : freePositions) {
@@ -247,4 +253,17 @@ void MapSystem::createFloor(const HUGO::Vector3 &pos, const HUGO::Vector3 & scal
             collider.info = HUGO::BoxColliderInfo{scale};
         });
     }
+}
+
+void MapSystem::createRoomLight(const HUGO::Vector3& pos) {
+    HUGO::ErrorOrType<EntityID> light = scene.instantiatePrefab("ceilingLight");
+    scene.modifyComponent<TransformComponent>(light.getValue(), [pos](TransformComponent& tr){
+        tr.setPosition(pos);
+    });
+    scene.addComponent<LightComponent>(light.getValue(), [](LightComponent& lg){
+        lg.setLightType(HUGO::LightType::LT_POINT);
+        lg.setAttenuation(HUGO::Vector4(1.0f, 0.0f, 0.01f, 5.0f));
+        lg.setDiffuse(HUGO::Vector4(0.9f, 0.8f, 0.6f, 1.0f));
+        lg.setSpecular(HUGO::Vector4(0.05f, 0.05f, 0.0f, 1.0f));
+    });
 }

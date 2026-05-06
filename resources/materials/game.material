@@ -29,6 +29,22 @@ material colorTecho
     }
 }
 
+material luzTecho
+{
+    receive_shadows on
+    technique {
+        pass {
+            lighting on
+            scene_blend add
+            depth_write on
+            texture_unit {
+                texture light.jpg
+                tex_address_mode wrap
+            }
+        }
+    }
+}
+
 material Particle/ImageMaterial
 {
     technique
@@ -38,10 +54,30 @@ material Particle/ImageMaterial
             lighting off
             scene_blend add
             depth_write off
+            depth_check on
 
             texture_unit
             {
-                texture particle_ritual.png 
+                texture particle_ritual.png
+            }
+        }
+    }
+}
+
+material Particle/Particle/MarkMaterial
+{
+    technique
+    {
+        pass
+        {
+            lighting off
+            scene_blend add
+            depth_write off
+            depth_check on
+
+            texture_unit
+            {
+                texture particle_mark.png
             }
         }
     }

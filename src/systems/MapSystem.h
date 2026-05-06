@@ -22,6 +22,7 @@ private:
     void createBeastie(const HUGO::Vector3& pos);
     void createRitual(const HUGO::Vector3& pos, EntityID ritual);
     void createFloor(const HUGO::Vector3& pos, const HUGO::Vector3 & scale, const std::string& prefab);
+    void createRoomLight(const HUGO::Vector3& pos);
 
 public:
     void init() override;

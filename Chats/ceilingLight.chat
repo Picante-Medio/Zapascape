@@ -1,0 +1,13 @@
+PREFAB ceilingLight
+ENTITY ceilingLight 1
+    COMPONENT TransformComponent
+        VECTOR_3 position 0.0 0.0 0.0
+        QUATERNION rotation 0.0 0.0 1.0 0.00000004371139
+        VECTOR_3 scale 1.0 0.20000000298023 1.0
+    COMPONENT RenderComponent
+        STRING meshName cube.mesh
+        STRING materialName luzTecho
+    START_CHILDREN
+    END_CHILDREN
+END_ENTITY
+
