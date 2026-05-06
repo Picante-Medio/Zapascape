@@ -2,9 +2,6 @@
 
 #include "HUGO.h"
 HSYSTEM(InstantiateButtonSystem)
-private:
-    EntityID but;
-    HUGO::Bool wasOver = false;
 public:
     void init() override;
     void onLoad() override;

@@ -4,9 +4,24 @@ ENTITY beastieZapas 0
 		VECTOR_3 position 1.6 -1.2 -2.5
 		QUATERNION rotation 0.0 0.0 0.0 1.0
 		VECTOR_3 scale 0.5 0.5 0.5
-  COMPONENT RenderComponent
+  	COMPONENT RenderComponent
 		STRING meshName beastieZapas.mesh
 		STRING materialName 
+	COMPONENT ParticleEmitterComponent
+        STRING particleName Particle/Star
+        STRING material static/Smoke
+        INT quota 50
+        BOOL sorted true
+        VECTOR_3 direction 0.0 1.0 0.0
+        FLOAT emissionRate 1.0
+        FLOAT timeToLive 0.5
+        FLOAT velocityMin 1.0
+        FLOAT velocityMax 2.0
+        FLOAT duration 1.0
+        FLOAT width 0.5
+        FLOAT height 0.5
+        BOOL emitting true
+        BOOL active true
     START_CHILDREN
     END_CHILDREN
 END_ENTITY

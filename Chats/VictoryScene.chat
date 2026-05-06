@@ -38,9 +38,9 @@ ENTITY background 1
 		STRING meshName cube.mesh
 		STRING materialName Intro/Background
     COMPONENT AudioComponent
-        STRING audioName intro
+        STRING audioName victory
         FLOAT volume 0.4
-        BOOL loop true
+        BOOL loop false
         FLOAT pitch 0.0
         FLOAT startTime 0.0
         BOOL isPlaying true

@@ -21,7 +21,7 @@ InstantiateButtonSystem::onLoad()
 
     // register play button callback
     HUGO::ErrorOrType<EntityID> startB = scene.instantiatePrefab("startButton");
-    but = startB.getValue();
+    EntityID but = startB.getValue();
     scene.modifyComponent<ButtonComponent>(but, [this](ButtonComponent& b){
         b.onClickCallback = [this](){
             //scene.sendMessage<ChangeGameMessage>(ChangeGameMessage());
@@ -51,14 +51,17 @@ for (auto& pack : scene.query<ButtonComponent, AudioComponent>()){
         const ButtonComponent& b = pack.getConst<ButtonComponent>();
         HUGO::Bool isOver = (b.state == HUGO::ButtonStateTypes::BS_OVER);
 
-        HUGO::Bool prev = wasOver;
-
-        if (isOver && !prev){
+        if (isOver && !b.wasOver){
             pack.modify<AudioComponent>([](AudioComponent& a){
                 a.isPlaying = true;
+                a.startTime =0.1;
             });
         }
-        wasOver = isOver;
+        if (isOver != b.wasOver){
+            pack.modify<ButtonComponent>([isOver](ButtonComponent& but){
+                but.wasOver = isOver;
+            });
+        }
     }
 }
 

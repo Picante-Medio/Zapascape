@@ -83,7 +83,7 @@ MapSystem::onLoad() {
         HUGO::Vector3 playerPos = HUGO::Vector3(roomPositions[playerIndex].x * map.getGridSize(), -2.5f, roomPositions[playerIndex].y * map.getGridSize());
         HUGO::Vector3 beastiePos;
 
-        float minDist = 2.0f; 
+        float minDist = 3.5f; 
         do {
             beastIndex = roomDist(mt);
             beastiePos = HUGO::Vector3(roomPositions[beastIndex].x * map.getGridSize(), -2.5f, roomPositions[beastIndex].y * map.getGridSize());
@@ -218,11 +218,8 @@ void MapSystem::createRoomLight(const HUGO::Vector3& pos) {
     scene.modifyComponent<TransformComponent>(light.getValue(), [pos](TransformComponent& tr){
         tr.setPosition(pos);
     });
-    scene.addComponent<LightComponent>(light.getValue(), [](LightComponent& lg){
+    scene.modifyComponent<LightComponent>(light.getValue(), [](LightComponent& lg){
         lg.setLightType(HUGO::LightType::LT_POINT);
-        lg.setAttenuation(HUGO::Vector4(1.0f, 0.0f, 0.01f, 5.0f));
-        lg.setDiffuse(HUGO::Vector4(0.9f, 0.8f, 0.6f, 1.0f));
-        lg.setSpecular(HUGO::Vector4(0.05f, 0.05f, 0.0f, 1.0f));
     });
 }
 

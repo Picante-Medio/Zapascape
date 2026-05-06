@@ -9,6 +9,7 @@
 #include "RenderComponent.h"
 #include "RitualComponent.h"
 #include "ChildrenComponent.h"
+#include "ParticleEmitterComponent.h"
 #include "DoorTag.h"
 void
 RitualSystem::init() {
@@ -88,6 +89,11 @@ RitualSystem::activateRitual(EntityID ritual, EntityID cubo) {
     scene.modifyComponent<ColliderComponent>(ritual, [](ColliderComponent& cc){
         cc.setActive(false);
     });
+
+    scene.modifyComponent<ParticleEmitterComponent>(ritual, [](ParticleEmitterComponent& pe){
+        pe.active = false;
+        pe.emitting = false;
+    });
     
     scene.log("Ritual activado. Progreso: " + std::to_string(activeRituals) + "/" + std::to_string(maxRitualsNumber));
 }
@@ -107,6 +113,6 @@ RitualSystem::setActiveRitualsNumber(HUGO::Int newNumber){
     if(activeRituals == maxRitualsNumber){
         // door activated
         //de momento va directo a victoria para tener un flujo
-        scene.changeScene("VictoryScene");
+        scene.changeAndDestroyPreviousScene("VictoryScene");
     }
 }

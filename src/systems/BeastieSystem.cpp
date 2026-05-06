@@ -7,6 +7,7 @@
 #include "RigidBodyComponent.h"
 #include "ColliderComponent.h"
 #include "RenderComponent.h"
+#include "AudioComponent.h"
 
 void BeastieSystem::init(){
 }
@@ -28,7 +29,7 @@ void BeastieSystem::update(uint32_t dt){
 
     auto& input = scene.getInput();
 
-    for(auto& pack: scene.query<BeastieComponent, MovementRBComponent, TransformComponent, RigidBodyComponent, AnimationComponent>()){
+    for(auto& pack: scene.query<BeastieComponent, MovementRBComponent, TransformComponent, RigidBodyComponent, AnimationComponent, AudioComponent>()){
         TransformComponent& beastieTr = pack.getDeprecated<TransformComponent>();
         MovementRBComponent& beastieMovement = pack.getDeprecated<MovementRBComponent>();
         BeastieComponent& b = pack.getDeprecated<BeastieComponent>();
@@ -42,6 +43,8 @@ void BeastieSystem::update(uint32_t dt){
             b.isSlowMove = false;
             if (isPlayerInRange(b.minRange, beastieTr, playerTr) && b.currentState != BeastieState::PURSUE) 
                 b.currentState = BeastieState::PURSUE;
+
+            
         }
         else if(b.isSlowMove){
             b.currentState = BeastieState::PURSUE;
@@ -87,8 +90,8 @@ void BeastieSystem::update(uint32_t dt){
             }
         }
         beastieMovement.direction = dir;
+        HUGO::Bool audioCond = dir != HUGO::Vector3(0.0f);
         updateForce(b, beastieMovement);
-        
         //rotation
         float rotDir = beastieTr.getRotation().forward().cross(toPlayer).y;
         float angularVel = std::clamp(rotDir, -1.0f, 1.0f) * 3.0f;
