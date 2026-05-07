@@ -14,10 +14,15 @@ HCOMPONENT(BeastieComponent)
     HUGO::Bool isFastMove = false;
     HUGO::Bool isSlowMove = false;
 
-    HUGO::Float wanderTime = 0.0f;
-    HUGO::Float changeDirTime = 20.0f;
+    HUGO::Float changeDirTime = 4.0f; // seconds
 
-    HUGO::Float currentSpawnDelay = 6000.0f;
+    HUGO::Float currentSpawnDelay = 6.0f; // seconds
+
+    HUGO::Vector3 desiredDirection = HUGO::Vector3(0.0f);
+    HUGO::Vector3 wanderDirection = HUGO::Vector3(0.0f);
+    HUGO::Float wanderTime = 0.0f;
+    DEFAULT_SERIALIZED_MEMBER(HUGO::Float, wanderInterval, 2.0f); // seconds
+
     HUGO::Bool aiEnabled = false;
 END_HCOMPONENT()
 

@@ -2,6 +2,8 @@
 #include "HUGO.h"
 
 HSYSTEM(HUDSystem)
+private:
+    HUGO::Bool alertActivated = false;
 public:
     void init() override;
     void onLoad() override;

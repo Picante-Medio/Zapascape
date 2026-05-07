@@ -6,7 +6,7 @@
 HSYSTEM(RitualSystem)
     EntityID player;
     EntityID puertaFinal;
-
+    EntityID sound;
     HUGO::Int activeRituals;
     HUGO::Int maxRitualsNumber;
 

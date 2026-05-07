@@ -14,6 +14,11 @@ void BeastieSystem::init(){
 void BeastieSystem::onLoad(){
     for (auto& pack: scene.query<BeastieComponent, AnimationComponent, AudioComponent>()){
         beastie = pack.getConst<BeastieComponent>().entity;
+        pack.modify<BeastieComponent>([this](BeastieComponent& b){
+            beastie = b.entity;
+            b.aiEnabled = false;
+            b.currentSpawnDelay = 10.0f;
+        });
         pack.modify<AnimationComponent>([](AnimationComponent& anim){
             anim.addAnimation("Run", true, false);
             anim.addAnimation("Stop", true, true);
@@ -24,104 +29,236 @@ void BeastieSystem::onLoad(){
         break;
     }
 }
-void BeastieSystem::fixedUpdate(uint32_t){}
-void BeastieSystem::update(uint32_t dt){
+void BeastieSystem::fixedUpdate(uint32_t)
+{
+    for(auto& pack : scene.query<BeastieComponent, MovementRBComponent, TransformComponent, RigidBodyComponent>())
+    {
+        TransformComponent& beastieTr = pack.getDeprecated<TransformComponent>();
+        MovementRBComponent& movement  = pack.getDeprecated<MovementRBComponent>();
+        BeastieComponent& b = pack.getDeprecated<BeastieComponent>();
 
+        //----------------------------------------
+        // MOVEMENT
+        //----------------------------------------
+        movement.direction = b.desiredDirection;
+
+        //----------------------------------------
+        // FORCE
+        //----------------------------------------
+        updateForce(b);
+
+        //----------------------------------------
+        // ROTATION
+        //----------------------------------------
+        if(b.desiredDirection.length() > 0.001f)
+        {
+            HUGO::Vector3 lookDir =b.desiredDirection.normalized();
+
+            HUGO::Float rotDir =beastieTr.getRotation().forward().cross(lookDir).y;
+
+            HUGO::Float angularVel = std::clamp(rotDir, -1.0f, 1.0f) * 3.0f;
+
+            pack.modify<RigidBodyComponent>([angularVel](RigidBodyComponent& rb)
+            {
+                rb.setAngularVelocity(HUGO::Vector3(0, angularVel, 0));
+            });
+        }
+        else
+        {
+            pack.modify<RigidBodyComponent>([](RigidBodyComponent& rb)
+            {
+                rb.setAngularVelocity(HUGO::Vector3(0.0f));
+            });
+        }
+    }
+}
+void BeastieSystem::update(uint32_t dt)
+{
     auto& input = scene.getInput();
 
-    for(auto& pack: scene.query<BeastieComponent, MovementRBComponent, TransformComponent, RigidBodyComponent, AnimationComponent, AudioComponent>()){
+    for (auto& pack : scene.query<BeastieComponent, TransformComponent, AnimationComponent, AudioComponent, ColliderComponent>())
+    {
         TransformComponent& beastieTr = pack.getDeprecated<TransformComponent>();
-        MovementRBComponent& beastieMovement = pack.getDeprecated<MovementRBComponent>();
         BeastieComponent& b = pack.getDeprecated<BeastieComponent>();
+
+        //----------------------------------------
+        // SPAWN DELAY
+        //----------------------------------------
 
         if(!b.aiEnabled)
         {
-            b.currentSpawnDelay -= dt;
+            b.currentSpawnDelay -= dt / 1000.0f;
 
             if(b.currentSpawnDelay <= 0.0f)
             {
                 b.aiEnabled = true;
-                pack.modify<AudioComponent>([](AudioComponent& a){
-                    a.isPlaying =true;
-                });
 
+                pack.modify<AudioComponent>([](AudioComponent& a)
+                {
+                    a.isPlaying = true;
+                });
             }
             else
             {
                 continue;
             }
         }
-        const HUGO::Bool isMoving = input->isActionPressed("move");
-        const TransformComponent& playerTr = scene.getComponentConst<TransformComponent>(player);
-    
-        //si esta moviendo player
-        if(isMoving)
-        {
-            b.isSlowMove = false;
-            if (isPlayerInRange(b.minRange, beastieTr, playerTr) && b.currentState != BeastieState::PURSUE) 
-                b.currentState = BeastieState::PURSUE;
 
-            
+        //----------------------------------------
+        // PLAYER INFO
+        //----------------------------------------
+
+        const TransformComponent& playerTr = scene.getComponentConst<TransformComponent>(player);
+
+        HUGO::Bool isMoving = input->isActionPressed("move");
+
+        HUGO::Vector3 toPlayer = playerTr.getWorldPosition() - beastieTr.getWorldPosition();
+
+        toPlayer.y = 0.0f;
+
+        HUGO::Float distance = toPlayer.length();
+
+        if(distance > 0.001f)
+        {
+            toPlayer.normalize();
         }
-        else if(b.isSlowMove){
+
+        //----------------------------------------
+        // STATE MACHINE
+        //----------------------------------------
+
+        if(distance > b.maxRange)
+        {
+            if(b.currentState != BeastieState::WANDER)
+            {
+                b.currentState = BeastieState::WANDER;
+                b.wanderTime = 0.0f;
+            }
+        }
+        else if(isMoving && distance <= b.minRange)
+        {
+            b.currentState = BeastieState::PURSUE;
+            b.isSlowMove = false;
+        }
+        else if(b.isSlowMove)
+        {
             b.currentState = BeastieState::PURSUE;
         }
-        else {
-            b.currentState= BeastieState::STOP;
+        else
+        {
+            b.currentState = BeastieState::STOP;
         }
 
-        //fuera del rango maximo
-        if (!isPlayerInRange(b.maxRange, beastieTr, playerTr) && b.currentState != BeastieState::STOP)
-            b.currentState= BeastieState::STOP;
-        
-       
-        //movemento direction
-        HUGO::Vector3 toPlayer = (playerTr.getWorldPosition() - beastieTr.getWorldPosition());
-        toPlayer.y = 0.0f; 
-        toPlayer.normalize();
-        HUGO::Vector3 dir(0.0f);
+        if (b.isFastMove){
+            b.currentState = BeastieState::PURSUE;
+            if(!rageSoundIncreased){
+                pack.modify<AudioComponent>([](AudioComponent& a)
+                {
+                    a.pitch = 1.5f;
+                });
+                rageSoundIncreased = true;
+            }
+        }
 
-        switch (b.currentState)
+
+        //----------------------------------------
+        // BEHAVIOUR
+        //----------------------------------------
+
+        switch(b.currentState)
         {
+            //------------------------------------
+            // PURSUE
+            //------------------------------------
+
             case BeastieState::PURSUE:
             {
-                dir = toPlayer;
-                if(!b.isSlowMove){
-                    pack.modify<AnimationComponent>([](AnimationComponent& a)
-                    {
-                        a.setEnabled("Run",true);
-                        a.setEnabled("Stop",false);
-                    });
-                }
-                break;
-            }
-            case BeastieState::STOP:
-            {
-                dir = HUGO::Vector3(0.0f);
+                b.desiredDirection = toPlayer;
+
                 pack.modify<AnimationComponent>([](AnimationComponent& a)
                 {
-                    a.setEnabled("Run",false);
-                    a.setEnabled("Stop",true);
+                    a.setEnabled("Run", true);
+                    a.setEnabled("Stop", false);
                 });
+
+                break;
+            }
+
+            //------------------------------------
+            // STOP
+            //------------------------------------
+
+            case BeastieState::STOP:
+            {
+                b.desiredDirection =
+                    HUGO::Vector3(0.0f);
+
+                pack.modify<AnimationComponent>(
+                    [](AnimationComponent& a)
+                    {
+                        a.setEnabled("Run", false);
+                        a.setEnabled("Stop", true);
+                    });
+
+                break;
+            }
+
+            //------------------------------------
+            // WANDER
+            //------------------------------------
+
+            case BeastieState::WANDER:
+            {
+                b.wanderTime -= dt / 1000.0f;
+
+                if(b.wanderTime <= 0.0f)
+                {
+                    b.wanderTime =
+                        b.wanderInterval;
+
+                    HUGO::Degree angle(
+                        rand() % 360);
+
+                    float rad =
+                        angle.valueRadians();
+
+                    b.wanderDirection =
+                        HUGO::Vector3(
+                            cos(rad),
+                            0.0f,
+                            sin(rad));
+
+                    b.wanderDirection.normalize();
+                }
+
+                b.desiredDirection =
+                    b.wanderDirection;
+
+                pack.modify<AnimationComponent>(
+                    [](AnimationComponent& a)
+                    {
+                        a.setEnabled("Run", true);
+                        a.setEnabled("Stop", false);
+                    });
+
                 break;
             }
         }
-        beastieMovement.direction = dir;
-        HUGO::Bool audioCond = dir != HUGO::Vector3(0.0f);
-        updateForce(b);
-        //rotation
-        HUGO::Float rotDir = beastieTr.getRotation().forward().cross(toPlayer).y;
-        HUGO::Float angularVel = std::clamp(rotDir, -1.0f, 1.0f) * 3.0f;
-        pack.modify<RigidBodyComponent>([angularVel](RigidBodyComponent& rb)
-        {
-            rb.setAngularVelocity(HUGO::Vector3(0, angularVel, 0));
-        });
-    }
 
-    //on collision
-    for(auto collisionId : scene.getComponent<ColliderComponent>(beastie).getCollisionInfo()){
-        if(scene.hasComponent<PlayerComponent>(collisionId)){
-            scene.changeAndDestroyPreviousScene("DefeatScene");
+        //----------------------------------------
+        // COLLISIONS
+        //----------------------------------------
+
+        for(auto collisionId :
+            pack.getConst<ColliderComponent>()
+            .getCollisionInfo())
+        {
+            if(scene.hasComponent<PlayerComponent>(
+                collisionId))
+            {
+                scene.changeAndDestroyPreviousScene(
+                    "DefeatScene");
+            }
         }
     }
 }

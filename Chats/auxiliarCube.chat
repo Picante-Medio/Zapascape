@@ -1,0 +1,14 @@
+PREFAB auxiliarCube
+ENTITY auxiliarCube 1
+    COMPONENT TransformComponent
+        VECTOR_3 position 0.0 0.0 1000.0
+        QUATERNION rotation 0.0 0.0 0.0 1.0
+        VECTOR_3 scale 0.3 0.3 0.3
+    COMPONENT RenderComponent
+        STRING meshName ritual_press.glb
+        STRING materialName 
+        BOOL visible false
+    START_CHILDREN
+    END_CHILDREN
+END_ENTITY
+

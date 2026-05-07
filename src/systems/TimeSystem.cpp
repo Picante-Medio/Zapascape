@@ -6,14 +6,18 @@
 #include "BeastieComponent.h"
 #include "MovementRBComponent.h"
 
-const uint32_t MAX_GAME_TIME =120;
-const uint32_t MAX_PLAYER_STOP_TIME = 10;
-
 void TimeSystem::init(){
     resetTimes();
 }
 void TimeSystem::onLoad(){
     resetTimes();
+    for (auto& pack: scene.query<TimeComponent>()){
+        pack.modify<TimeComponent>([this](TimeComponent& t){
+            MAX_GAME_TIME = t.maxGameTime;
+            MAX_PLAYER_STOP_TIME = t.maxStopTime;
+            t.remainingGameTime = t.maxGameTime;
+        });
+    }
 }
 void TimeSystem::resetTimes()
 {
@@ -26,7 +30,9 @@ void TimeSystem::update(uint32_t dt){
 
     if(gameTime > MAX_GAME_TIME){
        for (auto& pack: scene.query<BeastieComponent, MovementRBComponent>()){
-            pack.modify<BeastieComponent>([](BeastieComponent& b){b.isFastMove = true;});
+            pack.modify<BeastieComponent>([](BeastieComponent& b){
+                b.isFastMove = true;
+            });
        }
     }
     if(playerStoppedTime > MAX_PLAYER_STOP_TIME){

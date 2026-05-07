@@ -65,7 +65,8 @@ ENTITY Timer 1
 		FLOAT maxWidth 1.0
 		FLOAT maxHeight 1.0
 	COMPONENT TimeComponent
-		INT remainingGameTime 120
+		INT maxStopTime 10
+		INT maxGameTime 60
 	COMPONENT AudioComponent
         STRING audioName breath
         FLOAT volume 0.35
@@ -77,4 +78,21 @@ ENTITY Timer 1
 	START_CHILDREN
     END_CHILDREN
 END_ENTITY
+
+ENTITY alert 1
+	COMPONENT PanelComponent
+		STRING overlayName Game/Timer/alert
+		STRING containerName Game/Timer/alert/Container
+		BOOL isVisible false
+		INT metricsMode 0
+		FLOAT left 0.0
+		FLOAT top 0.0
+		FLOAT width 1.0
+		FLOAT height 1.0
+		STRING material Game/Alert
+	COMPONENT AlertTag
+	START_CHILDREN
+    END_CHILDREN
+END_ENTITY
+
 

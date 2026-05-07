@@ -22,6 +22,14 @@ RitualSystem::init() {
 
 void
 RitualSystem::onLoad() {
+    sound = scene.createEntity();
+    scene.addComponent<AudioComponent>(sound, [](AudioComponent& a){
+        a.audioName = "deactivate_ritual";
+        a.type = HUGO::SOUND2D;
+        a.isPlaying = false;
+        a.loop=false;
+        a.volume = 0.8f;
+    });
 }
 
 void
@@ -39,7 +47,7 @@ RitualSystem::update(uint32_t dt) {
         }
         EntityID ritual = pack.getConst<RitualComponent>().entity;
         
-        if(!scene.getComponent<RitualComponent>(ritual).getActive()) {
+        if(!scene.getComponent<RitualComponent>(ritual).isActive) {
             continue;
         }
 
@@ -54,7 +62,7 @@ RitualSystem::update(uint32_t dt) {
                 });
 
                 auto input = scene.getInput();
-                if(input->isActionPressed("interact") && scene.getComponent<RitualComponent>(ritual).getActive()){
+                if(input->isActionPressed("interact") && scene.getComponentConst<RitualComponent>(ritual).isActive){
                     activateRitual(ritual, cubo);
                     scene.log("Ritual activated");
                     break;
@@ -100,8 +108,11 @@ void
 RitualSystem::activateRitual(EntityID ritual, EntityID cubo) {  
     setActiveRitualsNumber(activeRituals + 1);
     
-    scene.modifyComponent<RitualComponent>(ritual, [](RitualComponent& rt){
-        rt.setActive(false);
+    scene.modifyComponent<RitualComponent>(ritual, [ritual, this](RitualComponent& rt){
+        rt.isActive = false;
+        scene.modifyComponent<AudioComponent>(ritual, [](AudioComponent& a){
+            a.isPlaying = false;
+        });
     });
     
     scene.modifyComponent<RenderComponent>(ritual, [](RenderComponent& rc){ 
@@ -120,7 +131,10 @@ RitualSystem::activateRitual(EntityID ritual, EntityID cubo) {
         pe.active = false;
         pe.emitting = false;
     });
-    
+
+    scene.modifyComponent<AudioComponent>(sound, [](AudioComponent& a){
+        a.isPlaying = true;
+    });
     scene.log("Ritual activado. Progreso: " + std::to_string(activeRituals) + "/" + std::to_string(maxRitualsNumber));
 } 
 

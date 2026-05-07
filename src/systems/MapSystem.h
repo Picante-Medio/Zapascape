@@ -15,7 +15,7 @@ private:
     std::mt19937 mt;
     std::uniform_int_distribution<int> directionsDist;
 
-    std::vector<HUGO::Vector2> getAdjacentFreePositions(HUGO::Vector2 pos, std::vector<std::vector<int>> mapData);
+    std::vector<HUGO::Vector2> getAdjacentFreePositions(const HUGO::Vector2& pos, const std::vector<std::vector<HUGO::Int>>& mapData);
     
     void createPlayer(const HUGO::Vector3& pos);
     void createBeastie(const HUGO::Vector3& pos);

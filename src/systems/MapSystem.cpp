@@ -119,7 +119,7 @@ MapSystem::onLoad() {
 }
 
 std::vector<HUGO::Vector2> 
-MapSystem::getAdjacentFreePositions(HUGO::Vector2 pos, std::vector<std::vector<HUGO::Int>> mapData) {
+MapSystem::getAdjacentFreePositions(const HUGO::Vector2& pos, const std::vector<std::vector<HUGO::Int>>& mapData) {
     std::vector<HUGO::Vector2> freePositions;
 
     for(HUGO::Int i = 0; i < directions.size(); i++) {
@@ -137,7 +137,9 @@ MapSystem::getAdjacentFreePositions(HUGO::Vector2 pos, std::vector<std::vector<H
 
 
 void
-MapSystem::update(uint32_t) {}
+MapSystem::update(uint32_t) {
+    int i =0;
+}
 
 void
 MapSystem::fixedUpdate(uint32_t) {}
@@ -182,22 +184,14 @@ void MapSystem::createRitual(const HUGO::Vector3 &pos, EntityID ritual)
     //     cc3.isTrigger = true;
     // });
 
-    EntityID cube = scene.createEntity();
+    EntityID cube = scene.instantiatePrefab("auxiliarCube").getValue();
     scene.addComponent<TransformComponent>(cube, [pos](TransformComponent& t) {
         t.setPosition(pos + HUGO::Vector3(0.0f, 1.0f, 0.0f));
-        t.setScale(HUGO::Vector3(0.3f, 0.3f, 0.3f));
     });
-    
-    scene.addComponent<RenderComponent>(cube, [](RenderComponent& rc) {
-        rc.setMeshName("ritual_press.glb");
-        rc.visible = false;
-    });
-
     scene.addComponent<RitualComponent>(ritual, [cube](RitualComponent& rc){
-        rc.setActive(true);
         rc.associatedCubo = cube;
+        rc.isActive= true;
     });
-
 }
 
 void MapSystem::createFloor(const HUGO::Vector3 &pos, const HUGO::Vector3 & scale, const std::string& prefab)
@@ -246,13 +240,10 @@ void MapSystem::createDoor(const HUGO::Vector3 &pos, const HUGO::Vector2& dir)
         HUGO::Vector3 forward(dir.x, 0.0f, dir.y);
         forward.normalize();
         
-        scene.addComponent<TransformComponent>(cube, [pos, forward](TransformComponent& t) {
+        scene.addComponent<TransformComponent>(cube, [pos, forward, finalRotation](TransformComponent& t) {
             t.setPosition(pos + forward);
-            t.setScale(HUGO::Vector3(0.3f, 0.3f, 0.3f));
-        });
-        
-        scene.addComponent<TransformComponent>(cube, [finalRotation](TransformComponent& t) {
             t.setRotation(finalRotation);
+            t.setScale(HUGO::Vector3(0.3f, 0.3f, 0.3f));
         });
         
         scene.addComponent<RenderComponent>(cube, [](RenderComponent& rc) {

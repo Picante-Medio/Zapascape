@@ -8,7 +8,8 @@ HSYSTEM(BeastieSystem)
 private:
     EntityID beastie;
     EntityID player;
-    uint32_t cont =0;
+    EntityID timer;
+    HUGO::Bool rageSoundIncreased = false;
     HUGO::Bool isPlayerInRange(HUGO::Float dist, const TransformComponent& beastieTr, const TransformComponent& playerTr);
     void updateForce(BeastieComponent& b);
 public:

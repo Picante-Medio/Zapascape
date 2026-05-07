@@ -3,6 +3,8 @@
 
 HCOMPONENT(TimeComponent)
 public:
-    DEFAULT_SERIALIZED_MEMBER(HUGO::Int, remainingGameTime, 0);
+    uint32_t remainingGameTime = 0;
+    DEFAULT_SERIALIZED_MEMBER(HUGO::Int, maxGameTime, 120);
+    DEFAULT_SERIALIZED_MEMBER(HUGO::Int, maxStopTime, 10);
     bool playerStoppedLongTime = false;
 END_HCOMPONENT()
