@@ -154,8 +154,11 @@ RitualSystem::setActiveRitualsNumber(HUGO::Int newNumber){
     if(activeRituals == maxRitualsNumber){
         // door activated
         //de momento va directo a victoria para tener un flujo
-        for (auto& pack : scene.query<DoorComponent>()){
+        for (auto& pack : scene.query<DoorComponent, AudioComponent>()){
             pack.getDeprecated<DoorComponent>().isInteractive = true;
+            pack.modify<AudioComponent>([](AudioComponent& a){
+                a.isPlaying = true;
+            });
         }
     }
 }

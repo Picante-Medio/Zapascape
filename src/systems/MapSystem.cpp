@@ -53,7 +53,8 @@ MapSystem::onLoad() {
 
         for(HUGO::Int i =0; i<roomPositions.size(); ++i) {
             auto pos = roomPositions[i];
-            if (i%4==0){
+            HUGO::Int off = (HUGO::Int)(roomPositions.size()/10);
+            if (i% off ==0){
                 HUGO::Vector3 worldPos(pos.x * map.getGridSize(), 3.0f, pos.y * map.getGridSize());
                 createRoomLight(worldPos);
             }
@@ -253,6 +254,9 @@ void MapSystem::createDoor(const HUGO::Vector3 &pos, const HUGO::Vector2& dir)
 
         scene.addComponent<DoorComponent>(door.getValue(), [cube](DoorComponent& dc){
             dc.associatedCubo = cube;
+        });
+        scene.modifyComponent<AudioComponent>(door.getValue(), [](AudioComponent& a){
+            a.type = HUGO::SOUND2D;
         });
     }
 }

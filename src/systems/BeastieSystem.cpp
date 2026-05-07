@@ -8,6 +8,7 @@
 #include "ColliderComponent.h"
 #include "RenderComponent.h"
 #include "AudioComponent.h"
+#include "MapComponent.h"
 
 void BeastieSystem::init(){
 }
@@ -157,6 +158,12 @@ void BeastieSystem::update(uint32_t dt)
                     a.pitch = 1.5f;
                 });
                 rageSoundIncreased = true;
+                for (auto& pack1: scene.query<AudioComponent, MapComponent>()){
+                    pack.modify<AudioComponent>([](AudioComponent& a)
+                    {
+                        a.pitch = 2.0f;
+                    });
+                }
             }
         }
 

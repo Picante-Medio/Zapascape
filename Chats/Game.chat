@@ -1,7 +1,6 @@
 SCENE Game
 SYSTEM AudioSystem
 SYSTEM RenderSystem
-SYSTEM PhysicsGizmoSystem
 SYSTEM LightSystem
 SYSTEM CameraSystem
 SYSTEM UISystem
@@ -30,7 +29,7 @@ ENTITY Map 0
         STRING audioName game
         FLOAT volume 0.1
         BOOL loop true
-        FLOAT pitch 0.0
+        FLOAT pitch 1.0
         FLOAT startTime 0.0
         BOOL isPlaying true
 		INT type 2
@@ -66,7 +65,7 @@ ENTITY Timer 1
 		FLOAT maxHeight 1.0
 	COMPONENT TimeComponent
 		INT maxStopTime 10
-		INT maxGameTime 90
+		INT maxGameTime 180
 	COMPONENT AudioComponent
         STRING audioName breath
         FLOAT volume 0.35

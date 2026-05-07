@@ -25,7 +25,14 @@ ENTITY door 0
 		VECTOR_3 gravity 0.0 0.0 0.0
         FLOAT linearSleepingThreshold 0.8
         FLOAT angularSleepingThreshold 1.0
-
+    COMPONENT AudioComponent
+        STRING audioName door_open
+        FLOAT volume 0.4
+        BOOL loop false
+        FLOAT pitch 1.0
+        FLOAT startTime 0.0
+        BOOL isPlaying false
+		INT type 0
     START_CHILDREN
     ENTITY door1 0
 	COMPONENT TransformComponent
