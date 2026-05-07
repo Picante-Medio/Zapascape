@@ -84,7 +84,7 @@ MapSystem::onLoad() {
         HUGO::Vector3 playerPos = HUGO::Vector3(roomPositions[playerIndex].x * map.getGridSize(), -2.5f, roomPositions[playerIndex].y * map.getGridSize());
         HUGO::Vector3 beastiePos;
 
-        float minDist = 3.5f; 
+        int minDist = 10; 
         do {
             beastIndex = roomDist(mt);
             beastiePos = HUGO::Vector3(roomPositions[beastIndex].x * map.getGridSize(), -2.5f, roomPositions[beastIndex].y * map.getGridSize());
