@@ -21,7 +21,7 @@ SYSTEM BeastieSystem
 ENTITY Map 0
 	COMPONENT MapComponent
 		FLOAT gridSize 5.0
-		INT numberOfRooms 20
+		INT numberOfRooms 60
 		STRING wallPrefab wall
 		INT mapWidth 500
 		INT mapHeight 500

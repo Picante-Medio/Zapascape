@@ -19,6 +19,8 @@ public:
     SERIALIZED_MEMBER(HUGO::Int, mapWidth);
     SERIALIZED_MEMBER(HUGO::Int, mapHeight);
 
+    DEFAULT_SERIALIZED_MEMBER(HUGO::Int, numRituals, 2);
+
     HUGO::Float getGridSize() const {
         return gridSize;
     }

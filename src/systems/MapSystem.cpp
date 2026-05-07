@@ -91,7 +91,7 @@ MapSystem::onLoad() {
         } while(beastIndex == playerIndex || (beastiePos - playerPos).length() < minDist * map.getGridSize());
         
         std::vector<HUGO::Int> ritualIndices;
-        for(HUGO::Int i = 0; i < 2; ++i) {
+        for(HUGO::Int i = 0; i < map.numRituals; ++i) {
             HUGO::Int ritualIndex = roomDist(mt);
             while(ritualIndex == beastIndex || std::find(ritualIndices.begin(), ritualIndices.end(), ritualIndex) != ritualIndices.end()) {
                 ritualIndex = roomDist(mt);
