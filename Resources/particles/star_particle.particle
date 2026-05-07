@@ -24,7 +24,7 @@ particle_system Particle/Star
         red -0.05
         green -0.05
         blue -0.02
-        blue -0.01
+        alpha -0.01
     }
 }
 
@@ -54,7 +54,7 @@ particle_system Particle/StarRndColor
         red -0.05
         green -0.05
         blue -0.02
-        blue -0.01
+        alpha -0.01
     }
 }
 
@@ -83,7 +83,7 @@ particle_system Particle/Smoke
         red -0.05
         green -0.05
         blue -0.02
-        blue -0.01
+        alpha -0.01
     }
     affector Scaler
     {

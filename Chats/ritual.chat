@@ -34,7 +34,7 @@ ENTITY ritual 1
         BOOL active true
     COMPONENT AudioComponent
         STRING audioName ritual
-        FLOAT volume 0.7
+        FLOAT volume 0.75
         BOOL loop true
         FLOAT pitch 0.0
         FLOAT startTime 0.0
