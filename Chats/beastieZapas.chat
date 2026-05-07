@@ -8,13 +8,13 @@ ENTITY beastieZapas 0
 		STRING meshName beastieZapas.mesh
 		STRING materialName 
 	COMPONENT ParticleEmitterComponent
-        STRING particleName Particle/Star
+        STRING particleName Particle/Smoke
         STRING material static/Smoke
         INT quota 50
         BOOL sorted true
         VECTOR_3 direction 0.0 1.0 0.0
         FLOAT emissionRate 1.0
-        FLOAT timeToLive 0.5
+        FLOAT timeToLive 5
         FLOAT velocityMin 1.0
         FLOAT velocityMax 2.0
         FLOAT duration 1.0

@@ -6,7 +6,7 @@ ENTITY tuxZapas 0
     VECTOR_3 scale 0.25 0.25 0.25
   COMPONENT RenderComponent
 		STRING meshName tux.mesh
-		STRING materialName 
-    START_CHILDREN
-    END_CHILDREN
+		STRING materialName
+  START_CHILDREN
+  END_CHILDREN
 END_ENTITY

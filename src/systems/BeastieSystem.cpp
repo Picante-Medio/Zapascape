@@ -18,9 +18,6 @@ void BeastieSystem::onLoad(){
             anim.addAnimation("Run", true, false);
             anim.addAnimation("Stop", true, true);
         });
-        pack.modify<AudioComponent>([](AudioComponent& a){
-            a.isPlaying =true;
-        });
     }
     for (auto& pack: scene.query<PlayerComponent, TransformComponent>()){
         player = pack.getConst<PlayerComponent>().entity;
@@ -37,7 +34,24 @@ void BeastieSystem::update(uint32_t dt){
         MovementRBComponent& beastieMovement = pack.getDeprecated<MovementRBComponent>();
         BeastieComponent& b = pack.getDeprecated<BeastieComponent>();
 
-        const bool isMoving = input->isActionPressed("move");
+        if(!b.aiEnabled)
+        {
+            b.currentSpawnDelay -= dt;
+
+            if(b.currentSpawnDelay <= 0.0f)
+            {
+                b.aiEnabled = true;
+                pack.modify<AudioComponent>([](AudioComponent& a){
+                    a.isPlaying =true;
+                });
+
+            }
+            else
+            {
+                continue;
+            }
+        }
+        const HUGO::Bool isMoving = input->isActionPressed("move");
         const TransformComponent& playerTr = scene.getComponentConst<TransformComponent>(player);
     
         //si esta moviendo player
@@ -94,10 +108,10 @@ void BeastieSystem::update(uint32_t dt){
         }
         beastieMovement.direction = dir;
         HUGO::Bool audioCond = dir != HUGO::Vector3(0.0f);
-        updateForce(b, beastieMovement);
+        updateForce(b);
         //rotation
-        float rotDir = beastieTr.getRotation().forward().cross(toPlayer).y;
-        float angularVel = std::clamp(rotDir, -1.0f, 1.0f) * 3.0f;
+        HUGO::Float rotDir = beastieTr.getRotation().forward().cross(toPlayer).y;
+        HUGO::Float angularVel = std::clamp(rotDir, -1.0f, 1.0f) * 3.0f;
         pack.modify<RigidBodyComponent>([angularVel](RigidBodyComponent& rb)
         {
             rb.setAngularVelocity(HUGO::Vector3(0, angularVel, 0));
@@ -111,14 +125,16 @@ void BeastieSystem::update(uint32_t dt){
         }
     }
 }
-bool BeastieSystem::isPlayerInRange(float dist, const TransformComponent& beastieTr, const TransformComponent& playerTr){
+HUGO::Bool BeastieSystem::isPlayerInRange(HUGO::Float dist, const TransformComponent& beastieTr, const TransformComponent& playerTr){
     float distance = (playerTr.getWorldPosition() - beastieTr.getWorldPosition()).length();
     return distance<dist;
 }
 
-void BeastieSystem::updateForce(BeastieComponent &b, MovementRBComponent &m)
+void BeastieSystem::updateForce(BeastieComponent &b)
 {
-    if(b.isFastMove) m.force = b.fastForce;
-    else if(b.isSlowMove) m.force = b.slowForce;
-    else m.force = b.normalForce;
+    scene.modifyComponent<MovementRBComponent>(beastie, [b](MovementRBComponent& m){
+        if(b.isFastMove) m.force = b.fastForce;
+        else if(b.isSlowMove) m.force = b.slowForce;
+        else m.force = b.normalForce;
+    });
 }

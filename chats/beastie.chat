@@ -17,7 +17,7 @@ ENTITY beastie 0
         BOOL useGizmo true
     COMPONENT RigidBodyComponent
         FLOAT mass 5.0
-        FLOAT linearDamping 0.2
+        FLOAT linearDamping 0.4
         FLOAT angularDamping 0.0
         VECTOR_3 linearVelocity 0.0 0.0 0.0
         VECTOR_3 angularVelocity 0.0 0.0 0.0
@@ -29,7 +29,7 @@ ENTITY beastie 0
     COMPONENT BeastieComponent
         FLOAT normalForce 15.0
         FLOAT fastForce 30.0
-        FLOAT slowForce 2.0
+        FLOAT slowForce 10.0
         FLOAT minRange 10.0
         FLOAT maxRange 15.0
     COMPONENT AudioComponent

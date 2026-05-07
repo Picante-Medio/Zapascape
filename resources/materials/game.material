@@ -97,6 +97,21 @@ material Door/FiltroRojo
     }
 }
 
+material static/Star
+{
+    technique {
+        pass {
+            lighting off
+            scene_blend alpha_blend
+            depth_write off   
+            diffuse vertexcolour
+            texture_unit {
+                texture star.png
+            }
+        }
+    }   
+}
+
 material static/Smoke
 {
     technique {
@@ -107,7 +122,6 @@ material static/Smoke
             diffuse vertexcolour
             texture_unit {
                 texture smoke.png
-                tex_address_mode clamp
             }
         }
     }   

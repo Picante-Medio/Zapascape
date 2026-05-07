@@ -69,7 +69,7 @@ ENTITY Text 1
         VECTOR_4 colour 0.0 0.0 0.0 0.0
         VECTOR_4 colourTop 1.0 0.3 0.0 1.0
         VECTOR_4 colourBottom 1.0 0.8 0.2 1.0
-        FLOAT left 0.2
+        FLOAT left 0.275
         FLOAT top 0.1
         FLOAT maxWidth 0.0
     START_CHILDREN

@@ -9,8 +9,8 @@ private:
     EntityID beastie;
     EntityID player;
     uint32_t cont =0;
-    bool isPlayerInRange(float dist, const TransformComponent& beastieTr, const TransformComponent& playerTr);
-    void updateForce(BeastieComponent& b, MovementRBComponent& m);
+    HUGO::Bool isPlayerInRange(HUGO::Float dist, const TransformComponent& beastieTr, const TransformComponent& playerTr);
+    void updateForce(BeastieComponent& b);
 public:
     void init() override;
     void onLoad() override;
