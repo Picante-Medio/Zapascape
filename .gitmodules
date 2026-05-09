@@ -1,0 +1,4 @@
+[submodule "HUGO"]
+	path = HUGO
+	url = https://github.com/Proyecto3-FDI-UCM/2526-Grupo01-HUGO.git
+	branch = develop
