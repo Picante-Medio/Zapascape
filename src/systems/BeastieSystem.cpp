@@ -15,9 +15,7 @@ void BeastieSystem::init(){
 }
 void BeastieSystem::onLoad(){
     for (auto& pack: scene.query<BeastieComponent, AnimationComponent, AudioComponent>()){
-        beastie = pack.getConst<BeastieComponent>().entity;
-        pack.modify<BeastieComponent>([this](BeastieComponent& b){
-            beastie = b.entity;
+        pack.modify<BeastieComponent>([](BeastieComponent& b){
             b.aiEnabled = false;
             b.currentSpawnDelay = 10.0f;
         });
@@ -221,21 +219,11 @@ void BeastieSystem::update(uint32_t dt)
 
                     if(b.wanderTime <= 0.0f)
                     {
-                        b.wanderTime =
-                            b.wanderInterval;
+                        b.wanderTime =b.wanderInterval;
+                        HUGO::Degree angle( rand() % 360);
+                        float rad = angle.valueRadians();
 
-                        HUGO::Degree angle(
-                            rand() % 360);
-
-                        float rad =
-                            angle.valueRadians();
-
-                        b.wanderDirection =
-                            HUGO::Vector3(
-                                cos(rad),
-                                0.0f,
-                                sin(rad));
-
+                        b.wanderDirection = HUGO::Vector3(cos(rad), 0.0f, sin(rad));
                         b.wanderDirection.normalize();
                     }
 
@@ -255,29 +243,19 @@ void BeastieSystem::update(uint32_t dt)
         // COLLISIONS
         //----------------------------------------
 
-        for(auto collisionId :
-            pack.getConst<ColliderComponent>()
-            .getCollisionInfo())
+        for(auto collisionId : pack.getConst<ColliderComponent>().getCollisionInfo())
         {
-            if(scene.hasComponent<PlayerComponent>(
-                collisionId))
+            if(scene.hasComponent<PlayerComponent>(collisionId))
             {
-                scene.changeAndDestroyPreviousScene(
-                    "DefeatScene");
+                scene.changeAndDestroyPreviousScene("DefeatScene");
             }
         }
     }
 }
-HUGO::Bool BeastieSystem::isPlayerInRange(HUGO::Float dist, 
-    const WorldTransformComponent& beastieWTr, const WorldTransformComponent& playerWTr)
-{
-    float distance = (playerWTr.worldPosition - beastieWTr.worldPosition).length();
-    return distance < dist;
-}
 
 void BeastieSystem::updateForce(BeastieComponent &b)
 {
-    scene.modifyComponent<MovementRBComponent>(beastie, [b](MovementRBComponent& m){
+    scene.modifyComponent<MovementRBComponent>(b.entity, [b](MovementRBComponent& m){
         if(b.isFastMove) m.force = b.fastForce;
         else if(b.isSlowMove) m.force = b.slowForce;
         else m.force = b.normalForce;

@@ -10,7 +10,6 @@
 #include "RitualComponent.h"
 #include "ParticleEmitterComponent.h"
 #include "DoorComponent.h"
-#include "DoorTag.h"
 
 void
 RitualSystem::init() {
@@ -152,7 +151,6 @@ RitualSystem::setActiveRitualsNumber(HUGO::Int newNumber){
 
     if(activeRituals == maxRitualsNumber){
         // door activated
-        //de momento va directo a victoria para tener un flujo
         for (auto& pack : scene.query<DoorComponent, AudioComponent>()){
             pack.getDeprecated<DoorComponent>().isInteractive = true;
             pack.modify<AudioComponent>([](AudioComponent& a){

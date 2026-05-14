@@ -21,7 +21,7 @@ material colorTecho
             scene_blend add
             depth_write on
             ambient 0.25 0.25 0.25 1.00
-            diffuse 0.40 0.40 0.40 1.00
+            diffuse 0.17 0.17 0.17 1.00
             texture_unit {
                 texture ceiling.png
                 tex_address_mode wrap

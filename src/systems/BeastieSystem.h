@@ -7,12 +7,9 @@ struct BeastieComponent;
 
 HSYSTEM(BeastieSystem)
 private:
-    EntityID beastie;
     EntityID player;
     EntityID timer;
     HUGO::Bool rageSoundIncreased = false;
-    HUGO::Bool isPlayerInRange(HUGO::Float dist, const WorldTransformComponent& beastieWTr, 
-        const WorldTransformComponent& playerWTr);
     void updateForce(BeastieComponent& b);
 public:
     void init() override;

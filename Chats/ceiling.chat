@@ -15,6 +15,7 @@ ENTITY ceiling 0
         QUATERNION rotationOffset 0.0 0.0 0.0 1.0
         BOOL active true
         BOOL useGizmo false
+        BOOL isTrigger false
     COMPONENT RigidBodyComponent
         FLOAT mass 0.0
         FLOAT linearDamping 0.0

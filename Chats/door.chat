@@ -1,5 +1,5 @@
 PREFAB door
-ENTITY door 0
+ENTITY door 1
 	COMPONENT TransformComponent
 		VECTOR_3 position 0.0 0.0 0.0
 		QUATERNION rotation 0.0 0.0 0.0 1.0
@@ -34,16 +34,15 @@ ENTITY door 0
         BOOL isPlaying false
 		INT type 0
     START_CHILDREN
-    ENTITY door1 0
-	COMPONENT TransformComponent
-		VECTOR_3 position 0.0 -0.52 0.55
-		QUATERNION rotation 0.0 1.0 0.0 0.0
-		VECTOR_3 scale 0.15 0.15 0.15
-	COMPONENT RenderComponent
-		STRING meshName door.glb
-		STRING materialName Door/FiltroRojo
-    END_ENTITY
-
+        ENTITY door1 1
+        COMPONENT TransformComponent
+            VECTOR_3 position 0.0 -0.52 0.55
+            QUATERNION rotation 0.0 1.0 0.0 0.0
+            VECTOR_3 scale 0.01 0.01 0.01
+        COMPONENT RenderComponent
+            STRING meshName door.glb
+            STRING materialName Door/FiltroRojo
+        END_ENTITY
     END_CHILDREN
 END_ENTITY
 

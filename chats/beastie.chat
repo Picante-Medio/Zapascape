@@ -15,6 +15,7 @@ ENTITY beastie 0
         QUATERNION rotationOffset 0.0 0.0 0.0 1.0
         BOOL active true
         BOOL useGizmo true
+        BOOL isTrigger false
     COMPONENT RigidBodyComponent
         FLOAT mass 5.0
         FLOAT linearDamping 0.4

@@ -1,5 +1,5 @@
 PREFAB wall
-ENTITY wall 0
+ENTITY wall 1
 	COMPONENT TransformComponent
 		VECTOR_3 position 0.0 0.0 0.0
 		QUATERNION rotation 0.0 0.0 0.0 1.0
@@ -14,7 +14,8 @@ ENTITY wall 0
         VECTOR_3 positionOffset 0.0 0.0 0.0
         QUATERNION rotationOffset 0.0 0.0 0.0 1.0
         BOOL active true
-        BOOL useGizmo false
+        BOOL useGizmo true
+        BOOL isTrigger flase
     COMPONENT RigidBodyComponent
         FLOAT mass 0.0
         FLOAT linearDamping 0.0
