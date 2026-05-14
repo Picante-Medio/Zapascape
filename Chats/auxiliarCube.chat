@@ -7,7 +7,7 @@ ENTITY auxiliarCube 1
     COMPONENT RenderComponent
         STRING meshName ritual_press.glb
         STRING materialName 
-        BOOL visible false
+        BOOL isVisible false
     START_CHILDREN
     END_CHILDREN
 END_ENTITY

@@ -56,7 +56,7 @@ RitualSystem::update(uint32_t dt) {
                 playerInArea = true;
                 // activate cube
                 scene.modifyComponent<RenderComponent>(cubo, [](RenderComponent& rc){ 
-                    rc.visible = true;
+                    rc.isVisible = true;
                 });
 
                 auto input = scene.getInput();
@@ -70,7 +70,7 @@ RitualSystem::update(uint32_t dt) {
 
         if(!playerInArea) {
             scene.modifyComponent<RenderComponent>(cubo, [](RenderComponent& rc){ 
-                rc.visible = false;
+                rc.isVisible = false;
             });
         }
     }
@@ -95,7 +95,7 @@ RitualSystem::update(uint32_t dt) {
             }
 
             scene.modifyComponent<RenderComponent>(cubo, [playerInArea](RenderComponent& rc){ 
-                rc.visible = playerInArea;
+                rc.isVisible = playerInArea;
             });
             
         }
@@ -114,11 +114,11 @@ RitualSystem::activateRitual(EntityID ritual, EntityID cubo) {
     });
     
     scene.modifyComponent<RenderComponent>(ritual, [](RenderComponent& rc){ 
-        rc.visible = false;
+        rc.isVisible = false;
     });
     
     scene.modifyComponent<RenderComponent>(cubo, [](RenderComponent& rc){ 
-        rc.visible = false;
+        rc.isVisible = false;
     });
     
     scene.modifyComponent<ColliderComponent>(ritual, [](ColliderComponent& cc){

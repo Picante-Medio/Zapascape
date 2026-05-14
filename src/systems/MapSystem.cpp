@@ -178,14 +178,17 @@ void MapSystem::createBeastie(const HUGO::Vector3& pos){
 
 void MapSystem::createRitual(const HUGO::Vector3 &pos, EntityID ritual)
 {
-    EntityID cube = scene.instantiatePrefab("auxiliarCube").getValue();
-    scene.modifyComponent<TransformComponent>(cube, [pos](TransformComponent& t) {
-        t.position.y += 1.0f;
-    });
-    scene.addComponent<RitualComponent>(ritual, [cube](RitualComponent& rc){
-        rc.associatedCubo = cube;
-        rc.isActive= true;
-    });
+    HUGO::ErrorOrType<EntityID> cube = scene.instantiatePrefab("auxiliarCube");
+    if(!cube.isError()){
+        EntityID ent = cube.getValue();
+        scene.modifyComponent<TransformComponent>(ent, [pos](TransformComponent& t) {
+            t.position.y += 1.0f;
+        });
+        scene.addComponent<RitualComponent>(ritual, [ent](RitualComponent& rc){
+            rc.associatedCubo = ent;
+            rc.isActive= true;
+        });
+    }
 }
 
 void MapSystem::createFloor(const HUGO::Vector3 &pos, const HUGO::Vector3 & scale, const std::string& prefab)
@@ -204,12 +207,14 @@ void MapSystem::createFloor(const HUGO::Vector3 &pos, const HUGO::Vector3 & scal
 
 void MapSystem::createRoomLight(const HUGO::Vector3& pos) {
     HUGO::ErrorOrType<EntityID> light = scene.instantiatePrefab("ceilingLight");
-    scene.modifyComponent<TransformComponent>(light.getValue(), [pos](TransformComponent& tr){
-        tr.position = pos;
-    });
-    scene.modifyComponent<LightComponent>(light.getValue(), [](LightComponent& lg){
-        lg.setLightType(HUGO::LightType::LT_POINT);
-    });
+    if(!light.isError()){
+        scene.modifyComponent<TransformComponent>(light.getValue(), [pos](TransformComponent& tr){
+            tr.position = pos;
+        });
+        scene.modifyComponent<LightComponent>(light.getValue(), [](LightComponent& lg){
+            lg.setLightType(HUGO::LightType::LT_POINT);
+        });
+    }
 }
 
 void MapSystem::createDoor(const HUGO::Vector3 &pos, const HUGO::Vector2& dir)
