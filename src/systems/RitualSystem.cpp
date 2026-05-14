@@ -8,7 +8,6 @@
 #include "PlayerComponent.h"
 #include "RenderComponent.h"
 #include "RitualComponent.h"
-#include "ChildrenComponent.h"
 #include "ParticleEmitterComponent.h"
 #include "DoorComponent.h"
 #include "DoorTag.h"

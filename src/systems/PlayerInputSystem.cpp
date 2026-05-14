@@ -70,8 +70,8 @@ void PlayerInputSystem::update(uint32_t dt)
     // -------------------------
     for (auto& pack: scene.query<PlayerComponent,TransformComponent, MovementRBComponent>()){
         const TransformComponent& t = pack.getConst<TransformComponent>();
-        HUGO::Vector3 forward = t.getRotation().forward().normalized();
-        HUGO::Vector3 right = t.getRotation().right().normalized();
+        HUGO::Vector3 forward = t.rotation.forward().normalized();
+        HUGO::Vector3 right = t.rotation.right().normalized();
 
         forward.y = 0.0f;
         right.y = 0.0f;

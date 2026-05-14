@@ -9,7 +9,7 @@
 #include "BeastieComponent.h"
 #include "LightComponent.h"
 #include "CameraComponent.h"
-#include "ChildrenComponent.h"
+#include "ParentComponent.h"
 #include "ColliderComponent.h"
 #include "RitualComponent.h"
 #include "DoorComponent.h"
@@ -65,8 +65,14 @@ MapSystem::onLoad() {
 
                 HUGO::ErrorOrType<EntityID> wall = scene.instantiatePrefab(map.wallPrefab);
                 if(!wall.isError()) {
-                    TransformComponent& wallTransform = scene.getComponent<TransformComponent>(wall.getValue());
-                    wallTransform.setPosition(HUGO::Vector3(freePos.x * map.getGridSize(), 0, freePos.y * map.getGridSize()));
+                    scene.modifyComponent<TransformComponent>(wall.getValue(), 
+                    [&freePos, &map](TransformComponent& wallTransform){
+                        wallTransform.position = 
+                            HUGO::Vector3(
+                                freePos.x * map.getGridSize(), 
+                                0, 
+                                freePos.y * map.getGridSize());
+                    });
                 }
                 map.mapData[freePos.x][freePos.y] = static_cast<HUGO::Int>(TileType::Wall);
             }
@@ -100,10 +106,19 @@ MapSystem::onLoad() {
             ritualIndices.push_back(ritualIndex);
             HUGO::ErrorOrType<EntityID> ritual = scene.instantiatePrefab("ritual");
             if(!ritual.isError()) {
-                TransformComponent& ritualTr = scene.getComponent<TransformComponent>(ritual.getValue());
-                ritualTr.setPosition(HUGO::Vector3(roomPositions[ritualIndex].x * map.getGridSize(), -2.48f, roomPositions[ritualIndex].y * map.getGridSize()));
-                ColliderComponent& coll = scene.getComponent<ColliderComponent>(ritual.getValue());
-                coll.isTrigger = true;
+                scene.modifyComponent<TransformComponent>(ritual.getValue(),
+                    [&roomPositions, &ritualIndex, &map](TransformComponent& ritualTr){
+                    ritualTr.position = HUGO::Vector3(
+                        roomPositions[ritualIndex].x * map.getGridSize(), 
+                        -2.48f, 
+                        roomPositions[ritualIndex].y * map.getGridSize());
+                });
+
+                scene.modifyComponent<ColliderComponent>(ritual.getValue(),
+                    [](ColliderComponent& coll){
+                        coll.isTrigger = true;
+                    }
+                );
             }
             createRitual(HUGO::Vector3(roomPositions[ritualIndex].x * map.getGridSize(), -2.48f, roomPositions[ritualIndex].y * map.getGridSize()), ritual.getValue());
         }
@@ -149,7 +164,7 @@ void MapSystem::createPlayer(const HUGO::Vector3& pos){
     HUGO::ErrorOrType<EntityID> player = scene.instantiatePrefab("player");
     if(!player.isError()) {
         scene.modifyComponent<TransformComponent>(player.getValue(), [pos](TransformComponent& tr){
-            tr.setPosition(pos + HUGO::Vector3(0.0f,1.0f,0.0f));
+            tr.position += HUGO::Vector3(0.0f,1.0f,0.0f);
         });
         scene.modifyComponent<LightComponent>(player.getValue(), [](LightComponent& l){
             l.setLightType(HUGO::LightType::LT_SPOTLIGHT);
@@ -165,7 +180,10 @@ void MapSystem::createBeastie(const HUGO::Vector3& pos){
     HUGO::ErrorOrType<EntityID> beastie = scene.instantiatePrefab("beastie");
     if(!beastie.isError()) {
         TransformComponent& beastieTr = scene.getComponent<TransformComponent>(beastie.getValue());
-        beastieTr.setPosition(pos);
+
+        scene.modifyComponent<TransformComponent>(beastie.getValue(), [&pos](TransformComponent& beastieTr){
+            beastieTr.position = pos;
+        });
     }
 }
 
@@ -186,8 +204,8 @@ void MapSystem::createRitual(const HUGO::Vector3 &pos, EntityID ritual)
     // });
 
     EntityID cube = scene.instantiatePrefab("auxiliarCube").getValue();
-    scene.addComponent<TransformComponent>(cube, [pos](TransformComponent& t) {
-        t.setPosition(pos + HUGO::Vector3(0.0f, 1.0f, 0.0f));
+    scene.modifyComponent<TransformComponent>(cube, [pos](TransformComponent& t) {
+        t.position.y += 1.0f;
     });
     scene.addComponent<RitualComponent>(ritual, [cube](RitualComponent& rc){
         rc.associatedCubo = cube;
@@ -200,8 +218,8 @@ void MapSystem::createFloor(const HUGO::Vector3 &pos, const HUGO::Vector3 & scal
     HUGO::ErrorOrType<EntityID> floor = scene.instantiatePrefab(prefab);
     if(!floor.isError()) {
         TransformComponent& floorTr = scene.getComponent<TransformComponent>(floor.getValue());
-        floorTr.setPosition(pos + HUGO::Vector3(0.0f, -scale.y/2.0f, 0.0f));
-        floorTr.setScale(scale);
+        floorTr.position.y += -scale.y/2.0f;
+        floorTr.scale = scale;
 
         scene.modifyComponent<ColliderComponent>(floor.getValue(), [scale](ColliderComponent& collider){
             collider.info = HUGO::BoxColliderInfo{scale};
@@ -212,7 +230,7 @@ void MapSystem::createFloor(const HUGO::Vector3 &pos, const HUGO::Vector3 & scal
 void MapSystem::createRoomLight(const HUGO::Vector3& pos) {
     HUGO::ErrorOrType<EntityID> light = scene.instantiatePrefab("ceilingLight");
     scene.modifyComponent<TransformComponent>(light.getValue(), [pos](TransformComponent& tr){
-        tr.setPosition(pos);
+        tr.position = pos;
     });
     scene.modifyComponent<LightComponent>(light.getValue(), [](LightComponent& lg){
         lg.setLightType(HUGO::LightType::LT_POINT);
@@ -224,7 +242,7 @@ void MapSystem::createDoor(const HUGO::Vector3 &pos, const HUGO::Vector2& dir)
     HUGO::ErrorOrType<EntityID> door = scene.instantiatePrefab("door");
     if(!door.isError()) {
         TransformComponent& doorTr = scene.getComponent<TransformComponent>(door.getValue());
-        doorTr.setPosition(pos);
+        doorTr.position = pos;
 
         float rotationY = 0.0f;
         if(dir.x > 0) rotationY = 90.0f;     
@@ -234,7 +252,7 @@ void MapSystem::createDoor(const HUGO::Vector3 &pos, const HUGO::Vector2& dir)
         
         HUGO::Radian angleRad = rotationY * (HUGO::PI / 180.0f);
         HUGO::Quaternion finalRotation = HUGO::Quaternion(angleRad, HUGO::Vector3(0, 1, 0));
-        doorTr.setRotation(finalRotation);
+        doorTr.rotation = finalRotation;
 
         EntityID cube = scene.createEntity();
         
@@ -242,9 +260,9 @@ void MapSystem::createDoor(const HUGO::Vector3 &pos, const HUGO::Vector2& dir)
         forward.normalize();
         
         scene.addComponent<TransformComponent>(cube, [pos, forward, finalRotation](TransformComponent& t) {
-            t.setPosition(pos + forward);
-            t.setRotation(finalRotation);
-            t.setScale(HUGO::Vector3(0.3f, 0.3f, 0.3f));
+            t.position = pos + forward;
+            t.rotation = finalRotation;
+            t.scale = {0.3f, 0.3f, 0.3f};
         });
         
         scene.addComponent<RenderComponent>(cube, [](RenderComponent& rc) {

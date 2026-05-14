@@ -1,6 +1,7 @@
 ﻿#include "BeastieSystem.h"
 #include "BeastieComponent.h"
 #include "PlayerComponent.h"
+#include "WorldTransformComponent.h"
 #include "TransformComponent.h"
 #include "MovementRBComponent.h"
 #include "AnimationComponent.h"
@@ -53,9 +54,9 @@ void BeastieSystem::fixedUpdate(uint32_t)
         //----------------------------------------
         if(b.desiredDirection.length() > 0.001f)
         {
-            HUGO::Vector3 lookDir =b.desiredDirection.normalized();
+            HUGO::Vector3 lookDir = b.desiredDirection.normalized();
 
-            HUGO::Float rotDir =beastieTr.getRotation().forward().cross(lookDir).y;
+            HUGO::Float rotDir = beastieTr.rotation.forward().cross(lookDir).y;
 
             HUGO::Float angularVel = std::clamp(rotDir, -1.0f, 1.0f) * 3.0f;
 
@@ -77,43 +78,41 @@ void BeastieSystem::update(uint32_t dt)
 {
     auto& input = scene.getInput();
 
-    for (auto& pack : scene.query<BeastieComponent, TransformComponent, AnimationComponent, AudioComponent, ColliderComponent>())
+    for (auto& pack : scene.query<BeastieComponent, WorldTransformComponent, 
+        AnimationComponent, AudioComponent, ColliderComponent>())
     {
-        TransformComponent& beastieTr = pack.getDeprecated<TransformComponent>();
-        BeastieComponent& b = pack.getDeprecated<BeastieComponent>();
+        const WorldTransformComponent& beastieWTr = pack.getConst<WorldTransformComponent>();
+        const BeastieComponent& bRead = pack.getConst<BeastieComponent>();
 
         //----------------------------------------
         // SPAWN DELAY
         //----------------------------------------
 
-        if(!b.aiEnabled)
-        {
-            b.currentSpawnDelay -= dt / 1000.0f;
+        if(!bRead.aiEnabled) {
+            pack.modify<BeastieComponent>([dt](BeastieComponent& b){
+                b.currentSpawnDelay -= dt / 1000.0f;
 
-            if(b.currentSpawnDelay <= 0.0f)
-            {
-                b.aiEnabled = true;
+                if(b.currentSpawnDelay <= 0.0f)
+                    b.aiEnabled = true;
+            });
 
-                pack.modify<AudioComponent>([](AudioComponent& a)
-                {
+            if (bRead.currentSpawnDelay <= 0.0f) {
+                pack.modify<AudioComponent>([](AudioComponent& a){
                     a.isPlaying = true;
                 });
             }
-            else
-            {
-                continue;
-            }
         }
+        else continue;
 
         //----------------------------------------
         // PLAYER INFO
         //----------------------------------------
 
-        const TransformComponent& playerTr = scene.getComponentConst<TransformComponent>(player);
+        const WorldTransformComponent& playerWorldTr = scene.getComponentConst<WorldTransformComponent>(player);
 
         HUGO::Bool isMoving = input->isActionPressed("move");
 
-        HUGO::Vector3 toPlayer = playerTr.getWorldPosition() - beastieTr.getWorldPosition();
+        HUGO::Vector3 toPlayer = playerWorldTr.worldPosition - beastieWTr.worldPosition;
 
         toPlayer.y = 0.0f;
 
@@ -128,42 +127,40 @@ void BeastieSystem::update(uint32_t dt)
         // STATE MACHINE
         //----------------------------------------
 
-        if(distance > b.maxRange)
-        {
-            if(b.currentState != BeastieState::WANDER)
+        pack.modify<BeastieComponent>([&distance, &isMoving](BeastieComponent& b){
+            if(distance > b.maxRange)
             {
-                b.currentState = BeastieState::WANDER;
-                b.wanderTime = 0.0f;
+                if(b.currentState != BeastieState::WANDER)
+                {
+                    b.currentState = BeastieState::WANDER;
+                    b.wanderTime = 0.0f;
+                }
             }
-        }
-        else if(isMoving && distance <= b.minRange)
-        {
-            b.currentState = BeastieState::PURSUE;
-            b.isSlowMove = false;
-        }
-        else if(b.isSlowMove)
-        {
-            b.currentState = BeastieState::PURSUE;
-        }
-        else
-        {
-            b.currentState = BeastieState::STOP;
-        }
+            else if(isMoving && distance <= b.minRange)
+            {
+                b.currentState = BeastieState::PURSUE;
+                b.isSlowMove = false;
+            }
+            else if(b.isSlowMove)
+                b.currentState = BeastieState::PURSUE;
+            else
+                b.currentState = BeastieState::STOP;
 
-        if (b.isFastMove){
-            b.currentState = BeastieState::PURSUE;
-            if(!rageSoundIncreased){
+            if (b.isFastMove)
+                b.currentState = BeastieState::PURSUE;
+        });
+
+        if(!rageSoundIncreased && bRead.isFastMove){
+            pack.modify<AudioComponent>([](AudioComponent& a)
+            {
+                a.pitch = 1.5f;
+            });
+            rageSoundIncreased = true;
+            for (auto& pack1: scene.query<AudioComponent, MapComponent>()){
                 pack.modify<AudioComponent>([](AudioComponent& a)
                 {
-                    a.pitch = 1.5f;
+                    a.pitch = 2.0f;
                 });
-                rageSoundIncreased = true;
-                for (auto& pack1: scene.query<AudioComponent, MapComponent>()){
-                    pack.modify<AudioComponent>([](AudioComponent& a)
-                    {
-                        a.pitch = 2.0f;
-                    });
-                }
             }
         }
 
@@ -172,7 +169,8 @@ void BeastieSystem::update(uint32_t dt)
         // BEHAVIOUR
         //----------------------------------------
 
-        switch(b.currentState)
+        
+        switch(bRead.currentState)
         {
             //------------------------------------
             // PURSUE
@@ -180,7 +178,9 @@ void BeastieSystem::update(uint32_t dt)
 
             case BeastieState::PURSUE:
             {
-                b.desiredDirection = toPlayer;
+                pack.modify<BeastieComponent>([&toPlayer](BeastieComponent& b){
+                    b.desiredDirection = toPlayer;
+                });
 
                 pack.modify<AnimationComponent>([](AnimationComponent& a)
                 {
@@ -197,15 +197,14 @@ void BeastieSystem::update(uint32_t dt)
 
             case BeastieState::STOP:
             {
-                b.desiredDirection =
-                    HUGO::Vector3(0.0f);
+                pack.modify<BeastieComponent>([](BeastieComponent& b){
+                    b.desiredDirection = HUGO::Vector3(0.0f);
+                });
 
-                pack.modify<AnimationComponent>(
-                    [](AnimationComponent& a)
-                    {
-                        a.setEnabled("Run", false);
-                        a.setEnabled("Stop", true);
-                    });
+                pack.modify<AnimationComponent>([](AnimationComponent& a){
+                    a.setEnabled("Run", false);
+                    a.setEnabled("Stop", true);
+                });
 
                 break;
             }
@@ -216,37 +215,37 @@ void BeastieSystem::update(uint32_t dt)
 
             case BeastieState::WANDER:
             {
-                b.wanderTime -= dt / 1000.0f;
+                pack.modify<BeastieComponent>([&dt](BeastieComponent& b){
 
-                if(b.wanderTime <= 0.0f)
-                {
-                    b.wanderTime =
-                        b.wanderInterval;
+                    b.wanderTime -= dt / 1000.0f;
 
-                    HUGO::Degree angle(
-                        rand() % 360);
-
-                    float rad =
-                        angle.valueRadians();
-
-                    b.wanderDirection =
-                        HUGO::Vector3(
-                            cos(rad),
-                            0.0f,
-                            sin(rad));
-
-                    b.wanderDirection.normalize();
-                }
-
-                b.desiredDirection =
-                    b.wanderDirection;
-
-                pack.modify<AnimationComponent>(
-                    [](AnimationComponent& a)
+                    if(b.wanderTime <= 0.0f)
                     {
-                        a.setEnabled("Run", true);
-                        a.setEnabled("Stop", false);
-                    });
+                        b.wanderTime =
+                            b.wanderInterval;
+
+                        HUGO::Degree angle(
+                            rand() % 360);
+
+                        float rad =
+                            angle.valueRadians();
+
+                        b.wanderDirection =
+                            HUGO::Vector3(
+                                cos(rad),
+                                0.0f,
+                                sin(rad));
+
+                        b.wanderDirection.normalize();
+                    }
+
+                    b.desiredDirection = b.wanderDirection;
+                });
+
+                pack.modify<AnimationComponent>([](AnimationComponent& a){
+                    a.setEnabled("Run", true);
+                    a.setEnabled("Stop", false);
+                });
 
                 break;
             }
@@ -269,9 +268,11 @@ void BeastieSystem::update(uint32_t dt)
         }
     }
 }
-HUGO::Bool BeastieSystem::isPlayerInRange(HUGO::Float dist, const TransformComponent& beastieTr, const TransformComponent& playerTr){
-    float distance = (playerTr.getWorldPosition() - beastieTr.getWorldPosition()).length();
-    return distance<dist;
+HUGO::Bool BeastieSystem::isPlayerInRange(HUGO::Float dist, 
+    const WorldTransformComponent& beastieWTr, const WorldTransformComponent& playerWTr)
+{
+    float distance = (playerWTr.worldPosition - beastieWTr.worldPosition).length();
+    return distance < dist;
 }
 
 void BeastieSystem::updateForce(BeastieComponent &b)

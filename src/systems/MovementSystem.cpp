@@ -2,7 +2,7 @@
 
 #include "MovementComponent.h"
 #include "MovementRBComponent.h"
-#include "TransformComponent.h"
+#include "WorldTransformComponent.h"
 #include "RigidBodyComponent.h"
 
 void MovementSystem::init() {}
@@ -16,10 +16,10 @@ MovementSystem::update(uint32_t dt)
     // movement with transform
     HUGO::Float s = dt /1000.0f;
     // Update movement components
-    for (auto& pack: scene.query<MovementComponent, TransformComponent>()) {
+    for (auto& pack: scene.query<MovementComponent, WorldTransformComponent>()) {
         const MovementComponent& m = pack.getConst<MovementComponent>();
-        pack.modify<TransformComponent>([s, m](TransformComponent& tr){
-            tr.setWorldPosition(tr.getWorldPosition() + m.direction * m.speed * s);
+        pack.modify<WorldTransformComponent>([s, m](WorldTransformComponent& tr){
+            tr.worldPosition += m.direction * m.speed * s;
         });
     }
 }

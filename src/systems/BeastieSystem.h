@@ -1,16 +1,18 @@
 ﻿#pragma once
 #include "HUGO.h"
 #include <random>
-struct TransformComponent;
+struct WorldTransformComponent;
 struct MovementRBComponent;
 struct BeastieComponent;
+
 HSYSTEM(BeastieSystem)
 private:
     EntityID beastie;
     EntityID player;
     EntityID timer;
     HUGO::Bool rageSoundIncreased = false;
-    HUGO::Bool isPlayerInRange(HUGO::Float dist, const TransformComponent& beastieTr, const TransformComponent& playerTr);
+    HUGO::Bool isPlayerInRange(HUGO::Float dist, const WorldTransformComponent& beastieWTr, 
+        const WorldTransformComponent& playerWTr);
     void updateForce(BeastieComponent& b);
 public:
     void init() override;

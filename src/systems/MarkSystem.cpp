@@ -38,8 +38,8 @@ MarkSystem::update(uint32_t dt)
         const TransformComponent& tr_player = scene.getComponentConst<TransformComponent>(player);
         EntityID id_to_use = q.front(); q.pop_front();
         scene.modifyComponent<TransformComponent>(id_to_use, [tr_player, this](TransformComponent& tr){
-            tr.setPosition(tr_player.getPosition()-HUGO::Vector3(0.0f, 1.0f, 0.0f));
-            tr.setRotation(tr_player.getRotation());
+            tr.position = tr_player.position - HUGO::Vector3(0.0f, 1.0f, 0.0f);
+            tr.rotation = tr_player.rotation;
         });
         q.push_back(id_to_use);
         scene.modifyComponent<MarkComponent>(mark, [](MarkComponent& m){
