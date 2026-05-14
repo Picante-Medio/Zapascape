@@ -5,7 +5,7 @@ SYSTEM LightSystem
 SYSTEM CameraSystem
 SYSTEM UISystem
 SYSTEM ConsoleSystem
-SYSTEM HierarchySystem
+SYSTEM TransformSystem
 SYSTEM ParticleSystem
 SYSTEM GameToOtherSystem
 SYSTEM MapSystem

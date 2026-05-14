@@ -1,6 +1,6 @@
 SCENE IntroScene
 SYSTEM AudioSystem
-SYSTEM HierarchySystem
+SYSTEM TransformSystem
 SYSTEM ParticleSystem
 SYSTEM CameraSystem
 SYSTEM LightSystem

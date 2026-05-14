@@ -2,7 +2,7 @@ SCENE test
 SYSTEM ConsoleSystem
 SYSTEM AudioSystem
 SYSTEM PhysicsGizmoSystem
-SYSTEM HierarchySystem
+SYSTEM TransformSystem
 SYSTEM ParticleSystem
 SYSTEM CameraSystem
 SYSTEM LightSystem
