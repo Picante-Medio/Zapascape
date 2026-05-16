@@ -152,10 +152,15 @@ RitualSystem::setActiveRitualsNumber(HUGO::Int newNumber){
     if(activeRituals == maxRitualsNumber){
         // door activated
         for (auto& pack : scene.query<DoorComponent, AudioComponent>()){
-            pack.getDeprecated<DoorComponent>().isInteractive = true;
+
+            pack.modify<DoorComponent>([](DoorComponent& door){
+                door.isInteractive = true;
+            });
+
             pack.modify<AudioComponent>([](AudioComponent& a){
                 a.isPlaying = true;
             });
+            
         }
     }
 }

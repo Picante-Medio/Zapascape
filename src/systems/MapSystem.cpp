@@ -23,59 +23,77 @@ void
 MapSystem::onLoad() {
     mt = std::mt19937(std::random_device{}());
     directionsDist = std::uniform_int_distribution<int>(0, directions.size()-1);
+
     for (auto& pack: scene.query<MapComponent>()) {
-        MapComponent& map = pack.getDeprecated<MapComponent>();
-        map.mapData = std::vector<std::vector<HUGO::Int>>(map.mapWidth, std::vector<HUGO::Int>(map.mapHeight, static_cast<HUGO::Int>(TileType::Undefined)));
 
-        HUGO::Vector2 startPos(map.mapWidth / 2.0f, map.mapHeight / 2.0f);
-        map.mapData[static_cast<HUGO::Int>(startPos.x)][static_cast<HUGO::Int>(startPos.y)] = static_cast<HUGO::Int>(TileType::Start);
-
-        HUGO::Vector2 currentPos = startPos;
+        HUGO::Vector2 startPos;
         std::vector<HUGO::Vector2> roomPositions;
-        
-        HUGO::Int nRooms = map.getNumberOfRooms();
-        HUGO::Int currentRooms = 0;
 
-        while(currentRooms < nRooms) {
-            HUGO::Int randomIndex = directionsDist(mt);
-            currentPos = currentPos + directions[randomIndex];
-            if (currentPos.x < 0 || currentPos.x >= map.mapWidth ||
-                currentPos.y < 0 || currentPos.y >= map.mapHeight) {
-                continue;
+        pack.modify<MapComponent>([this, &startPos, &roomPositions](MapComponent& map) {
+
+            map.mapData = std::vector<std::vector<HUGO::Int>>(
+                map.mapWidth, 
+                std::vector<HUGO::Int>(
+                    map.mapHeight, 
+                    static_cast<HUGO::Int>(TileType::Undefined)
+                )
+            );
+
+            startPos = HUGO::Vector2(map.mapWidth / 2.0f, map.mapHeight / 2.0f);
+
+            map.mapData[static_cast<HUGO::Int>(startPos.x)][static_cast<HUGO::Int>(startPos.y)] = static_cast<HUGO::Int>(TileType::Start);
+        
+            HUGO::Vector2 currentPos = startPos;
+            
+            HUGO::Int nRooms = map.getNumberOfRooms();
+            HUGO::Int currentRooms = 0;
+
+            while(currentRooms < nRooms) {
+                HUGO::Int randomIndex = directionsDist(mt);
+                currentPos = currentPos + directions[randomIndex];
+                if (currentPos.x < 0 || currentPos.x >= map.mapWidth ||
+                    currentPos.y < 0 || currentPos.y >= map.mapHeight) {
+                    continue;
+                }
+                TileType mapTile = static_cast<TileType>(map.mapData[currentPos.x][currentPos.y]);
+                if(mapTile == TileType::Undefined) {
+                    map.mapData[currentPos.x][currentPos.y] = static_cast<HUGO::Int>(TileType::Empty);
+                    roomPositions.push_back(currentPos);
+                    currentRooms += 1;
+                }
             }
-            TileType mapTile = static_cast<TileType>(map.mapData[currentPos.x][currentPos.y]);
-            if(mapTile == TileType::Undefined) {
-                map.mapData[currentPos.x][currentPos.y] = static_cast<HUGO::Int>(TileType::Empty);
-                roomPositions.push_back(currentPos);
-                currentRooms += 1;
-            }
-        }
+        });
+
+        const MapComponent& mapRead = pack.getConst<MapComponent>();
 
         for(HUGO::Int i =0; i<roomPositions.size(); ++i) {
             auto pos = roomPositions[i];
             HUGO::Int off = (HUGO::Int)(roomPositions.size()/10);
             if (i% off ==0){
-                HUGO::Vector3 worldPos(pos.x * map.getGridSize(), 3.0f, pos.y * map.getGridSize());
+                HUGO::Vector3 worldPos(pos.x * mapRead.getGridSize(), 3.0f, pos.y * mapRead.getGridSize());
                 createRoomLight(worldPos);
             }
 
-            std::vector<HUGO::Vector2> freePositions = getAdjacentFreePositions(pos, map.mapData);
+            std::vector<HUGO::Vector2> freePositions = getAdjacentFreePositions(pos, mapRead.mapData);
 
             for(const HUGO::Vector2& freePos : freePositions) {
 
-                HUGO::ErrorOrType<EntityID> wall = scene.instantiatePrefab(map.wallPrefab);
+                HUGO::ErrorOrType<EntityID> wall = scene.instantiatePrefab(mapRead.wallPrefab);
                 if(!wall.isError()) {
                     scene.modifyComponent<TransformComponent>(wall.getValue(), 
-                    [&freePos, &map](TransformComponent& wallTransform){
-                        wallTransform.position = HUGO::Vector3(freePos.x * map.getGridSize(), 0, freePos.y * map.getGridSize());
+                    [&freePos, &mapRead](TransformComponent& wallTransform){
+                        wallTransform.position = HUGO::Vector3(freePos.x * mapRead.getGridSize(), 0, freePos.y * mapRead.getGridSize());
                     });
                 }
-                map.mapData[freePos.x][freePos.y] = static_cast<HUGO::Int>(TileType::Wall);
+
+                pack.modify<MapComponent>([&freePos](MapComponent& map){
+                    map.mapData[freePos.x][freePos.y] = static_cast<HUGO::Int>(TileType::Wall);
+                });
             }
         }
         
 
-        HUGO::Vector3 start =HUGO::Vector3(startPos.x * map.getGridSize(), 0, startPos.y * map.getGridSize());
+        HUGO::Vector3 start = HUGO::Vector3(startPos.x * mapRead.getGridSize(), 0, startPos.y * mapRead.getGridSize());
         HUGO::Vector2 doorDirection = roomPositions[0] - startPos; 
         createDoor(start, doorDirection);
 
@@ -84,19 +102,30 @@ MapSystem::onLoad() {
         HUGO::Int playerIndex = roomDist(mt);
         HUGO::Int beastIndex;
 
-        HUGO::Vector3 playerPos = HUGO::Vector3(roomPositions[playerIndex].x * map.getGridSize(), -2.5f, roomPositions[playerIndex].y * map.getGridSize());
+        HUGO::Vector3 playerPos = HUGO::Vector3(
+                roomPositions[playerIndex].x * mapRead.getGridSize(), 
+                -2.5f, roomPositions[playerIndex].y * mapRead.getGridSize());
+
         HUGO::Vector3 beastiePos;
 
         int minDist = 10; 
         int cont = 10;
         do {
             beastIndex = roomDist(mt);
-            beastiePos = HUGO::Vector3(roomPositions[beastIndex].x * map.getGridSize(), -2.5f, roomPositions[beastIndex].y * map.getGridSize());
+            beastiePos = HUGO::Vector3(
+                roomPositions[beastIndex].x * mapRead.getGridSize(), 
+                -2.5f, roomPositions[beastIndex].y * mapRead.getGridSize());
             cont--;
-        } while(cont >=0 && ( beastIndex == playerIndex || (beastiePos - playerPos).length() < minDist * map.getGridSize()));
+        } 
+        while(
+            cont >=0 && (
+                beastIndex == playerIndex 
+                || (beastiePos - playerPos).length() < minDist * mapRead.getGridSize()
+            )
+        );
         
         std::vector<HUGO::Int> ritualIndices;
-        for(HUGO::Int i = 0; i < map.numRituals; ++i) {
+        for(HUGO::Int i = 0; i < mapRead.numRituals; ++i) {
             HUGO::Int ritualIndex = roomDist(mt);
             while(ritualIndex == beastIndex || std::find(ritualIndices.begin(), ritualIndices.end(), ritualIndex) != ritualIndices.end()) {
                 ritualIndex = roomDist(mt);
@@ -105,8 +134,11 @@ MapSystem::onLoad() {
             HUGO::ErrorOrType<EntityID> ritual = scene.instantiatePrefab("ritual");
             if(!ritual.isError()) {
                 scene.modifyComponent<TransformComponent>(ritual.getValue(),
-                    [&roomPositions, &ritualIndex, &map](TransformComponent& ritualTr){
-                    ritualTr.position = HUGO::Vector3( roomPositions[ritualIndex].x * map.getGridSize(), -2.48f, roomPositions[ritualIndex].y * map.getGridSize());
+                    [&roomPositions, &ritualIndex, &mapRead](TransformComponent& ritualTr){
+                    ritualTr.position = HUGO::Vector3(
+                        roomPositions[ritualIndex].x * mapRead.getGridSize(), 
+                        -2.48f, roomPositions[ritualIndex].y * mapRead.getGridSize()
+                    );
                 });
 
                 scene.modifyComponent<ColliderComponent>(ritual.getValue(),
@@ -115,14 +147,17 @@ MapSystem::onLoad() {
                     }
                 );
             }
-            createRitual(HUGO::Vector3(roomPositions[ritualIndex].x * map.getGridSize(), -2.48f, roomPositions[ritualIndex].y * map.getGridSize()), ritual.getValue());
+            createRitual(HUGO::Vector3(
+                roomPositions[ritualIndex].x * mapRead.getGridSize(), 
+                -2.48f, roomPositions[ritualIndex].y * mapRead.getGridSize()), 
+                ritual.getValue());
         }
 
         //suelo y techo
-        HUGO::Vector3 floorPos(map.mapWidth * map.getGridSize() / 2.0f, -2.5, map.mapHeight * map.getGridSize() / 2.0f);
-        HUGO::Vector3 floorScale(map.mapWidth / 2.0f, 0.1f, map.mapHeight / 2.0f);
+        HUGO::Vector3 floorPos(mapRead.mapWidth * mapRead.getGridSize() / 2.0f, -2.5, mapRead.mapHeight * mapRead.getGridSize() / 2.0f);
+        HUGO::Vector3 floorScale(mapRead.mapWidth / 2.0f, 0.1f, mapRead.mapHeight / 2.0f);
         createFloor(floorPos, floorScale, "floor");
-        createFloor(HUGO::Vector3(floorPos.x, map.getGridSize()/2, floorPos.z), floorScale, "ceiling");
+        createFloor(HUGO::Vector3(floorPos.x, mapRead.getGridSize()/2, floorPos.z), floorScale, "ceiling");
 
         createPlayer(playerPos);
         createBeastie(beastiePos);

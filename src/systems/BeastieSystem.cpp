@@ -33,14 +33,16 @@ void BeastieSystem::fixedUpdate(uint32_t)
 {
     for(auto& pack : scene.query<BeastieComponent, MovementRBComponent, TransformComponent, RigidBodyComponent>())
     {
-        TransformComponent& beastieTr = pack.getDeprecated<TransformComponent>();
-        MovementRBComponent& movement  = pack.getDeprecated<MovementRBComponent>();
-        BeastieComponent& b = pack.getDeprecated<BeastieComponent>();
+        const TransformComponent& beastieTr = pack.getConst<TransformComponent>();
+        const BeastieComponent& b = pack.getConst<BeastieComponent>();
 
         //----------------------------------------
         // MOVEMENT
         //----------------------------------------
-        movement.direction = b.desiredDirection;
+
+        pack.modify<MovementRBComponent>([&b](MovementRBComponent& movement){
+            movement.direction = b.desiredDirection;
+        });
 
         //----------------------------------------
         // FORCE
@@ -253,7 +255,7 @@ void BeastieSystem::update(uint32_t dt)
     }
 }
 
-void BeastieSystem::updateForce(BeastieComponent &b)
+void BeastieSystem::updateForce(const BeastieComponent &b)
 {
     scene.modifyComponent<MovementRBComponent>(b.entity, [b](MovementRBComponent& m){
         if(b.isFastMove) m.force = b.fastForce;
