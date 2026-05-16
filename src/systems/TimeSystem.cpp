@@ -25,7 +25,8 @@ void TimeSystem::resetTimes()
     playerStoppedTime = 0;
     gameTime = 0;
 }
-void TimeSystem::update(uint32_t dt){
+void TimeSystem::update(uint32_t dt)
+{
     accumulatedMS += dt;
 
     if(gameTime > MAX_GAME_TIME){

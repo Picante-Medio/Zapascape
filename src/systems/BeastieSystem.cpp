@@ -81,9 +81,17 @@ void BeastieSystem::update(uint32_t dt)
     for (auto& pack : scene.query<BeastieComponent, WorldTransformComponent, 
         AnimationComponent, AudioComponent, ColliderComponent>())
     {
+        //COLLISION
+        for(auto collisionId : pack.getConst<ColliderComponent>().getCollisionInfo())
+        {
+            if(scene.hasComponent<PlayerComponent>(collisionId))
+            {
+                scene.changeAndDestroyPreviousScene("DefeatScene");
+            }
+        }
+
         const WorldTransformComponent& beastieWTr = pack.getConst<WorldTransformComponent>();
         const BeastieComponent& bRead = pack.getConst<BeastieComponent>();
-
         //----------------------------------------
         // SPAWN DELAY
         //----------------------------------------
@@ -163,12 +171,6 @@ void BeastieSystem::update(uint32_t dt)
                 });
             }
         }
-
-
-        //----------------------------------------
-        // BEHAVIOUR
-        //----------------------------------------
-
         
         switch(bRead.currentState)
         {
@@ -238,18 +240,6 @@ void BeastieSystem::update(uint32_t dt)
                 });
 
                 break;
-            }
-        }
-
-        //----------------------------------------
-        // COLLISIONS
-        //----------------------------------------
-
-        for(auto collisionId : pack.getConst<ColliderComponent>().getCollisionInfo())
-        {
-            if(scene.hasComponent<PlayerComponent>(collisionId))
-            {
-                scene.changeAndDestroyPreviousScene("DefeatScene");
             }
         }
     }

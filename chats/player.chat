@@ -10,7 +10,7 @@ ENTITY player 1
     COMPONENT MovementRBComponent
         FLOAT force 25.0
     COMPONENT ColliderComponent
-        COLLIDER_INFO info BOX_COLLIDER 0.6 1.0 0.6
+        COLLIDER_INFO info BOX_COLLIDER 0.6 2.0 0.6
         FLOAT restitution 0.0
         FLOAT friction 0.9
         VECTOR_3 positionOffset 0.0 0.2 0.0

@@ -31,8 +31,8 @@ ENTITY beastie 0
         FLOAT normalForce 15.0
         FLOAT fastForce 30.0
         FLOAT slowForce 10.0
-        FLOAT minRange 10.0
-        FLOAT maxRange 15.0
+        FLOAT minRange 15.0
+        FLOAT maxRange 20.0
     COMPONENT AudioComponent
         STRING audioName beastie_walk
         FLOAT volume 1.5
