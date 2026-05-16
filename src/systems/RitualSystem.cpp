@@ -45,13 +45,13 @@ RitualSystem::update(uint32_t dt) {
         }
         EntityID ritual = pack.getConst<RitualComponent>().entity;
         
-        if(!scene.getComponent<RitualComponent>(ritual).isActive) {
+        if(!scene.getComponentConst<RitualComponent>(ritual).isActive) {
             continue;
         }
 
         EntityID cubo = pack.getConst<RitualComponent>().associatedCubo;
         bool playerInArea = false;
-        for(auto collisionId : scene.getComponent<ColliderComponent>(ritual).getCollisionInfo()){
+        for(auto collisionId : scene.getComponentConst<ColliderComponent>(ritual).getCollisionInfo()){
             if(player == collisionId){
                 playerInArea = true;
                 // activate cube
@@ -83,7 +83,7 @@ RitualSystem::update(uint32_t dt) {
             EntityID cubo = pack.getConst<DoorComponent>().associatedCubo;
 
             bool playerInArea = false;
-            for(auto collisionId : scene.getComponent<ColliderComponent>(door).getCollisionInfo()){
+            for(auto collisionId : scene.getComponentConst<ColliderComponent>(door).getCollisionInfo()){
                 if(collisionId == player){
                     playerInArea = true;
                     if(input->isActionPressed("interact") ){ 

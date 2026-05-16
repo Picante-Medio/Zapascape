@@ -256,8 +256,6 @@ void MapSystem::createDoor(const HUGO::Vector3 &pos, const HUGO::Vector2& dir)
 {
     HUGO::ErrorOrType<EntityID> door = scene.instantiatePrefab("door");
     if(!door.isError()) {
-        TransformComponent& doorTr = scene.getComponent<TransformComponent>(door.getValue());
-        doorTr.position = pos;
 
         float rotationY = 0.0f;
         if(dir.x > 0) rotationY = 90.0f;     
@@ -267,7 +265,12 @@ void MapSystem::createDoor(const HUGO::Vector3 &pos, const HUGO::Vector2& dir)
         
         HUGO::Radian angleRad = rotationY * (HUGO::PI / 180.0f);
         HUGO::Quaternion finalRotation = HUGO::Quaternion(angleRad, HUGO::Vector3(0, 1, 0));
-        doorTr.rotation = finalRotation;
+
+        scene.modifyComponent<TransformComponent>(door.getValue(), [&pos, &finalRotation](TransformComponent& doorTr){
+
+            doorTr.position = pos;
+            doorTr.rotation = finalRotation;
+        });
 
         //PopUp
         EntityID cube = scene.instantiatePrefab("auxiliarCube").getValue();
