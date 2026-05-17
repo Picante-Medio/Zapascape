@@ -110,7 +110,6 @@ void BeastieSystem::update(uint32_t dt)
                 });
             }
         }
-        else continue;
 
         //----------------------------------------
         // PLAYER INFO

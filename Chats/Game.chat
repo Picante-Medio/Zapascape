@@ -20,7 +20,7 @@ SYSTEM LuaFunctionsSystem
 ENTITY Map 0
 	COMPONENT MapComponent
 		FLOAT gridSize 5.0
-		INT numberOfRooms 100
+		INT numberOfRooms 60
 		STRING wallPrefab wall
 		INT mapWidth 500
 		INT mapHeight 500
@@ -90,6 +90,35 @@ ENTITY alert 1
 		FLOAT height 1.0
 		STRING material Game/Alert
 	COMPONENT AlertTag
+	START_CHILDREN
+    END_CHILDREN
+END_ENTITY
+
+ENTITY RitualText 1
+	COMPONENT PanelComponent
+		STRING overlayName Game/RitualText/Overlay
+		STRING containerName Game/RitualText/Overlay/Container
+		BOOL isVisible true
+		INT metricsMode 0
+		FLOAT left 0.0
+		FLOAT top 0.0
+		FLOAT width 0.0
+		FLOAT height 0.0
+		STRING material 
+	COMPONENT TextComponent
+		STRING textAreaName Game/RitualText/Overlay/Container/Text
+		STRING text 0/4
+		STRING textFont Roboto
+		FLOAT characterHeight 0.05
+		FLOAT spaceWidth 0.01
+		VECTOR_4 colour 0.0 0.0 0.0 0.0
+		VECTOR_4 colourTop 1.0 0.0 0.0 1.0
+		VECTOR_4 colourBottom 0.0 0.0 0.0 1.0
+		FLOAT left 0.9
+		FLOAT top 0.05
+		FLOAT maxWidth 1.0
+		FLOAT maxHeight 1.0
+	COMPONENT RitualTextComponent
 	START_CHILDREN
     END_CHILDREN
 END_ENTITY

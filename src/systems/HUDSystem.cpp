@@ -3,9 +3,17 @@
 #include "PanelComponent.h"
 #include "TextComponent.h"
 #include "TimeComponent.h"
+#include "AllChangeSceneMessages.h"
+#include "RitualComponent.h"
 
 constexpr HUGO::Float ALERT = 10.0f;
-void HUDSystem::init(){}
+void HUDSystem::init(){
+    scene.subscribe<DeactiveRitualMessage>([this](std::shared_ptr<HUGO::Message> msg) {
+        std::shared_ptr<DeactiveRitualMessage> m = std::static_pointer_cast<DeactiveRitualMessage>(msg);
+        for (auto& pack: scene.query<RitualTextComponent, TextComponent>())
+            pack.modify<TextComponent>([m](TextComponent& text) {text.text = m->text;}); 
+    });
+}
 
 void HUDSystem::onLoad(){}
 void HUDSystem::update(uint32_t dt)

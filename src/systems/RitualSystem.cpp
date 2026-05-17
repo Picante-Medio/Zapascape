@@ -10,7 +10,7 @@
 #include "RitualComponent.h"
 #include "ParticleEmitterComponent.h"
 #include "DoorComponent.h"
-
+#include "AllChangeSceneMessages.h"
 void
 RitualSystem::init() {
     activeRituals = 0;
@@ -133,8 +133,11 @@ RitualSystem::activateRitual(EntityID ritual, EntityID cubo) {
     scene.modifyComponent<AudioComponent>(sound, [](AudioComponent& a){
         a.isPlaying = true;
     });
-    scene.log("Ritual activado. Progreso: " + std::to_string(activeRituals) + "/" + std::to_string(maxRitualsNumber));
-} 
+    DeactiveRitualMessage msg;
+    msg.text = std::to_string(activeRituals) + "/" + std::to_string(maxRitualsNumber);
+    scene.sendMessage<DeactiveRitualMessage>(msg);
+    scene.log("Ritual activado. Progreso: " + msg.text);
+}
 
 void
 RitualSystem::fixedUpdate(uint32_t) {

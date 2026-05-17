@@ -29,7 +29,7 @@ ENTITY beastie 0
     COMPONENT MovementRBComponent
     COMPONENT BeastieComponent
         FLOAT normalForce 15.0
-        FLOAT fastForce 30.0
+        FLOAT fastForce 35.0
         FLOAT slowForce 10.0
         FLOAT minRange 15.0
         FLOAT maxRange 20.0
