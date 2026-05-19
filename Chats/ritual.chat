@@ -41,7 +41,6 @@ ENTITY ritual 1
     COMPONENT Audio3DInfoComponent
         FLOAT minDistance 1.0
         FLOAT maxDistance 15.0
-        VECTOR_3 direction 0.0 1.0 0.0
     START_CHILDREN
     END_CHILDREN
 END_ENTITY

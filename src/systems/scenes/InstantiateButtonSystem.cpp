@@ -32,7 +32,6 @@ InstantiateButtonSystem::onLoad()
             scene.modifyComponent<PanelComponent>(loading, [](PanelComponent& p){ p.isVisible = true; });
         };
     });
-
     // register exit button callback
     HUGO::ErrorOrType<EntityID> exitB = scene.instantiatePrefab("exitButton");
     but = exitB.getValue();
