@@ -29,6 +29,22 @@ ENTITY camera 1
     END_CHILDREN
 END_ENTITY
 
+ENTITY Loading 1
+    COMPONENT PanelComponent
+        STRING overlayName safaf
+        STRING containerName geywrwysf
+        BOOL isVisible false
+        INT metricsMode 0
+        FLOAT left 0.0
+        FLOAT top 0.0
+        FLOAT width 1.0
+        FLOAT height 1.0
+        STRING material Intro/Loading
+        INT zOrder 600
+    START_CHILDREN
+    END_CHILDREN
+END_ENTITY
+
 ENTITY background 1
     COMPONENT TransformComponent
 		VECTOR_3 position 0.0 0.0 -10.0
@@ -41,10 +57,8 @@ ENTITY background 1
         STRING audioName intro
         FLOAT volume 0.4
         BOOL loop true
-        FLOAT pitch 0.0
-        FLOAT startTime 0.0
+        FLOAT pitch 1.0
         BOOL isPlaying true
-		INT type 2
     START_CHILDREN
     END_CHILDREN
 END_ENTITY
@@ -106,36 +120,13 @@ ENTITY luz 1
         VECTOR_4 attenuation 1.0 0.0 0.00999999977648 20.0
         FLOAT shadowNearClipDist 0.1
         FLOAT shadowFarClipDist 300.0
-    START_CHILDREN
-    END_CHILDREN
-END_ENTITY
-
-ENTITY pass 1
-    COMPONENT AudioComponent 
+    COMPONENT AudioComponent
         STRING audioName click
         FLOAT volume 0.75
         BOOL loop false
-        FLOAT pitch 0.0
-        FLOAT startTime 0.0
+        FLOAT pitch 1.0
         BOOL isPlaying false
-        INT type 0
     COMPONENT ClickTag
-    START_CHILDREN
-    END_CHILDREN
-END_ENTITY
-
-ENTITY Loading 1
-    COMPONENT PanelComponent
-        STRING overlayName safaf
-        STRING containerName geywrwysf
-        BOOL isVisible false
-        INT metricsMode 0
-        FLOAT left 0.0
-        FLOAT top 0.0
-        FLOAT width 1.0
-        FLOAT height 1.0
-        STRING material Intro/Loading
-        INT zOrder 600
     START_CHILDREN
     END_CHILDREN
 END_ENTITY

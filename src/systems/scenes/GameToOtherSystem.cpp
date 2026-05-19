@@ -4,15 +4,8 @@
 
 void GameToOtherSystem::init(){ }
 
-void GameToOtherSystem::onLoad(){
-    for (auto& pack : scene.query<AudioComponent>()){
-        pack.modify<AudioComponent>([](AudioComponent& a){
-            a.type = HUGO::MUSIC;
-        });
-    }
-}
+void GameToOtherSystem::onLoad(){}
 
-void GameToOtherSystem::update(uint32_t){
-}
+void GameToOtherSystem::update(uint32_t){}
 
 void GameToOtherSystem::fixedUpdate(uint32_t) {};

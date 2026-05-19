@@ -30,9 +30,7 @@ ENTITY Map 0
         FLOAT volume 0.1
         BOOL loop true
         FLOAT pitch 1.0
-        FLOAT startTime 0.0
         BOOL isPlaying true
-		INT type 2
 	COMPONENT MarkComponent
 		int maxNum 10
 	START_CHILDREN
@@ -71,9 +69,7 @@ ENTITY Timer 1
         FLOAT volume 0.35
         BOOL loop true
         FLOAT pitch 0.7
-        FLOAT startTime 0.0
         BOOL isPlaying true
-		INT type 0
 	START_CHILDREN
     END_CHILDREN
 END_ENTITY

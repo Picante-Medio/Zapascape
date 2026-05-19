@@ -196,9 +196,6 @@ void MapSystem::createPlayer(const HUGO::Vector3& pos){
             l.setLightType(HUGO::LightType::LT_SPOTLIGHT);
             l.setSpotInner(HUGO::Radian(HUGO::Degree(5.0f)));
         });
-        scene.modifyComponent<AudioComponent>(player.getValue(), [](AudioComponent& a){
-            a.type = HUGO::SOUND2D;
-        });
     }
 
 }
@@ -284,9 +281,6 @@ void MapSystem::createDoor(const HUGO::Vector3 &pos, const HUGO::Vector2& dir)
 
         scene.addComponent<DoorComponent>(door.getValue(), [cube](DoorComponent& dc){
             dc.associatedCubo = cube;
-        });
-        scene.modifyComponent<AudioComponent>(door.getValue(), [](AudioComponent& a){
-            a.type = HUGO::SOUND2D;
         });
     }
 }

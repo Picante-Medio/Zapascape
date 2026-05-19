@@ -15,13 +15,9 @@ InstantiateButtonSystem::onLoad()
         scene.changeAndDestroyPreviousScene(m->sceneName);
     });
 
-    for (auto& pack: scene.query<AudioComponent>()){
-        pack.modify<AudioComponent>([this](AudioComponent& a){
-            a.type = HUGO::AudioTypes::MUSIC;
-        });
-    }
     for (auto& pack: scene.query<PanelComponent>()){
         loading = pack.getConst<PanelComponent>().entity;
+        break;
     }
 
     // register play button callback
@@ -33,14 +29,11 @@ InstantiateButtonSystem::onLoad()
         b.onClickCallback = [this](){
             countdownStart = true;
             scene.modifyComponent<AudioComponent>(click, [](AudioComponent& a){ a.isPlaying = true; });
-            scene.modifyComponent<PanelComponent>(loading, [](PanelComponent& p){ p.isVisible = true; });
+            scene.modifyComponent<PanelComponent>(loading, [](PanelComponent& p){ 
+            p.isVisible = true; });
         };
     });
-    
-    scene.modifyComponent<AudioComponent>(but, [this](AudioComponent& a){
-        a.type = HUGO::AudioTypes::SOUND2D;
-    });
-    
+
     // register exit button callback
     HUGO::ErrorOrType<EntityID> exitB = scene.instantiatePrefab("exitButton");
     but = exitB.getValue();
@@ -49,15 +42,9 @@ InstantiateButtonSystem::onLoad()
             scene.exitGame();
         };
     });
-    scene.modifyComponent<AudioComponent>(but, [this](AudioComponent& a){
-        a.type = HUGO::AudioTypes::SOUND2D;
-    });
 
     for (auto& pack: scene.query<AudioComponent, ClickTag>()){
-        pack.modify<AudioComponent>([this](AudioComponent& a){
-            a.type = HUGO::AudioTypes::SOUND2D;
-            click = a.entity;
-        });
+        click = pack.getConst<AudioComponent>().entity;
     }
 }
 
@@ -70,7 +57,6 @@ for (auto& pack : scene.query<ButtonComponent, AudioComponent>()){
         if (!countdownStart && isOver && !b.wasOver){
             pack.modify<AudioComponent>([](AudioComponent& a){
                 a.isPlaying = true;
-                a.startTime =0.1;
             });
         }
         if (isOver != b.wasOver){

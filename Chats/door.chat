@@ -30,9 +30,7 @@ ENTITY door 1
         FLOAT volume 0.4
         BOOL loop false
         FLOAT pitch 1.0
-        FLOAT startTime 0.0
         BOOL isPlaying false
-		INT type 0
     START_CHILDREN
         ENTITY door1 1
         COMPONENT TransformComponent

@@ -37,9 +37,7 @@ ENTITY player 1
         FLOAT volume 0.75
         BOOL loop true
         FLOAT pitch 1.25
-        FLOAT startTime 0.0
         BOOL isPlaying false
-		INT type 0
     COMPONENT CameraComponent
         INT projectionType 0
         FLOAT fovY 60.0

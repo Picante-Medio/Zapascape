@@ -23,7 +23,6 @@ RitualSystem::onLoad() {
     sound = scene.createEntity();
     scene.addComponent<AudioComponent>(sound, [](AudioComponent& a){
         a.audioName = "deactivate_ritual";
-        a.type = HUGO::SOUND2D;
         a.isPlaying = false;
         a.loop=false;
         a.volume = 0.8f;

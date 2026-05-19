@@ -35,15 +35,13 @@ ENTITY beastie 0
         FLOAT maxRange 20.0
     COMPONENT AudioComponent
         STRING audioName beastie_walk
-        FLOAT volume 1.5
+        FLOAT volume 0.5
         BOOL loop true
         FLOAT pitch 1.0
-        FLOAT startTime 0.0
         BOOL isPlaying false
-		INT type 1
     COMPONENT Audio3DInfoComponent
         FLOAT maxDistance 30.0
-        FLOAT minDistance 10.0
+        FLOAT minDistance 2.0
     START_CHILDREN
     END_CHILDREN
 END_ENTITY

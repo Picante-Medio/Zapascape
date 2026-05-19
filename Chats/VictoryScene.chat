@@ -10,7 +10,7 @@ SYSTEM UISystem
 SYSTEM InstantiateButtonSystem
 SYSTEM VictorySceneSystem
 
-ENTITY camera 0
+ENTITY camera 1
     COMPONENT TransformComponent
         VECTOR_3 position 0.0 0.0 0.0
         QUATERNION rotation 0.0 0.0 0.0 1.0
@@ -41,10 +41,8 @@ ENTITY background 1
         STRING audioName victory
         FLOAT volume 0.4
         BOOL loop false
-        FLOAT pitch 0.0
-        FLOAT startTime 0.0
+        FLOAT pitch 1.0
         BOOL isPlaying true
-		INT type 2
     START_CHILDREN
     END_CHILDREN
 END_ENTITY
@@ -76,7 +74,7 @@ ENTITY Text 1
     END_CHILDREN
 END_ENTITY
 
-ENTITY luz 3
+ENTITY luz 1
 	COMPONENT TransformComponent
         VECTOR_3 position 0.0 -1.2 -0.5
 		QUATERNION rotation 0.0 0.0 0.0 1.0
@@ -103,10 +101,8 @@ ENTITY pass 1
         STRING audioName click
         FLOAT volume 0.75
         BOOL loop false
-        FLOAT pitch 0.0
-        FLOAT startTime 0.0
+        FLOAT pitch 1.0
         BOOL isPlaying false
-        INT type 0
     COMPONENT ClickTag
     START_CHILDREN
     END_CHILDREN
