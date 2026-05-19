@@ -7,7 +7,6 @@ SYSTEM UISystem
 SYSTEM ConsoleSystem
 SYSTEM TransformSystem
 SYSTEM ParticleSystem
-SYSTEM GameToOtherSystem
 SYSTEM MapSystem
 SYSTEM PlayerInputSystem
 SYSTEM MovementSystem
@@ -114,7 +113,7 @@ ENTITY RitualText 1
 		FLOAT top 0.05
 		FLOAT maxWidth 1.0
 		FLOAT maxHeight 1.0
-	COMPONENT RitualTextComponent
+	COMPONENT RitualTextTag
 	START_CHILDREN
     END_CHILDREN
 END_ENTITY

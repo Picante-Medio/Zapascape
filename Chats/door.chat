@@ -39,7 +39,7 @@ ENTITY door 1
             VECTOR_3 scale 0.15 0.15 0.15
         COMPONENT RenderComponent
             STRING meshName door.glb
-            STRING materialName Door/FiltroRojo
+            STRING materialName 
         END_ENTITY
     END_CHILDREN
 END_ENTITY

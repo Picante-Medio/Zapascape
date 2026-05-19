@@ -6,6 +6,7 @@
 #include "BeastieComponent.h"
 #include "MovementRBComponent.h"
 
+constexpr HUGO::Float ALERT = 15.0f;
 void TimeSystem::init(){
     resetTimes();
 }
@@ -30,6 +31,9 @@ void TimeSystem::update(uint32_t dt)
     accumulatedMS += dt;
 
     if(gameTime > MAX_GAME_TIME){
+        scene.changeAndDestroyPreviousScene("DefeatScene");
+    }
+    if(gameTime > MAX_GAME_TIME - ALERT){
        for (auto& pack: scene.query<BeastieComponent, MovementRBComponent>()){
             pack.modify<BeastieComponent>([](BeastieComponent& b){
                 b.isFastMove = true;
@@ -55,6 +59,7 @@ void TimeSystem::update(uint32_t dt)
             pack.modify<TimeComponent>([this](TimeComponent& t){
                 t.remainingGameTime = gameTime>MAX_GAME_TIME? 0: MAX_GAME_TIME - gameTime; 
                 t.playerStoppedLongTime = playerStoppedTime > MAX_PLAYER_STOP_TIME;
+                t.alert = gameTime > MAX_GAME_TIME - ALERT;
             });
         }
         

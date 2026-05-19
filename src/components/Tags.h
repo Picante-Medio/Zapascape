@@ -1,0 +1,14 @@
+#pragma once
+#include "HUGO.h"
+
+HCOMPONENT(AlertTag)
+END_HCOMPONENT()
+
+HCOMPONENT(RitualTextTag)
+END_HCOMPONENT()
+
+HCOMPONENT(LoadingPanelTag)
+END_HCOMPONENT()
+
+HCOMPONENT(ClickTag)
+END_HCOMPONENT()

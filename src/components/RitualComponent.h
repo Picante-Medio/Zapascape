@@ -9,6 +9,3 @@ public:
     DEFAULT_SERIALIZED_MEMBER(HUGO::Float, volume3D, 0.7f);
     DEFAULT_SERIALIZED_MEMBER(HUGO::Float, volumeDeactivate, 0.8f);
 END_HCOMPONENT()
-
-HCOMPONENT(RitualTextComponent)
-END_HCOMPONENT()

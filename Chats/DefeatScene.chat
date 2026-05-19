@@ -120,6 +120,7 @@ ENTITY Loading 1
         FLOAT height 1.0
         STRING material Intro/Loading
         INT zOrder 600
+    COMPONENT LoadingPanelTag
     START_CHILDREN
     END_CHILDREN
 END_ENTITY

@@ -3,7 +3,7 @@
 #include "AudioComponent.h"
 #include "ButtonComponent.h"
 #include "AllChangeSceneMessages.h"
-#include "ClickTag.h"
+#include "Tags.h"
 #include "PanelComponent.h"
 void InstantiateButtonSystem::init() {}
 
@@ -15,8 +15,8 @@ InstantiateButtonSystem::onLoad()
         scene.changeAndDestroyPreviousScene(m->sceneName);
     });
 
-    for (auto& pack: scene.query<PanelComponent>()){
-        loading = pack.getConst<PanelComponent>().entity;
+    for (auto& pack: scene.query<LoadingPanelTag>()){
+        loading = pack.getConst<LoadingPanelTag>().entity;
         break;
     }
 
@@ -29,8 +29,7 @@ InstantiateButtonSystem::onLoad()
         b.onClickCallback = [this](){
             countdownStart = true;
             scene.modifyComponent<AudioComponent>(click, [](AudioComponent& a){ a.isPlaying = true; });
-            scene.modifyComponent<PanelComponent>(loading, [](PanelComponent& p){ 
-            p.isVisible = true; });
+            scene.modifyComponent<PanelComponent>(loading, [](PanelComponent& p){ p.isVisible = true; });
         };
     });
 

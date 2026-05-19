@@ -7,4 +7,5 @@ public:
     DEFAULT_SERIALIZED_MEMBER(HUGO::Int, maxGameTime, 120);
     DEFAULT_SERIALIZED_MEMBER(HUGO::Int, maxStopTime, 10);
     bool playerStoppedLongTime = false;
+    bool alert = false;
 END_HCOMPONENT()
