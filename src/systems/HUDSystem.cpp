@@ -16,7 +16,14 @@ void HUDSystem::init(){
 }
 
 void HUDSystem::onLoad(){
-    time = scene.query<TimeComponent>().begin()->getConst<TimeComponent>().entity;
+    const TimeComponent&  t = scene.query<TimeComponent>().begin()->getConst<TimeComponent>();
+    time = t.entity;
+    for (auto& pack: scene.query<ProgressBarComponent>()){
+        pack.modify<ProgressBarComponent>([t](ProgressBarComponent& pb){
+            pb.maxValue = t.maxStopTime;
+            pb.fillMode = HUGO::VERTICAL_BOTTOM_TO_TOP;
+        });
+    }
 }
 void HUDSystem::update(uint32_t dt)
 {
@@ -56,7 +63,7 @@ void HUDSystem::update(uint32_t dt)
     {
         const TimeComponent& tcomp = scene.getComponentConst<TimeComponent>(time);
         pack.modify<ProgressBarComponent>([tcomp](ProgressBarComponent& p){
-            //p.currentValue = 1 - tcomp.remainingStopTime;
+            p.currentValue = tcomp.maxStopTime - tcomp.remainingStopTime;
         }); 
     }
 }

@@ -147,7 +147,8 @@ material Game/Alert
         }
     }
 }
-material Game/Track
+
+material Game/Fill/Background
 {
     technique
     {
@@ -162,6 +163,28 @@ material Game/Track
             texture_unit
             {
                 texture darkGray.png
+                colour_op replace
+            }
+
+        }
+    }
+}
+
+material Game/Track
+{
+    technique
+    {
+        pass
+        {
+            // MUST BE INCLUDED
+            lighting off
+            depth_check off
+            depth_write off
+            scene_blend alpha_blend
+
+            texture_unit
+            {
+                texture fill.png
                 colour_op replace
             }
 

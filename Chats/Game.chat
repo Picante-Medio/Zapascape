@@ -16,7 +16,7 @@ SYSTEM HUDSystem
 SYSTEM RitualSystem
 SYSTEM BeastieSystem
 SYSTEM LuaFunctionsSystem
-ENTITY Map 0
+ENTITY Map 1
 	COMPONENT MapComponent
 		FLOAT gridSize 5.0
 		INT numberOfRooms 60
@@ -86,6 +86,27 @@ ENTITY alert 1
 		FLOAT height 1.0
 		STRING material Game/Alert
 	COMPONENT AlertTag
+	START_CHILDREN
+    END_CHILDREN
+END_ENTITY
+
+ENTITY progressbar 1
+	COMPONENT PanelComponent
+		STRING overlayName Game/ProgressBar
+		STRING containerName Game/ProgressBar/Container
+		BOOL isVisible true
+		INT metricsMode 0
+		FLOAT left 0.05
+		FLOAT top 0.1
+		FLOAT width 0.05
+		FLOAT height 0.5
+		STRING material Game/Fill/Background
+	COMPONENT ProgressBarComponent
+		FLOAT minValue 0.0
+		FLOAT maxValue 1.0
+		FLOAT currentValue 0.0
+		STRING fillMaterial Game/Track
+		STRING fillElementName fhagheighie
 	START_CHILDREN
     END_CHILDREN
 END_ENTITY
