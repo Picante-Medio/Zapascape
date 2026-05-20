@@ -206,7 +206,7 @@ Durante el juego, en la pantalla aparecerá datos que informarán al jugador sob
 
 Ambos elementos del HUD están integrados de forma discreta en la pantalla.
 
-![HUD](hud_zapascape.png "HUD")
+![HUD](ImagenGDD/hud_zapascape.png "HUD")
 
 
 ### 6.2. Menús
@@ -215,15 +215,15 @@ El juego contará con varios **menús** funcionales que permiten al jugador nave
 
 -   **Menú de principal**: es lo primero que aparece al entrar en la aplicación. Tendrá dos botones: uno para empezar el juego y otro para cerrar la aplicación.  
 
-![Menú principal](menu_zapascape.png "Menú principal")
+![Menú principal](ImagenGDD/menu_zapascape.png "Menú principal")
 
 -   **Menú de Victoria**: aparece cuando el jugador llega a la puerta de salida. El jugador podrá elegir entre volver a jugar, que generará otro mapa, o salir del juego.
     
-![Menú de Victoria](menuVictoria_zapascape.png "Menú de Victoria")
+![Menú de Victoria](ImagenGDD/menuVictoria_zapascape.png "Menú de Victoria")
 
 -   **Menú de Derrota:** aparece cuando el jugador es alcanzado por un enemigo. Ofrece opciones para jugar otra vez o salir del juego.
     
-![Menú de Derrota](menuDerrota_zapascape.png "Menú de Derrota")
+![Menú de Derrota](ImagenGDD/menuDerrota_zapascape.png "Menú de Derrota")
 
 ---
 

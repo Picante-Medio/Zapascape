@@ -103,7 +103,6 @@ MapSystem::onLoad() {
             }
         }
         
-
         HUGO::Vector3 start = HUGO::Vector3(startPos.x * mapRead.getGridSize(), 0, startPos.y * mapRead.getGridSize());
         HUGO::Vector2 doorDirection = roomPositions[0] - startPos; 
         createDoor(start, doorDirection);
@@ -157,11 +156,11 @@ MapSystem::onLoad() {
                         coll.isTrigger = true;
                     }
                 );
-            }
-            createRitual(HUGO::Vector3(
+                createRitual(HUGO::Vector3(
                 roomPositions[ritualIndex].x * mapRead.getGridSize(), 
-                -2.48f, roomPositions[ritualIndex].y * mapRead.getGridSize()), 
+                -1.5f, roomPositions[ritualIndex].y * mapRead.getGridSize()), 
                 ritual.getValue());
+            }
         }
 
         float centerX = (minX + maxX) / 2.0f;
@@ -213,7 +212,10 @@ void MapSystem::createPlayer(const HUGO::Vector3& pos){
             l.setSpotInner(HUGO::Radian(HUGO::Degree(5.0f)));
         });
     }
-
+    else {
+        std::cout<< "[Error]: Fallo al instanciar Player, cerrando el juego\n";
+        scene.exitGame();
+    }
 }
 void MapSystem::createBeastie(const HUGO::Vector3& pos){
     HUGO::ErrorOrType<EntityID> beastie = scene.instantiatePrefab("beastie");
@@ -221,6 +223,9 @@ void MapSystem::createBeastie(const HUGO::Vector3& pos){
         scene.modifyComponent<TransformComponent>(beastie.getValue(), [&pos](TransformComponent& beastieTr){
             beastieTr.position = pos;
         });
+    }
+    else {
+        std::cout<< "[Error]: Fallo al instanciar Beastie\n";
     }
 }
 
@@ -237,6 +242,9 @@ void MapSystem::createRitual(const HUGO::Vector3 &pos, EntityID ritual)
             rc.isActive= true;
         });
     }
+    else {
+        std::cout<< "[Error]: Fallo al instanciar el prefab del ritual\n";
+    }
 }
 
 void MapSystem::createFloor(const HUGO::Vector3 &pos, const HUGO::Vector3 & scale, const std::string& prefab)
@@ -251,6 +259,9 @@ void MapSystem::createFloor(const HUGO::Vector3 &pos, const HUGO::Vector3 & scal
             collider.info = HUGO::BoxColliderInfo{scale};
         });
     }
+    else {
+        std::cout<< "[Error]: Fallo al instanciar el prefab del suelo\n";
+    }
 }
 
 void MapSystem::createRoomLight(const HUGO::Vector3& pos) {
@@ -263,6 +274,9 @@ void MapSystem::createRoomLight(const HUGO::Vector3& pos) {
         scene.modifyComponent<LightComponent>(light.getValue(), [](LightComponent& lg){
             lg.setLightType(HUGO::LightType::LT_SPOTLIGHT);
         });
+    }
+    else {
+        std::cout<< "[Error]:Fallo al instanciar el prefab del tejado\n";
     }
 }
 
@@ -299,5 +313,8 @@ void MapSystem::createDoor(const HUGO::Vector3 &pos, const HUGO::Vector2& dir)
         scene.addComponent<DoorComponent>(door.getValue(), [cube](DoorComponent& dc){
             dc.associatedCubo = cube;
         });
+    }
+    else {
+        std::cout<< "[Error]: Fallo al instanciar el prefab de la puerta final\n";
     }
 }
