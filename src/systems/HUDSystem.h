@@ -4,6 +4,7 @@
 HSYSTEM(HUDSystem)
 private:
     HUGO::Bool alertActivated = false;
+    EntityID time;
 public:
     void init() override;
     void onLoad() override;

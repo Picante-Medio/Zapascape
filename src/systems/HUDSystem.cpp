@@ -5,6 +5,7 @@
 #include "TimeComponent.h"
 #include "AllChangeSceneMessages.h"
 #include "RitualComponent.h"
+#include "ProgressBarComponent.h"
 
 void HUDSystem::init(){
     scene.subscribe<DeactiveRitualMessage>([this](std::shared_ptr<HUGO::Message> msg) {
@@ -14,7 +15,9 @@ void HUDSystem::init(){
     });
 }
 
-void HUDSystem::onLoad(){}
+void HUDSystem::onLoad(){
+    time = scene.query<TimeComponent>().begin()->getConst<TimeComponent>().entity;
+}
 void HUDSystem::update(uint32_t dt)
 {
     for (auto& pack: scene.query<TimeComponent, TextComponent>())
@@ -47,6 +50,14 @@ void HUDSystem::update(uint32_t dt)
                 text.colourBottom = red;
             }
         });
+    }
+
+    for (auto& pack: scene.query<ProgressBarComponent>())
+    {
+        const TimeComponent& tcomp = scene.getComponentConst<TimeComponent>(time);
+        pack.modify<ProgressBarComponent>([tcomp](ProgressBarComponent& p){
+            //p.currentValue = 1 - tcomp.remainingStopTime;
+        }); 
     }
 }
 

@@ -117,7 +117,7 @@ void BeastieSystem::update(uint32_t dt)
 
         const WorldTransformComponent& playerWorldTr = scene.getComponentConst<WorldTransformComponent>(player);
 
-        HUGO::Bool isMoving = input->isActionPressed("move");
+        HUGO::Bool isMoving = input.isActionPressed("move");
 
         HUGO::Vector3 toPlayer = playerWorldTr.worldPosition - beastieWTr.worldPosition;
 

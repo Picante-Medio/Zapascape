@@ -32,9 +32,9 @@ MarkSystem::onLoad()
 void
 MarkSystem::update(uint32_t dt) 
 {
-    auto input = scene.getInput();
+    auto& input = scene.getInput();
     //check if we have pressed mark key
-    if (input->wasActionJustPressed("mark")){
+    if (input.wasActionJustPressed("mark")){
         const TransformComponent& tr_player = scene.getComponentConst<TransformComponent>(player);
         EntityID id_to_use = q.front(); q.pop_front();
         scene.modifyComponent<TransformComponent>(id_to_use, [tr_player, this](TransformComponent& tr){

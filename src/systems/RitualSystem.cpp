@@ -58,8 +58,8 @@ RitualSystem::update(uint32_t dt) {
                     rc.isVisible = true;
                 });
 
-                auto input = scene.getInput();
-                if(input->isActionPressed("interact") && scene.getComponentConst<RitualComponent>(ritual).isActive){
+                auto& input = scene.getInput();
+                if(input.isActionPressed("interact") && scene.getComponentConst<RitualComponent>(ritual).isActive){
                     activateRitual(ritual, cubo);
                     scene.log("Ritual activated");
                     break;
@@ -78,14 +78,14 @@ RitualSystem::update(uint32_t dt) {
         EntityID door = pack.getConst<DoorComponent>().entity;
 
         if(pack.getConst<DoorComponent>().isInteractive) {
-            auto input = scene.getInput();
+            auto& input = scene.getInput();
             EntityID cubo = pack.getConst<DoorComponent>().associatedCubo;
 
             bool playerInArea = false;
             for(auto collisionId : scene.getComponentConst<ColliderComponent>(door).getCollisionInfo()){
                 if(collisionId == player){
                     playerInArea = true;
-                    if(input->isActionPressed("interact") ){ 
+                    if(input.isActionPressed("interact") ){ 
                         scene.log("Door activated");
                         scene.changeAndDestroyPreviousScene("VictoryScene");
                         break;

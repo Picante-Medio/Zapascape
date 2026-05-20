@@ -47,7 +47,7 @@ void TimeSystem::update(uint32_t dt)
     }
 
     if(accumulatedMS >= 1000) {
-        if(!scene.getInput()->isActionPressed("move")){
+        if(!scene.getInput().isActionPressed("move")){
             playerStoppedTime+= (accumulatedMS / 1000);
         }
         else {
@@ -57,8 +57,8 @@ void TimeSystem::update(uint32_t dt)
 
         for (auto& pack: scene.query<TimeComponent>()){
             pack.modify<TimeComponent>([this](TimeComponent& t){
-                t.remainingGameTime = gameTime>MAX_GAME_TIME? 0: MAX_GAME_TIME - gameTime; 
-                t.playerStoppedLongTime = playerStoppedTime > MAX_PLAYER_STOP_TIME;
+                t.remainingGameTime = gameTime > MAX_GAME_TIME? 0: MAX_GAME_TIME - gameTime; 
+                t.remainingStopTime = playerStoppedTime > MAX_PLAYER_STOP_TIME? 0: MAX_PLAYER_STOP_TIME - playerStoppedTime; 
                 t.alert = gameTime > MAX_GAME_TIME - ALERT;
             });
         }

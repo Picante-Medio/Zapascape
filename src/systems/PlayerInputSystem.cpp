@@ -18,14 +18,14 @@ const HUGO::Radian MIN_PITCH = HUGO::Degree(-89.0f);
 const HUGO::Radian MAX_PITCH = HUGO::Degree(89.0f);
 
 void PlayerInputSystem::init() {
-    auto input = scene.getInput();
+    auto& input = scene.getInput();
 
     // Register gameplay actions
-    input->registerAction(interactAction, interactKey);
-    input->registerAction(markAction, markKey);
+    input.registerAction(interactAction, interactKey);
+    input.registerAction(markAction, markKey);
 
     // Movement keys (WASD or custom mapping)
-    input->registerAction(moveAction, {upKey, downKey, leftKey, rightKey});
+    input.registerAction(moveAction, {upKey, downKey, leftKey, rightKey});
 }
 
 void PlayerInputSystem::onLoad() {
@@ -40,23 +40,23 @@ void PlayerInputSystem::onLoad() {
 
 void PlayerInputSystem::update(uint32_t dt)
 {
-    auto input = scene.getInput();
+    auto& input = scene.getInput();
 
     // -------------------------
     // MOVEMENT INPUT (WASD)
     // -------------------------
     HUGO::Vector3 actDir(0.0f);
 
-    if(input->isKeyPressed(HUGO::KeyCode::ESC)) scene.exitGame();
-    if (input->isKeyPressed(leftKey)) actDir.x -= 1.0f;
-    else if (input->isKeyPressed(rightKey)) actDir.x += 1.0f;
+    if(input.isKeyPressed(HUGO::KeyCode::ESC)) scene.exitGame();
+    if (input.isKeyPressed(leftKey)) actDir.x -= 1.0f;
+    else if (input.isKeyPressed(rightKey)) actDir.x += 1.0f;
 
-    if (input->isKeyPressed(upKey)) actDir.z -= 1.0f;
-    else if (input->isKeyPressed(downKey)) actDir.z += 1.0f;
+    if (input.isKeyPressed(upKey)) actDir.z -= 1.0f;
+    else if (input.isKeyPressed(downKey)) actDir.z += 1.0f;
 
     //ANIMATION
     for(auto& pack: scene.query<PlayerComponent,AnimationComponent, AudioComponent>()){
-        HUGO::Bool cond = input->isActionPressed("move");
+        HUGO::Bool cond = input.isActionPressed("move");
         pack.modify<AnimationComponent>([cond](AnimationComponent& anim){
             anim.setEnabled("Idle",cond);
             anim.setEnabled("Stop",!cond);
@@ -95,10 +95,10 @@ void PlayerInputSystem::update(uint32_t dt)
 // MOUSE DELTA
 // -------------------------
 void PlayerInputSystem::fixedUpdate(uint32_t) {
-    auto input = scene.getInput();
+    auto& input = scene.getInput();
     HUGO::Vector2 mouseDelta(0.0f);
-    auto aux = input->getMousePosition();
-    if (input->isMouseButtonPressed(HUGO::MouseCode::MOUSE_RIGHT))
+    auto aux = input.getMousePosition();
+    if (input.isMouseButtonPressed(HUGO::MouseCode::MOUSE_RIGHT))
     {
         HUGO::Vector2 currentMousePos(static_cast<HUGO::Float>(aux.x),static_cast<HUGO::Float>(aux.y));
 
@@ -122,26 +122,8 @@ void PlayerInputSystem::fixedUpdate(uint32_t) {
     // -------------------------
     HUGO::Float yaw = mouseDelta.x * rotationSensitivity;
     for (auto& pack: scene.query<PlayerComponent, RigidBodyComponent>()){
-        // int x=0;
         pack.modify<RigidBodyComponent>([yaw](RigidBodyComponent& rb){
             rb.setAngularVelocity(HUGO::Vector3(0.0f, yaw, 0.0f));
         });
     }
-    // for (auto& pack: scene.query<CameraComponent, TransformComponent>()){
-    //     int i =0;
-    // }
-
-    // for (auto& pack: scene.query<LightComponent, TransformComponent>()){
-    //     int y =0;
-    // }
-
-    // pitch += mouseDelta.y * rotationSensitivity;
-    // HUGO::Quaternion rotX(HUGO::Radian(pitch), HUGO::Vector3(1, 0, 0));
-
-    // for (auto& pack: scene.query<CameraComponent, TransformComponent>()){
-    //     pack.modify<TransformComponent>([rotX](TransformComponent& tr){
-    //         tr.setRotation(rotX);
-    //     });
-    // }
-
 }
