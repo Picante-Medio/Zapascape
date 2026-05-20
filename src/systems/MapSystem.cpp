@@ -65,12 +65,16 @@ MapSystem::onLoad() {
         });
 
         const MapComponent& mapRead = pack.getConst<MapComponent>();
+        float minX = std::numeric_limits<float>::max();
+        float maxX = std::numeric_limits<float>::lowest();
+        float minZ = std::numeric_limits<float>::max();
+        float maxZ = std::numeric_limits<float>::lowest();
 
         for(HUGO::Int i =0; i<roomPositions.size(); ++i) {
             auto pos = roomPositions[i];
             HUGO::Int off = (HUGO::Int)(roomPositions.size()/10);
             if (i% off ==0){
-                HUGO::Vector3 worldPos(pos.x * mapRead.getGridSize(), 3.0f, pos.y * mapRead.getGridSize());
+                HUGO::Vector3 worldPos(pos.x * mapRead.getGridSize(), mapRead.getGridSize()/2 -0.6f, pos.y * mapRead.getGridSize());
                 createRoomLight(worldPos);
             }
 
@@ -79,6 +83,13 @@ MapSystem::onLoad() {
             for(const HUGO::Vector2& freePos : freePositions) {
 
                 HUGO::ErrorOrType<EntityID> wall = scene.instantiatePrefab(mapRead.wallPrefab);
+                float wallWorldX = freePos.x * mapRead.getGridSize();
+                float wallWorldZ = freePos.y * mapRead.getGridSize();
+                minX = std::min(minX, wallWorldX);
+                maxX = std::max(maxX, wallWorldX);
+                minZ = std::min(minZ, wallWorldZ);
+                maxZ = std::max(maxZ, wallWorldZ);
+
                 if(!wall.isError()) {
                     scene.modifyComponent<TransformComponent>(wall.getValue(), 
                     [&freePos, &mapRead](TransformComponent& wallTransform){
@@ -153,9 +164,13 @@ MapSystem::onLoad() {
                 ritual.getValue());
         }
 
-        //suelo y techo
-        HUGO::Vector3 floorPos(mapRead.mapWidth * mapRead.getGridSize() / 2.0f, -2.5, mapRead.mapHeight * mapRead.getGridSize() / 2.0f);
-        HUGO::Vector3 floorScale(mapRead.mapWidth / 2.0f, 0.1f, mapRead.mapHeight / 2.0f);
+        float centerX = (minX + maxX) / 2.0f;
+        float centerZ = (minZ + maxZ) / 2.0f;
+        float widthWorld = maxX - minX + mapRead.getGridSize();
+        float heightWorld = maxZ - minZ + mapRead.getGridSize();
+        
+        HUGO::Vector3 floorPos(centerX, -2.5f, centerZ);
+        HUGO::Vector3 floorScale(widthWorld, 0.1f, heightWorld);
         createFloor(floorPos, floorScale, "floor");
         createFloor(HUGO::Vector3(floorPos.x, mapRead.getGridSize()/2, floorPos.z), floorScale, "ceiling");
 
@@ -191,6 +206,7 @@ void MapSystem::createPlayer(const HUGO::Vector3& pos){
     if(!player.isError()) {
         scene.modifyComponent<TransformComponent>(player.getValue(), [pos](TransformComponent& tr){
             tr.position = pos + HUGO::Vector3(0.0f,1.0f,0.0f);
+            //tr.rotation = HUGO::Quaternion(HUGO::Radian(HUGO::Degree(-90.0f)), HUGO::Vector3(1,0,0));
         });
         scene.modifyComponent<LightComponent>(player.getValue(), [](LightComponent& l){
             l.setLightType(HUGO::LightType::LT_SPOTLIGHT);
@@ -242,9 +258,10 @@ void MapSystem::createRoomLight(const HUGO::Vector3& pos) {
     if(!light.isError()){
         scene.modifyComponent<TransformComponent>(light.getValue(), [pos](TransformComponent& tr){
             tr.position = pos;
+            tr.rotation = HUGO::Quaternion(HUGO::Radian(HUGO::Degree(-90.0f)), HUGO::Vector3(1,0,0));
         });
         scene.modifyComponent<LightComponent>(light.getValue(), [](LightComponent& lg){
-            lg.setLightType(HUGO::LightType::LT_POINT);
+            lg.setLightType(HUGO::LightType::LT_SPOTLIGHT);
         });
     }
 }
@@ -261,7 +278,7 @@ void MapSystem::createDoor(const HUGO::Vector3 &pos, const HUGO::Vector2& dir)
         else if(dir.y < 0) rotationY = 180.0f; 
         
         HUGO::Radian angleRad = rotationY * (HUGO::PI / 180.0f);
-        HUGO::Quaternion finalRotation = HUGO::Quaternion(angleRad, HUGO::Vector3(0, 1, 0));
+        HUGO::Quaternion finalRotation = HUGO::Quaternion(angleRad, HUGO::Vector3(0, -1, 0));
 
         scene.modifyComponent<TransformComponent>(door.getValue(), [&pos, &finalRotation](TransformComponent& doorTr){
 

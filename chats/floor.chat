@@ -5,7 +5,7 @@ ENTITY floor 0
 		QUATERNION rotation 0.0 0.0 0.0 1.0
 		VECTOR_3 scale 1.0 1.0 1.0
 	COMPONENT RenderComponent
-		STRING meshName cube.mesh
+		STRING meshName floor.glb
 		STRING materialName colorFloor
     COMPONENT ColliderComponent
         COLLIDER_INFO info BOX_COLLIDER 1.0 1.0 1.0

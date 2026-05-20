@@ -1,9 +1,23 @@
 material colorFloor
 {
     receive_shadows on
-    technique {
-        pass {
-            texture_unit {
+    technique
+    {
+        pass
+        {
+            rtshader_system
+            {
+                lighting_stage per_pixel
+            }
+            lighting on
+            ambient 0.3 0.3 0.3 1.0
+            diffuse 0.6 0.6 0.6 1.0
+            specular 0.02 0.02 0.02 1.0
+            shininess 64.0
+            emissive 0.0 0.0 0.0 1.0
+            
+            texture_unit
+            {
                 texture floor_texture.png
                 tex_address_mode wrap
                 scale 0.005 0.005
@@ -15,14 +29,24 @@ material colorFloor
 material colorTecho
 {
     receive_shadows on
-    technique {
-        pass {
+    technique
+    {
+        pass
+        {
+            rtshader_system
+            {
+                lighting_stage per_pixel
+            }
+            
             lighting on
-            scene_blend add
-            depth_write on
-            ambient 0.25 0.25 0.25 1.00
-            diffuse 0.17 0.17 0.17 1.00
-            texture_unit {
+            ambient 0.25 0.25 0.25 1.0
+            diffuse 0.5 0.5 0.5 1.0
+            specular 0.01 0.01 0.01 1.0
+            shininess 32.0
+            emissive 0.0 0.0 0.0 1.0
+            
+            texture_unit
+            {
                 texture ceiling.png
                 tex_address_mode wrap
                 scale 0.005 0.005
