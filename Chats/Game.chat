@@ -26,10 +26,11 @@ ENTITY Map 0
 		INT numRituals 4
 	COMPONENT AudioComponent
         STRING audioName game
-        FLOAT volume 0.1
+        FLOAT volume 0.2
         BOOL loop true
         FLOAT pitch 1.0
         BOOL isPlaying true
+		BOOL streaming true
 	COMPONENT MarkComponent
 		int maxNum 10
 	START_CHILDREN

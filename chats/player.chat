@@ -38,6 +38,7 @@ ENTITY player 1
         BOOL loop true
         FLOAT pitch 1.25
         BOOL isPlaying false
+    COMPONENT AudioListenerComponent
     COMPONENT CameraComponent
         INT projectionType 0
         FLOAT fovY 60.0

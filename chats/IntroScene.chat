@@ -60,6 +60,7 @@ ENTITY background 1
         BOOL loop true
         FLOAT pitch 1.0
         BOOL isPlaying true
+        BOOL streaming true
     START_CHILDREN
     END_CHILDREN
 END_ENTITY
