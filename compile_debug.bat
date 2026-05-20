@@ -1,11 +1,9 @@
 @echo off
 setlocal
 
-echo ========================================
-echo    Compiling HUGO in DEBUG via script
-echo ========================================
-
-cd /d "%~dp0HUGO"
+echo =============================================
+echo    Compiling Zapascape in DEBUG via script
+echo =============================================
 
 set LOG_DIR=build\logs
 if not exist "%LOG_DIR%" mkdir "%LOG_DIR%"
