@@ -39,7 +39,7 @@ void HUDSystem::update(uint32_t dt)
             HUGO::Int time = timeComp.remainingGameTime;
             text.text = std::to_string(time);
 
-            HUGO::Float t01 = 0.0f;
+            float t01 = 0.0f;
 
             if(timeComp.alert)
             {

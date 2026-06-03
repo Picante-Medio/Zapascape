@@ -50,7 +50,7 @@ void
 InstantiateButtonSystem::update(uint32_t dt) {
 for (auto& pack : scene.query<ButtonComponent, AudioComponent>()){
         const ButtonComponent& b = pack.getConst<ButtonComponent>();
-        HUGO::Bool isOver = (b.state == HUGO::ButtonStateTypes::BS_OVER);
+        bool isOver = (b.state == HUGO::ButtonStateTypes::BS_OVER);
 
         if (!countdownStart && isOver && !b.wasOver){
             pack.modify<AudioComponent>([](AudioComponent& a){

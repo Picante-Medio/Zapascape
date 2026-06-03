@@ -4,9 +4,9 @@
 
 HSYSTEM(PlayerInputSystem)
     HUGO::Vector2 lastMousePos;
-    HUGO::Bool firstMouse = true;
+    bool firstMouse = true;
 
-    HUGO::Float rotationSensitivity = 0.1f;
+    float rotationSensitivity = 0.1f;
 
     HUGO::KeyCode upKey = HUGO::KeyCode::W;
     HUGO::KeyCode downKey = HUGO::KeyCode::S;
@@ -16,12 +16,12 @@ HSYSTEM(PlayerInputSystem)
     HUGO::KeyCode markKey = HUGO::KeyCode::F;
     HUGO::KeyCode interactKey = HUGO::KeyCode::E;
 
-    HUGO::String markAction = "mark";
-    HUGO::String interactAction = "interact";
-    HUGO::String moveAction = "move";
+    std::string markAction = "mark";
+    std::string interactAction = "interact";
+    std::string moveAction = "move";
     
     EntityID cameraID;
-    HUGO::Float pitch = 0.0f;
+    float pitch = 0.0f;
 public:
     void init() override;
     void onLoad() override;

@@ -56,9 +56,9 @@ void BeastieSystem::fixedUpdate(uint32_t)
         {
             HUGO::Vector3 lookDir = b.desiredDirection.normalized();
 
-            HUGO::Float rotDir = beastieTr.rotation.forward().cross(lookDir).y;
+            float rotDir = beastieTr.rotation.forward().cross(lookDir).y;
 
-            HUGO::Float angularVel = std::clamp(rotDir, -1.0f, 1.0f) * 3.0f;
+            float angularVel = std::clamp(rotDir, -1.0f, 1.0f) * 3.0f;
 
             pack.modify<RigidBodyComponent>([angularVel](RigidBodyComponent& rb)
             {
@@ -117,13 +117,13 @@ void BeastieSystem::update(uint32_t dt)
 
         const WorldTransformComponent& playerWorldTr = scene.getComponentConst<WorldTransformComponent>(player);
 
-        HUGO::Bool isMoving = input.isActionPressed("move");
+        bool isMoving = input.isActionPressed("move");
 
         HUGO::Vector3 toPlayer = playerWorldTr.worldPosition - beastieWTr.worldPosition;
 
         toPlayer.y = 0.0f;
 
-        HUGO::Float distance = toPlayer.length();
+        float distance = toPlayer.length();
 
         if(distance > 0.001f)
         {

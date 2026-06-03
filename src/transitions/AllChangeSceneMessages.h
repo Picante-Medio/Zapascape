@@ -3,8 +3,8 @@
 #include "Message.h"
 
 struct ChangeGameMessage : HUGO::Message {
-    HUGO::String sceneName = "Game";
+    std::string sceneName = "Game";
 };
 struct DeactiveRitualMessage : HUGO::Message {
-    HUGO::String text = "";
+    std::string text = "";
 };

@@ -14,7 +14,7 @@ void
 MovementSystem::update(uint32_t dt) 
 {
     // movement with transform
-    HUGO::Float s = dt /1000.0f;
+    float s = dt /1000.0f;
     // Update movement components
     for (auto& pack: scene.query<MovementComponent, WorldTransformComponent>()) {
         const MovementComponent& m = pack.getConst<MovementComponent>();

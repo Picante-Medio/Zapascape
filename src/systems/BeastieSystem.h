@@ -9,7 +9,7 @@ HSYSTEM(BeastieSystem)
 private:
     EntityID player;
     EntityID timer;
-    HUGO::Bool rageSoundIncreased = false;
+    bool rageSoundIncreased = false;
     void updateForce(const BeastieComponent& b);
 public:
     void init() override;

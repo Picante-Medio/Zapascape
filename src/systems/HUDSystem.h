@@ -3,7 +3,7 @@
 
 HSYSTEM(HUDSystem)
 private:
-    HUGO::Bool alertActivated = false;
+    bool alertActivated = false;
     EntityID time;
 public:
     void init() override;

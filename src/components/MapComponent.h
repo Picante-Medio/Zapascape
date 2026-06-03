@@ -10,18 +10,18 @@ enum class TileType {
 };
 HCOMPONENT(MapComponent)
 private:
-    DEFAULT_SERIALIZED_MEMBER(HUGO::Float, gridSize, 1.0f);
+    DEFAULT_SERIALIZED_MEMBER(float, gridSize, 1.0f);
     DEFAULT_SERIALIZED_MEMBER(HUGO::Int, numberOfRooms, 1);
 public:
     std::vector<std::vector<int>> mapData;
-    SERIALIZED_MEMBER(HUGO::String, wallPrefab);
+    SERIALIZED_MEMBER(std::string, wallPrefab);
 
     SERIALIZED_MEMBER(HUGO::Int, mapWidth);
     SERIALIZED_MEMBER(HUGO::Int, mapHeight);
 
     DEFAULT_SERIALIZED_MEMBER(HUGO::Int, numRituals, 2);
 
-    HUGO::Float getGridSize() const {
+    float getGridSize() const {
         return gridSize;
     }
 

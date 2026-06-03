@@ -56,7 +56,7 @@ void PlayerInputSystem::update(uint32_t dt)
 
     //ANIMATION
     for(auto& pack: scene.query<PlayerComponent,AnimationComponent, AudioComponent>()){
-        HUGO::Bool cond = input.isActionPressed("move");
+        bool cond = input.isActionPressed("move");
         pack.modify<AnimationComponent>([cond](AnimationComponent& anim){
             anim.setEnabled("Idle",cond);
             anim.setEnabled("Stop",!cond);
@@ -100,7 +100,7 @@ void PlayerInputSystem::fixedUpdate(uint32_t) {
     auto aux = input.getMousePosition();
     if (input.isMouseButtonPressed(HUGO::MouseCode::MOUSE_RIGHT))
     {
-        HUGO::Vector2 currentMousePos(static_cast<HUGO::Float>(aux.x),static_cast<HUGO::Float>(aux.y));
+        HUGO::Vector2 currentMousePos(static_cast<float>(aux.x),static_cast<float>(aux.y));
 
         if (firstMouse)
         {
@@ -113,14 +113,14 @@ void PlayerInputSystem::fixedUpdate(uint32_t) {
     }
     else
     {
-        lastMousePos = HUGO::Vector2(static_cast<HUGO::Float>(aux.x),static_cast<HUGO::Float>(aux.y));
+        lastMousePos = HUGO::Vector2(static_cast<float>(aux.x),static_cast<float>(aux.y));
         firstMouse = true;
     }
 
     // -------------------------
     // RIGIDBODY ROTATION 
     // -------------------------
-    HUGO::Float yaw = mouseDelta.x * rotationSensitivity;
+    float yaw = mouseDelta.x * rotationSensitivity;
     for (auto& pack: scene.query<PlayerComponent, RigidBodyComponent>()){
         pack.modify<RigidBodyComponent>([yaw](RigidBodyComponent& rb){
             rb.setAngularVelocity(HUGO::Vector3(0.0f, yaw, 0.0f));

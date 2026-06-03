@@ -6,7 +6,7 @@
 #include "BeastieComponent.h"
 #include "MovementRBComponent.h"
 
-constexpr HUGO::Float ALERT = 15.0f;
+constexpr float ALERT = 15.0f;
 void TimeSystem::init(){
     resetTimes();
 }
