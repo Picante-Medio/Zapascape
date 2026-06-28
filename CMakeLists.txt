@@ -18,6 +18,9 @@ set(HUGO_BUILD_ENGINE ON CACHE BOOL "" FORCE)
 
 FetchContent_MakeAvailable(HUGO)
 
+set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT ${PROJECT_NAME})
+
+
 # Source files
 
 file(GLOB_RECURSE ${PROJECT_NAME}_SRC_FILES CONFIGURE_DEPENDS ${CMAKE_SOURCE_DIR}/src/*.cpp)
@@ -52,8 +55,18 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
     LIBRARY_OUTPUT_DIRECTORY_DEBUG ${CMAKE_SOURCE_DIR}/bin
     LIBRARY_OUTPUT_DIRECTORY_RELEASE ${CMAKE_SOURCE_DIR}/bin)
 
-add_custom_target(copy_config ALL
+add_custom_target(copy_config
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
     ${CMAKE_SOURCE_DIR}/hugo.config
     ${CMAKE_SOURCE_DIR}/bin/hugo.config
     COMMAND_EXPAND_LISTS)
+
+set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT HUGO)
+add_dependencies(HUGO ${PROJECT_NAME} copy_config)
+
+if(MSVC)
+    set_target_properties(
+        copy_config
+        PROPERTIES FOLDER "Tools"
+    )
+endif()

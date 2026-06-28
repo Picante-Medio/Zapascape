@@ -4,7 +4,15 @@
 
 **2025–2026**
 
-  
+## Como generar ficheros de proyecto en Windows
+
+Ejecutar `build.bat` disponible en la raíz 
+
+Los ficheros de solución se generarán en la ruta `./build/Windows/x64`, ahí estará disponible la solución del proyecto.
+
+## Como compilar
+
+Se puede utilizar o bien el `.sln` y compilar 
 
 ---
 
