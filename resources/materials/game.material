@@ -10,8 +10,8 @@ material colorFloor
                 lighting_stage per_pixel
             }
             lighting on
-            ambient 0.3 0.3 0.3 1.0
-            diffuse 0.6 0.6 0.6 1.0
+            ambient 0.4 0.4 0.4 1.0
+            diffuse 0.7 0.7 0.7 1.0
             specular 0.02 0.02 0.02 1.0
             shininess 64.0
             emissive 0.0 0.0 0.0 1.0
@@ -20,7 +20,34 @@ material colorFloor
             {
                 texture floor_texture.png
                 tex_address_mode wrap
-                scale 0.005 0.005
+                scale 0.5 0.5
+            }
+        }
+    }
+}
+
+material colorWall
+{
+    receive_shadows on
+    technique
+    {
+        pass
+        {
+            rtshader_system
+            {
+                lighting_stage per_pixel
+            }
+            lighting on
+            ambient 0.03 0.03 0.03 1.0
+            diffuse 1.0 1.0 1.0 1.0
+            specular 0.4 0.4 0.4 1
+            shininess 32
+            emissive 0.11 0.11 0.11 1.00
+            texture_unit
+            {
+                texture wall_texture.png
+                tex_address_mode wrap
+                scale 0.5 0.5
             }
         }
     }
@@ -39,17 +66,17 @@ material colorTecho
             }
             
             lighting on
-            ambient 0.25 0.25 0.25 1.0
-            diffuse 0.5 0.5 0.5 1.0
-            specular 0.01 0.01 0.01 1.0
-            shininess 32.0
+            ambient 0.18 0.18 0.18 1.00
+            diffuse 0.35 0.35 0.35 1.0
+            specular 0.003 0.003 0.003 1.0
+            shininess 2.0
             emissive 0.0 0.0 0.0 1.0
             
             texture_unit
             {
                 texture ceiling.png
                 tex_address_mode wrap
-                scale 0.005 0.005
+                scale 0.1 0.1
             }
         }
     }

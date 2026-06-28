@@ -5,8 +5,8 @@ ENTITY wall 1
 		QUATERNION rotation 0.0 0.0 0.0 1.0
 		VECTOR_3 scale 5.0 5.0 5.0
 	COMPONENT RenderComponent
-		STRING meshName wall.glb
-		STRING materialName 
+		STRING meshName wall2.glb
+		STRING materialName colorWall
     COMPONENT ColliderComponent
         COLLIDER_INFO info BOX_COLLIDER 2.5 2.5 2.5
         FLOAT restitution 0.0

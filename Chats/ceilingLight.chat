@@ -7,18 +7,18 @@ ENTITY ceilingLight 1
     COMPONENT RenderComponent
         STRING meshName cube.mesh
         STRING materialName luzTecho
-     COMPONENT LightComponent
+    COMPONENT LightComponent
         VECTOR_4 diffuse 0.15 0.12 0.1 1.0
         VECTOR_4 specular 0.02 0.02 0.02 1.0
         VECTOR_4 attenuation 0.5 1.0 0.15 0.05
         INT lightType 2
-        FLOAT spotFalloff 1.0
-        FLOAT spotNearClip 0.2
-        FLOAT spotOuter 2.0
-        FLOAT spotInner 2.0
+        FLOAT spotFalloff 0.8
+        FLOAT spotNearClip 0.005
+        FLOAT spotOuter 12.0
+        FLOAT spotInner 0.5
         FLOAT shadowFarDist 15.0
-        FLOAT shadowFarDistSquared 1.0
-        FLOAT shadowNearClipDist 0.1
+        FLOAT shadowFarDistSquared 1.5
+        FLOAT shadowNearClipDist 0.01
         FLOAT shadowFarClipDist 3.0
     START_CHILDREN
     END_CHILDREN

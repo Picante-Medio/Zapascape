@@ -52,12 +52,12 @@ ENTITY player 1
     COMPONENT LightComponent
         VECTOR_4 diffuse 0.5 0.45 0.4 1.0 
         VECTOR_4 specular 0.5 0.5 0.5 1.0
-        INT lightType 2
+        INT lightType 1
         FLOAT spotFalloff 1.0
         FLOAT spotNearClip 0.2
         FLOAT spotOuter 2.0
         FLOAT spotInner 1.0
-        FLOAT shadowFarDist 15.0
+        FLOAT shadowFarDist 25.0
         FLOAT shadowFarDistSquared 1.0
         VECTOR_4 attenuation 1.0 0.0 0.00999999977648 20.0
         FLOAT shadowNearClipDist 0.1

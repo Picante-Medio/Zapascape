@@ -72,11 +72,11 @@ MapSystem::onLoad() {
 
         for(HUGO::Int i =0; i<roomPositions.size(); ++i) {
             auto pos = roomPositions[i];
-            HUGO::Int off = (HUGO::Int)(roomPositions.size()/10);
-            if (i% off ==0){
-                HUGO::Vector3 worldPos(pos.x * mapRead.getGridSize(), mapRead.getGridSize()/2 -0.6f, pos.y * mapRead.getGridSize());
-                createRoomLight(worldPos);
-            }
+            // HUGO::Int off = (HUGO::Int)(roomPositions.size()/10);
+            // if (i% off ==0){
+            //     HUGO::Vector3 worldPos(pos.x * mapRead.getGridSize(), mapRead.getGridSize()/2 -0.5f, pos.y * mapRead.getGridSize());
+            //     createRoomLight(worldPos);
+            // }
 
             std::vector<HUGO::Vector2> freePositions = getAdjacentFreePositions(pos, mapRead.mapData);
 
@@ -170,8 +170,21 @@ MapSystem::onLoad() {
         
         HUGO::Vector3 floorPos(centerX, -2.5f, centerZ);
         HUGO::Vector3 floorScale(widthWorld, 0.1f, heightWorld);
-        createFloor(floorPos, floorScale, "floor");
-        createFloor(HUGO::Vector3(floorPos.x, mapRead.getGridSize()/2, floorPos.z), floorScale, "ceiling");
+        for (int x = 0; x < mapRead.mapWidth; ++x)
+        {
+            for (int y = 0; y < mapRead.mapHeight; ++y)
+            {
+                TileType tile = static_cast<TileType>(mapRead.mapData[x][y]);
+
+                if (tile == TileType::Empty || tile == TileType::Start)
+                {
+                    HUGO::Vector3 pos(x * mapRead.getGridSize(), -2.5f, y * mapRead.getGridSize());
+
+                    createFloor(pos, HUGO::Vector3(mapRead.getGridSize(), 0.1f, mapRead.getGridSize()), "floor");
+                    createFloor(HUGO::Vector3(pos.x, mapRead.getGridSize() / 2.0f, pos.z),HUGO::Vector3(mapRead.getGridSize(), 0.1f, mapRead.getGridSize()),"ceiling");
+                }
+            }
+        }
 
         createPlayer(playerPos);
         createBeastie(beastiePos);
@@ -271,8 +284,20 @@ void MapSystem::createRoomLight(const HUGO::Vector3& pos) {
             tr.position = pos;
             tr.rotation = HUGO::Quaternion(HUGO::Radian(HUGO::Degree(-90.0f)), HUGO::Vector3(1,0,0));
         });
-        scene.modifyComponent<LightComponent>(light.getValue(), [](LightComponent& lg){
+        scene.modifyComponent<LightComponent>(light.getValue(), [](LightComponent& lg)
+        {
             lg.setLightType(HUGO::LightType::LT_SPOTLIGHT);
+
+            lg.setSpotInner(HUGO::Radian(HUGO::Degree(10.0f)));
+            lg.setSpotOuter(HUGO::Radian(HUGO::Degree(60.0f)));
+
+            lg.setSpotNearClip(0.1f);
+
+            lg.setAttenuation(HUGO::Vector4(1.0f, 0.09f, 0.032f, 0.0f));
+
+            lg.setShadowFarClipDist(200.0f);
+            lg.setShadowNearClipDist(0.1f);
+            
         });
     }
     else {
