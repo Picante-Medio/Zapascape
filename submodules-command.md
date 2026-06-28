@@ -9,3 +9,7 @@ Esto es necesario la primera vez (cuando el submodulo no está inicializado en t
 `git config submodule.recurse true`
 
 Esto NO LOS INICIALIZA entonces el primer comando hay que ejecutarlo mínimo una vez
+
+## Actualizar a que commit del submodulo se apunta
+
+git submodule update --remote
