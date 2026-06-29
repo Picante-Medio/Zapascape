@@ -22,6 +22,14 @@ Se puede utilizar o bien el `.sln` y compilar desde visual studio mediante la in
 
 Se generará un `HUGO.exe` (o `HUGOd.exe`) en el directorio `./bin` desde el que ejecutar el juego.
 
+## Controles del juego
+
+| Acción| Tecla|
+| ---| ---|
+| Movimiento|WASD|
+| Rotación de la cámara | Botón derecho del ratón |
+| Interactuar| E |
+| Colocar marcas| F|
 ---
 
   
