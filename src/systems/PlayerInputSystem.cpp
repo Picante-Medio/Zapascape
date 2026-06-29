@@ -47,7 +47,7 @@ void PlayerInputSystem::update(uint32_t dt)
     // -------------------------
     HUGO::Vector3 actDir(0.0f);
 
-    if(input.isKeyPressed(HUGO::KeyCode::ESC)) scene.exitGame();
+    if(input.isKeyPressed(HUGO::KeyCode::ESC)) scene.changeAndDestroyPreviousScene("IntroScene");
     if (input.isKeyPressed(leftKey)) actDir.x -= 1.0f;
     else if (input.isKeyPressed(rightKey)) actDir.x += 1.0f;
 
