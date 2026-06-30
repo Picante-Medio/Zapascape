@@ -8,7 +8,7 @@
 
 El proyecto está pensado para compilar junto al motor (por cuestiones de hacer todo lo más compatible posible). No es el mejor planteamiento pero quita dolores de cabeza.
 
-Es importante si se clona el repositorio de 0 ejecutar `git submodule update --init --recursive --remote` (los `.bat` se aseguran de ejecutar este comando). En algunas ocasiones se ha visto que se genera un directorio `./HUGO/HUGO/` (como si se duplicara), en este caso habrá que borrar el directorio mas profundo porque la inicialización del submódulo puede fallar.
+Es importante si se clona el repositorio de 0 ejecutar `git submodule update --init --recursive` (los `.bat` se aseguran de ejecutar este comando). En algunas ocasiones se ha visto que se genera un directorio `./HUGO/HUGO/` (como si se duplicara), en este caso habrá que borrar el directorio mas profundo porque la inicialización del submódulo puede fallar.
 
 ## Como generar ficheros de proyecto en Windows
 
