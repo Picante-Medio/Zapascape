@@ -57,4 +57,4 @@ echo     Compiling finished succesfully
 echo ======================================
 
 endlocal
-pause
+exit /b 0
