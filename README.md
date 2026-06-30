@@ -8,11 +8,11 @@
 
 El proyecto está pensado para compilar junto al motor (por cuestiones de hacer todo lo más compatible posible). No es el mejor planteamiento pero quita dolores de cabeza.
 
-Es importante si se clona el repositorio de 0 ejecutar `git submodule update --init --recursive --remote`. En algunas ocasiones se ha visto que se genera un directorio `./HUGO/HUGO/` (como si se duplicara), en este caso habrá que borrar el directorio mas profundo porque la inicialización del submódulo puede fallar.
+Es importante si se clona el repositorio de 0 ejecutar `git submodule update --init --recursive --remote` (los `.bat` se aseguran de ejecutar este comando). En algunas ocasiones se ha visto que se genera un directorio `./HUGO/HUGO/` (como si se duplicara), en este caso habrá que borrar el directorio mas profundo porque la inicialización del submódulo puede fallar.
 
 ## Como generar ficheros de proyecto en Windows
 
-Ejecutar `build.bat` disponible en la raíz 
+Ejecutar `build_solution.bat` disponible en la raíz 
 
 Los ficheros de solución se generarán en la ruta `./build/Windows/x64`, ahí estará disponible la solución del proyecto.
 
@@ -22,6 +22,12 @@ Se puede utilizar o bien el `.sln` y compilar desde visual studio mediante la in
 
 Se generará un `HUGO.exe` (o `HUGOd.exe`) en el directorio `./bin` desde el que ejecutar el juego.
 
+### Limpiar proyecto
+
+Para limpiar los ficheros de proyecto y binarios generados será necesario ejecutar `./clean_build.bat`.
+
+---
+
 ## Controles del juego
 
 | Acción| Tecla|
@@ -30,12 +36,10 @@ Se generará un `HUGO.exe` (o `HUGOd.exe`) en el directorio `./bin` desde el que
 | Rotación de la cámara | Botón derecho del ratón |
 | Interactuar| E |
 | Colocar marcas| F|
+
 ---
 
-  
-
 ## ÍNDICE
-
   
 
 1. [Resumen](#1-resumen)
