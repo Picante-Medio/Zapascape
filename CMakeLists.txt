@@ -70,3 +70,26 @@ if(MSVC)
         PROPERTIES FOLDER "Tools"
     )
 endif()
+
+# Visualizar los headers en el explorador de soluciones de visual studio
+set(${PROJECT_NAME}_HEADER_FILES)
+
+foreach(dir ${${PROJECT_NAME}_INCLUDE_DIRS})
+    file(GLOB_RECURSE HEADERS
+        CONFIGURE_DEPENDS
+        "${dir}/*.h"
+        "${dir}/*.hpp"
+    )
+    list(APPEND ${PROJECT_NAME}_HEADER_FILES ${HEADERS})
+endforeach()
+
+target_sources(${PROJECT_NAME} PRIVATE
+    ${${PROJECT_NAME}_HEADER_FILES}
+)
+
+source_group(
+TREE "${CMAKE_CURRENT_SOURCE_DIR}/src"
+FILES
+    ${${PROJECT_NAME}_HEADER_FILES}
+    ${${PROJECT_NAME}_SRC_FILES}
+)
