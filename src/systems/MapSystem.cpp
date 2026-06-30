@@ -24,7 +24,6 @@ MapSystem::onLoad() {
     mt = std::mt19937(std::random_device{}());
     directionsDist = std::uniform_int_distribution<int>(0, directions.size()-1);
 
-    //esto no es un bucle ya que solo existe un map component
     for (auto& pack: scene.query<MapComponent>()) {
         
         HUGO::Vector2 startPos;
@@ -72,33 +71,19 @@ MapSystem::onLoad() {
         float minZ = std::numeric_limits<float>::max();
         float maxZ = std::numeric_limits<float>::lowest();
 
-        //casillas de mapa vacias-> se instancian los prefabs de los muros etc a lavez que se genera el mapa
         for(HUGO::Int i =0; i<roomPositions.size(); ++i) {
             auto pos = roomPositions[i];
-            // HUGO::Int off = (HUGO::Int)(roomPositions.size()/10);
-            // if (i% off ==0){
-            //     HUGO::Vector3 worldPos(pos.x * mapRead.getGridSize(), mapRead.getGridSize()/2 -0.5f, pos.y * mapRead.getGridSize());
-            //     createRoomLight(worldPos);
-            // }
 
             std::vector<HUGO::Vector2> freePositions = getAdjacentFreePositions(pos, mapRead.mapData);
             std::cout<<"{";
             for(const HUGO::Vector2& freePos : freePositions) {
 
-                //HUGO::ErrorOrType<EntityID> wall = scene.instantiatePrefab(mapRead.wallPrefab);
                 float wallWorldX = freePos.x * mapRead.getGridSize();
                 float wallWorldZ = freePos.y * mapRead.getGridSize();
                 minX = std::min(minX, wallWorldX);
                 maxX = std::max(maxX, wallWorldX);
                 minZ = std::min(minZ, wallWorldZ);
                 maxZ = std::max(maxZ, wallWorldZ);
-
-                /*if(!wall.isError()) {
-                    scene.modifyComponent<TransformComponent>(wall.getValue(), 
-                    [&freePos, &mapRead](TransformComponent& wallTransform){
-                        wallTransform.position = HUGO::Vector3(freePos.x * mapRead.getGridSize(), 0, freePos.y * mapRead.getGridSize());
-                    });
-                }*/
 
                 pack.modify<MapComponent>([&freePos](MapComponent& map){
                     map.mapData[freePos.x][freePos.y] = static_cast<HUGO::Int>(TileType::Wall);
@@ -174,35 +159,8 @@ MapSystem::onLoad() {
         
         HUGO::Vector3 floorPos(centerX, -2.5f, centerZ);
         HUGO::Vector3 floorScale(widthWorld, 0.1f, heightWorld);
-
-        /*for (int x = 0; x < mapRead.mapWidth; ++x)
-        {
-            for (int y = 0; y < mapRead.mapHeight; ++y)
-            {
-                TileType tile = static_cast<TileType>(mapRead.mapData[x][y]);
-
-                if (tile == TileType::Empty || tile == TileType::Start)
-                {
-                    HUGO::Vector3 pos(x * mapRead.getGridSize(), -2.5f, y * mapRead.getGridSize());
-
-                    createFloor(pos, HUGO::Vector3(mapRead.getGridSize(), 0.1f, mapRead.getGridSize()), "floor");
-                    createFloor(HUGO::Vector3(pos.x, mapRead.getGridSize() / 2.0f, pos.z),HUGO::Vector3(mapRead.getGridSize(), 0.1f, mapRead.getGridSize()),"ceiling");
-                }
-                else if(tile == TileType::Wall){
-                    HUGO::ErrorOrType<EntityID> wall = scene.instantiatePrefab(mapRead.wallPrefab);
-
-                    if(!wall.isError()) {
-                        scene.modifyComponent<TransformComponent>(wall.getValue(), 
-                        [this, x, y](TransformComponent& wallTransform){
-                            wallTransform.position = HUGO::Vector3(x * scene.getComponentConst<MapComponent>(mapID).getGridSize(), 0, y * scene.getComponentConst<MapComponent>(mapID).getGridSize());
-                        });
-
-                    }
-                }
-            }
-        }*/
        
-            createPlayer(playerPos);
+        createPlayer(playerPos);
     }
 }
 
@@ -233,13 +191,18 @@ void MapSystem::createPlayer(const HUGO::Vector3& pos){
 
     HUGO::ErrorOrType<EntityID> player = scene.instantiatePrefab("player");
     if(!player.isError()) {
-        scene.modifyComponent<TransformComponent>(player.getValue(), [pos](TransformComponent& tr){
+        playerID = player.getValue();
+        scene.modifyComponent<TransformComponent>(playerID, [pos](TransformComponent& tr){
             tr.position = pos + HUGO::Vector3(0.0f,1.0f,0.0f);
             //tr.rotation = HUGO::Quaternion(HUGO::Radian(HUGO::Degree(-90.0f)), HUGO::Vector3(1,0,0));
         });
-        scene.modifyComponent<LightComponent>(player.getValue(), [](LightComponent& l){
+        scene.modifyComponent<LightComponent>(playerID, [](LightComponent& l){
             l.setLightType(HUGO::LightType::LT_SPOTLIGHT);
             l.setSpotInner(HUGO::Radian(HUGO::Degree(5.0f)));
+        });
+        scene.modifyComponent<MovementRBComponent>(playerID, [this](MovementRBComponent& mov){
+            playerForce = mov.force;
+            mov.force = 0.0;
         });
     }
     else {
@@ -403,6 +366,9 @@ void MapSystem::increasesIt(){
         actY = 0;
         actX++;
         if(actX >= scene.getComponentConst<MapComponent>(mapID).mapWidth) {
+            scene.modifyComponent<MovementRBComponent>(playerID, [this](MovementRBComponent& mov){
+                mov.force = playerForce;
+            });
             createBeastie(beastiePos);
             mapGenerated = true;
         }

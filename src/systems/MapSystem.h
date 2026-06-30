@@ -17,8 +17,10 @@ private:
     bool mapGenerated = false;
     HUGO::Int actX = 0, actY = 0;
     EntityID mapID;
+    EntityID playerID;
     HUGO::Vector3 beastiePos;
     HUGO::Vector3 playerPos;
+    float playerForce = 0;
 
     std::vector<HUGO::Vector2> getAdjacentFreePositions(const HUGO::Vector2& pos, const std::vector<std::vector<HUGO::Int>>& mapData);
     
