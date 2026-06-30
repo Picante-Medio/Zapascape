@@ -24,8 +24,9 @@ MapSystem::onLoad() {
     mt = std::mt19937(std::random_device{}());
     directionsDist = std::uniform_int_distribution<int>(0, directions.size()-1);
 
+    //esto no es un bucle ya que solo existe un map component
     for (auto& pack: scene.query<MapComponent>()) {
-
+        
         HUGO::Vector2 startPos;
         std::vector<HUGO::Vector2> roomPositions;
 
@@ -65,11 +66,13 @@ MapSystem::onLoad() {
         });
 
         const MapComponent& mapRead = pack.getConst<MapComponent>();
+        mapID = mapRead.entity;
         float minX = std::numeric_limits<float>::max();
         float maxX = std::numeric_limits<float>::lowest();
         float minZ = std::numeric_limits<float>::max();
         float maxZ = std::numeric_limits<float>::lowest();
 
+        //casillas de mapa vacias-> se instancian los prefabs de los muros etc a lavez que se genera el mapa
         for(HUGO::Int i =0; i<roomPositions.size(); ++i) {
             auto pos = roomPositions[i];
             // HUGO::Int off = (HUGO::Int)(roomPositions.size()/10);
@@ -79,10 +82,10 @@ MapSystem::onLoad() {
             // }
 
             std::vector<HUGO::Vector2> freePositions = getAdjacentFreePositions(pos, mapRead.mapData);
-
+            std::cout<<"{";
             for(const HUGO::Vector2& freePos : freePositions) {
 
-                HUGO::ErrorOrType<EntityID> wall = scene.instantiatePrefab(mapRead.wallPrefab);
+                //HUGO::ErrorOrType<EntityID> wall = scene.instantiatePrefab(mapRead.wallPrefab);
                 float wallWorldX = freePos.x * mapRead.getGridSize();
                 float wallWorldZ = freePos.y * mapRead.getGridSize();
                 minX = std::min(minX, wallWorldX);
@@ -90,17 +93,18 @@ MapSystem::onLoad() {
                 minZ = std::min(minZ, wallWorldZ);
                 maxZ = std::max(maxZ, wallWorldZ);
 
-                if(!wall.isError()) {
+                /*if(!wall.isError()) {
                     scene.modifyComponent<TransformComponent>(wall.getValue(), 
                     [&freePos, &mapRead](TransformComponent& wallTransform){
                         wallTransform.position = HUGO::Vector3(freePos.x * mapRead.getGridSize(), 0, freePos.y * mapRead.getGridSize());
                     });
-                }
+                }*/
 
                 pack.modify<MapComponent>([&freePos](MapComponent& map){
                     map.mapData[freePos.x][freePos.y] = static_cast<HUGO::Int>(TileType::Wall);
                 });
             }
+            
         }
         
         HUGO::Vector3 start = HUGO::Vector3(startPos.x * mapRead.getGridSize(), 0, startPos.y * mapRead.getGridSize());
@@ -112,11 +116,11 @@ MapSystem::onLoad() {
         HUGO::Int playerIndex = roomDist(mt);
         HUGO::Int beastIndex;
 
-        HUGO::Vector3 playerPos = HUGO::Vector3(
+        playerPos = HUGO::Vector3(
                 roomPositions[playerIndex].x * mapRead.getGridSize(), 
                 -2.5f, roomPositions[playerIndex].y * mapRead.getGridSize());
 
-        HUGO::Vector3 beastiePos;
+        
 
         int minDist = 10; 
         int cont = 10;
@@ -170,7 +174,8 @@ MapSystem::onLoad() {
         
         HUGO::Vector3 floorPos(centerX, -2.5f, centerZ);
         HUGO::Vector3 floorScale(widthWorld, 0.1f, heightWorld);
-        for (int x = 0; x < mapRead.mapWidth; ++x)
+
+        /*for (int x = 0; x < mapRead.mapWidth; ++x)
         {
             for (int y = 0; y < mapRead.mapHeight; ++y)
             {
@@ -183,11 +188,21 @@ MapSystem::onLoad() {
                     createFloor(pos, HUGO::Vector3(mapRead.getGridSize(), 0.1f, mapRead.getGridSize()), "floor");
                     createFloor(HUGO::Vector3(pos.x, mapRead.getGridSize() / 2.0f, pos.z),HUGO::Vector3(mapRead.getGridSize(), 0.1f, mapRead.getGridSize()),"ceiling");
                 }
-            }
-        }
+                else if(tile == TileType::Wall){
+                    HUGO::ErrorOrType<EntityID> wall = scene.instantiatePrefab(mapRead.wallPrefab);
 
-        createPlayer(playerPos);
-        createBeastie(beastiePos);
+                    if(!wall.isError()) {
+                        scene.modifyComponent<TransformComponent>(wall.getValue(), 
+                        [this, x, y](TransformComponent& wallTransform){
+                            wallTransform.position = HUGO::Vector3(x * scene.getComponentConst<MapComponent>(mapID).getGridSize(), 0, y * scene.getComponentConst<MapComponent>(mapID).getGridSize());
+                        });
+
+                    }
+                }
+            }
+        }*/
+       
+            createPlayer(playerPos);
     }
 }
 
@@ -209,7 +224,9 @@ MapSystem::getAdjacentFreePositions(const HUGO::Vector2& pos, const std::vector<
 }
 
 
-void MapSystem::update(uint32_t) {}
+void MapSystem::update(uint32_t) {
+    if(!mapGenerated) createNextTile();
+}
 void MapSystem::fixedUpdate(uint32_t) {}
 
 void MapSystem::createPlayer(const HUGO::Vector3& pos){
@@ -230,6 +247,7 @@ void MapSystem::createPlayer(const HUGO::Vector3& pos){
         scene.exitGame();
     }
 }
+
 void MapSystem::createBeastie(const HUGO::Vector3& pos){
     HUGO::ErrorOrType<EntityID> beastie = scene.instantiatePrefab("beastie");
     if(!beastie.isError()) {
@@ -341,5 +359,52 @@ void MapSystem::createDoor(const HUGO::Vector3 &pos, const HUGO::Vector2& dir)
     }
     else {
         std::cout<< "[Error]: Fallo al instanciar el prefab de la puerta final\n";
+    }
+}
+
+void MapSystem::createNextTile(){
+
+    const MapComponent& map = scene.getComponentConst<MapComponent>(mapID);
+    TileType tile = static_cast<TileType>(map.mapData[actX][actY]);
+
+    if (tile == TileType::Empty || tile == TileType::Start)
+    {
+        HUGO::Vector3 pos(actX * map.getGridSize(), -2.5f, actY * map.getGridSize());
+
+        createFloor(pos, HUGO::Vector3(map.getGridSize(), 0.1f, map.getGridSize()), "floor");
+        createFloor(HUGO::Vector3(pos.x, map.getGridSize() / 2.0f, pos.z),HUGO::Vector3(map.getGridSize(), 0.1f, map.getGridSize()),"ceiling");
+        increasesIt();
+    }
+    else if(tile == TileType::Wall){
+        HUGO::ErrorOrType<EntityID> wall = scene.instantiatePrefab(map.wallPrefab);
+
+        if(!wall.isError()) {
+            scene.modifyComponent<TransformComponent>(wall.getValue(), 
+            [this](TransformComponent& wallTransform){
+                wallTransform.position = HUGO::Vector3(actX * scene.getComponentConst<MapComponent>(mapID).getGridSize(), 0, actY * scene.getComponentConst<MapComponent>(mapID).getGridSize());
+            });
+
+        }
+        increasesIt();
+    }
+    else{
+        while (tile != TileType::Wall && tile != TileType::Empty && tile != TileType::Start && !mapGenerated)
+        {
+            increasesIt();
+            if(!mapGenerated) tile = static_cast<TileType>(map.mapData[actX][actY]);
+        }
+        
+    }
+}
+
+void MapSystem::increasesIt(){
+    actY++;
+    if(actY >= scene.getComponentConst<MapComponent>(mapID).mapHeight){
+        actY = 0;
+        actX++;
+        if(actX >= scene.getComponentConst<MapComponent>(mapID).mapWidth) {
+            createBeastie(beastiePos);
+            mapGenerated = true;
+        }
     }
 }
