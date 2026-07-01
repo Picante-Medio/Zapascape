@@ -75,7 +75,7 @@ MapSystem::onLoad() {
             auto pos = roomPositions[i];
 
             std::vector<HUGO::Vector2> freePositions = getAdjacentFreePositions(pos, mapRead.mapData);
-            std::cout<<"{";
+
             for(const HUGO::Vector2& freePos : freePositions) {
 
                 float wallWorldX = freePos.x * mapRead.getGridSize();
@@ -89,7 +89,6 @@ MapSystem::onLoad() {
                     map.mapData[freePos.x][freePos.y] = static_cast<HUGO::Int>(TileType::Wall);
                 });
             }
-            
         }
         
         HUGO::Vector3 start = HUGO::Vector3(startPos.x * mapRead.getGridSize(), 0, startPos.y * mapRead.getGridSize());
